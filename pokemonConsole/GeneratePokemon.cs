@@ -12,35 +12,39 @@ namespace pokemonConsole
 {
     internal class GeneratePokemon
     {
-        private string name = "";
-        private int level;
+        private string fileCSV = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\pokemon.csv";
 
-        private int basePv = 35;
-        private int evPv = 0;
-
-        private int baseAtk = 55;
-        private int evAtk = 0;
-
-        private int baseDef = 30;
-        private int evDef = 0;
-
-        private int baseSpd = 90;
-        private int evSpd = 0;
-
-        private int baseSpe = 50;
-        private int evSpe = 0;
-
-
-        public static Pokemon generatePokemon(int id_generate, int level_generate)
+        public static Pokemon generatePokemon(int id_generate, int level_generate, int ev_generate_all_stats = 0)
         {
             GeneratePokemon gen = new GeneratePokemon();
             Random random = new Random();
 
-            string fileCSV = "C:\\Users\\ycaillot\\Desktop\\pokemonConsole\\pokemonConsole\\pokemon.csv";
-            using (StreamReader sr = new StreamReader(fileCSV))
+            string name = "";
+            int basePv = 0;
+            int baseAtk = 0;
+            int baseDef = 0;
+            int baseSpe = 0;
+            int baseSpd = 0;
+
+            int dvPv = random.Next(0, 16);
+            int dvAtk = random.Next(0, 16);
+            int dvDef = random.Next(0, 16);
+            int dvSpe = random.Next(0, 16);
+            int dvSpd = random.Next(0, 16);
+
+            List<int> listPv = new List<int>();
+            List<int> listAtk = new List<int>();
+            List<int> listDef = new List<int>();
+            List<int> listSpe = new List<int>();
+            List<int> listSpd = new List<int>();
+            List<string> listType = new List<string>();
+
+
+            using (StreamReader sr = new StreamReader(gen.fileCSV))
             {
                 string line;
                 bool pokemonFound = false;
+
 
                 while ((line = sr.ReadLine()) != null || !pokemonFound)
                 {
@@ -50,47 +54,34 @@ namespace pokemonConsole
 
                     if (id_search == id_generate)
                     {
-                        gen.name = colonnes[1];
-                        gen.basePv = int.Parse(colonnes[4]);
-                        gen.baseAtk = int.Parse(colonnes[5]);
-                        gen.baseDef = int.Parse(colonnes[6]);
-                        gen.baseSpe = int.Parse(colonnes[7]);
-                        gen.baseSpd = int.Parse(colonnes[8]);
+                        name = colonnes[1];
+                        basePv = int.Parse(colonnes[4]);
+                        baseAtk = int.Parse(colonnes[5]);
+                        baseDef = int.Parse(colonnes[6]);
+                        baseSpe = int.Parse(colonnes[7]);
+                        baseSpd = int.Parse(colonnes[8]);
+
+                        listType.Add(colonnes[2]);
+                        if (colonnes[3] != "NONE")
+                        {
+                            listType.Add(colonnes[3]);
+                        }
 
                         pokemonFound = true;
                     }
                 }
             }
 
-            gen.level = level_generate;
+            listPv.Add(basePv); listPv.Add(dvPv); listPv.Add(ev_generate_all_stats);
+            listAtk.Add(baseAtk); listAtk.Add(dvAtk); listAtk.Add(ev_generate_all_stats);
+            listDef.Add(baseDef); listDef.Add(dvDef); listDef.Add(ev_generate_all_stats);
+            listSpe.Add(baseSpe); listSpe.Add(dvSpe); listSpe.Add(ev_generate_all_stats);
+            listSpd.Add(baseSpd); listSpd.Add(dvSpd); listSpd.Add(ev_generate_all_stats);
 
-            int dvPv = random.Next(0, 16);
-            int dvAtk = random.Next(0, 16);
-            int dvDef = random.Next(0, 16);
-            int dvSpd = random.Next(0, 16);
-            int dvSpe = random.Next(0, 16);
-
-            int maxPv = FormulaStatsPv(gen.level, gen.basePv, dvPv, gen.evPv);
-            int maxAtk = FormulaStatsNotPv(gen.level, gen.baseAtk, dvAtk, gen.evAtk);
-            int maxDef = FormulaStatsNotPv(gen.level, gen.baseDef, dvDef, gen.evDef);
-            int maxSpd = FormulaStatsNotPv(gen.level, gen.baseSpd, dvSpd, gen.evSpd);
-            int maxSpe = FormulaStatsNotPv(gen.level, gen.baseSpe, dvSpe, gen.evSpe);
-
-            Pokemon pokemonGenerated = new Pokemon(gen.name, gen.level, maxPv, maxAtk, maxDef, maxSpd, maxSpe);
+            Pokemon pokemonGenerated = new Pokemon(level_generate, name,listType, listPv, listAtk, listDef, listSpd, listSpe);
             return pokemonGenerated;
 
         }
 
-
-
-        public static int FormulaStatsPv(int level, int baseStat, int dvStat, int evStat)
-        {
-            return (int)(((((baseStat + dvStat) * 2 + Math.Sqrt(evStat) / 4) * level) / 100) + level + 10);
-        }
-
-        public static int FormulaStatsNotPv(int level, int baseStat, int dvStat, int evStat)
-        {
-            return (int)(((((baseStat + dvStat) * 2 + Math.Sqrt(evStat) / 4) * level) / 100) + 5);
-        }
     }
 }
