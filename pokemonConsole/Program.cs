@@ -6,22 +6,19 @@ class AfficherPokemon
 {
     static void Main()
     {
-        Pokemon pokemon = GeneratePokemon.generatePokemon(6, 25);
+        Pokemon pokemon = GeneratePokemon.generatePokemon(4, 60);
 
-        Console.WriteLine("name = " + pokemon.getName());
-        Console.WriteLine("Level = " + pokemon.getLevel());
+        pokemon.AfficherDetailsPokemon();
 
-        for(int i = 0; i < pokemon.getListType().Count; i++) 
-        {
-            Console.WriteLine($"Type {i+1} = {pokemon.getListType()[i]}");
-        }
+        Console.WriteLine();
 
-        Console.WriteLine("pv = " + pokemon.getPv());
-        Console.WriteLine("atk = " + pokemon.getAtk());
-        Console.WriteLine("def = " + pokemon.getDef());
-        Console.WriteLine("Spe = " + pokemon.getSpe());
-        Console.WriteLine("Spd = " + pokemon.getSpd());
+        pokemon.Evolution();
+        pokemon.AfficherDetailsPokemon();
 
+        Console.WriteLine();
+
+        pokemon.Evolution();
+        pokemon.AfficherDetailsPokemon();
     }
 }
 

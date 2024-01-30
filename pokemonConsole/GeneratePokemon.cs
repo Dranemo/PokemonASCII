@@ -39,35 +39,57 @@ namespace pokemonConsole
             List<int> listSpd = new List<int>();
             List<string> listType = new List<string>();
 
+            List<string> listEvo = new List<string>();
+
 
             using (StreamReader sr = new StreamReader(gen.fileCSV))
             {
                 string line;
                 bool pokemonFound = false;
+                bool pokemonFinishReading = false;
 
 
-                while ((line = sr.ReadLine()) != null || !pokemonFound)
+                while ((line = sr.ReadLine()) != null && !pokemonFinishReading)
                 {
-                    string[] colonnes = line.Split(',');
-
-                    int.TryParse(colonnes[0], out int id_search);
-
-                    if (id_search == id_generate)
+                    if (!pokemonFound)
                     {
-                        name = colonnes[1];
-                        basePv = int.Parse(colonnes[4]);
-                        baseAtk = int.Parse(colonnes[5]);
-                        baseDef = int.Parse(colonnes[6]);
-                        baseSpe = int.Parse(colonnes[7]);
-                        baseSpd = int.Parse(colonnes[8]);
+                        string[] colonnes = line.Split(',');
 
-                        listType.Add(colonnes[2]);
-                        if (colonnes[3] != "NONE")
+                        int.TryParse(colonnes[0], out int id_search);
+
+                        if (id_search == id_generate)
                         {
-                            listType.Add(colonnes[3]);
-                        }
+                            name = colonnes[1];
+                            basePv = int.Parse(colonnes[4]);
+                            baseAtk = int.Parse(colonnes[5]);
+                            baseDef = int.Parse(colonnes[6]);
+                            baseSpe = int.Parse(colonnes[7]);
+                            baseSpd = int.Parse(colonnes[8]);
 
-                        pokemonFound = true;
+                            listType.Add(colonnes[2]);
+                            if (colonnes[3] != "NONE")
+                            {
+                                listType.Add(colonnes[3]);
+                            }
+
+                            pokemonFound = true;
+
+                            if (colonnes[10] == "false")
+                            {
+                                pokemonFinishReading = true;
+                            }
+                        }
+                    }
+
+                    else
+                    {
+                        listEvo.Add(line);
+
+                        string[] colonnes = line.Split(',');
+                        if (colonnes[10] == "false")
+                        {
+                            pokemonFinishReading = true;
+                        }
                     }
                 }
             }
@@ -78,7 +100,7 @@ namespace pokemonConsole
             listSpe.Add(baseSpe); listSpe.Add(dvSpe); listSpe.Add(ev_generate_all_stats);
             listSpd.Add(baseSpd); listSpd.Add(dvSpd); listSpd.Add(ev_generate_all_stats);
 
-            Pokemon pokemonGenerated = new Pokemon(level_generate, name,listType, listPv, listAtk, listDef, listSpd, listSpe);
+            Pokemon pokemonGenerated = new Pokemon(level_generate, name,listType, listPv, listAtk, listDef, listSpd, listSpe, listEvo);
             return pokemonGenerated;
 
         }
