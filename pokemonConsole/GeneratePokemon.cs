@@ -12,7 +12,8 @@ namespace pokemonConsole
 {
     internal class GeneratePokemon
     {
-        private string fileCSV = "C:\\Users\\moiqu\\OneDrive\\Bureau\\C-Pokemon\\pokemonConsole\\pokemon.csv";
+        private string fileCSV = "C:\\Users\\agathelier\\Desktop\\Nouveau dossier\\C-Pokemon\\pokemonConsole\\pokemon.csv";
+
 
         public static Pokemon generatePokemon(int id_generate, int level_generate, int ev_generate_all_stats = 0)
         {
