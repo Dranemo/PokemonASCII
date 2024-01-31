@@ -19,7 +19,7 @@ namespace pokemonConsole
             pokemon.AfficherDetailsPokemon();
             pokemonAdverse.AfficherDetailsPokemon();
 
-            while (pokemon.Pv > 0 && pokemonAdverse.Pv > 0)
+            while (pokemon.pvLeft > 0 && pokemonAdverse.pvLeft > 0)
             {
                 // Afficher les détails des Pokémon
                 pokemon.AfficherDetailsPokemon();
@@ -41,18 +41,18 @@ namespace pokemonConsole
                     }
 
 
-                    float PvRestantPokemonJoueur = CalculerDegatSubitPokemonJoueur(pokemon.Pv, pokemonAdverse.getAtk());
-                    float PvRestantPokemonAdverse = CalculerDegatSubitPokemonAdverse(pokemonAdverse.Pv, pokemon.getAtk());
+                    float PvRestantPokemonJoueur = CalculerDegatSubitPokemonJoueur(pokemon.pvLeft, pokemonAdverse.atk);
+                    float PvRestantPokemonAdverse = CalculerDegatSubitPokemonAdverse(pokemonAdverse.pvLeft, pokemon.atk);
 
 
                     // Mise à jour des PV du Pokémon du joueur
-                    pokemon.Pv = (int)PvRestantPokemonJoueur;
+                    pokemon.pvLeft = (int)PvRestantPokemonJoueur;
 
                     // Mise à jour des PV du Pokémon de l'adversaire
-                    pokemonAdverse.Pv = (int)PvRestantPokemonAdverse;
+                    pokemonAdverse.pvLeft = (int)PvRestantPokemonAdverse;
 
-                    Console.WriteLine($"Les nouveaux PV du Pokemon du joueur sont = {pokemon.Pv}");
-                    Console.WriteLine($"Les nouveaux PV du Pokemon de l'adversaire sont = {pokemonAdverse.Pv}");
+                    Console.WriteLine($"Les nouveaux PV du Pokemon du joueur sont = {pokemon.pvLeft}");
+                    Console.WriteLine($"Les nouveaux PV du Pokemon de l'adversaire sont = {pokemonAdverse.pvLeft}");
                 }
                 else
                 {
@@ -60,11 +60,11 @@ namespace pokemonConsole
                 }
 
                 // À ce stade, la boucle s'arrête car l'un des Pokémon a 0 PV ou moins
-                if (pokemon.Pv <= 0)
+                if (pokemon.pvLeft <= 0)
                 {
                     Console.WriteLine("Le Pokemon du joueur a perdu !");
                 }
-                if (pokemonAdverse.Pv <= 0)
+                if (pokemonAdverse.pvLeft <= 0)
                 {
                     Console.WriteLine("Le Pokemon de l'adversaire a perdu !");
                 }
