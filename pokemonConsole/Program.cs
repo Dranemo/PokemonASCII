@@ -41,41 +41,62 @@ class AfficherPokemon
         //pokemon.Evolution();
         //pokemon.AfficherDetailsPokemon();
 
-        Pokemon pokemon = GeneratePokemon.generatePokemon(15, 25);
-        Pokemon pokemonAdverse = GeneratePokemon.generatePokemon(3, 25);
+        Pokemon pokemon = GeneratePokemon.generatePokemon(27, 25);
+        Pokemon pokemonAdverse = GeneratePokemon.generatePokemon(95, 25);
 
         AfficherDetailsPokemon(pokemon);
         AfficherDetailsPokemon(pokemonAdverse);
 
         while (pokemon.Pv > 0 && pokemonAdverse.Pv > 0)
         {
-            float multiplicateurType1 = CalculerMultiplicateur1(pokemon.getListType()[0], pokemonAdverse.getListType()[0]);
-            Console.WriteLine($"Multiplicateur type 1 = {multiplicateurType1}");
-            float multiplicateurType2 = CalculerMultiplicateur2(pokemon.getListType()[1], pokemonAdverse.getListType()[1]);
-            Console.WriteLine($"Multiplicateur type 2 = {multiplicateurType2}");
+            // Afficher les détails des Pokémon
+            AfficherDetailsPokemon(pokemon);
+            AfficherDetailsPokemon(pokemonAdverse);
 
-            float degatsSubitPokemonJoueur = CalculerDegatSubitPokemonJoueur(pokemon.getPv(), pokemonAdverse.getAtk());
-            Console.WriteLine($"Les nouveaux PV du Pokemon du joueur sont = {degatsSubitPokemonJoueur}");
-            float degatsSubitPokemonAdverse = CalculerDegatSubitPokemonAdverse(pokemonAdverse.getPv(), pokemon.getAtk());
-            Console.WriteLine($"Les nouveaux PV du Pokemon de l'adversaire sont = {degatsSubitPokemonAdverse}");
+            // Demander à l'utilisateur d'entrer son action
+            Console.WriteLine("Entrez 'Attaque' pour attaquer : ");
+            string modeAttaque = Console.ReadLine();
 
-            // Mise à jour des PV du Pokémon du joueur
-            pokemon.Pv -= (int)degatsSubitPokemonJoueur;
+            // Vérifier l'action de l'utilisateur
+            if (modeAttaque.ToLower() == "attaque")
+            {
+                float multiplicateurType1 = CalculerMultiplicateur1(pokemon.getListType()[0], pokemonAdverse.getListType()[0]);
+                Console.WriteLine($"Multiplicateur type 1 = {multiplicateurType1}");
+                if (pokemon.getListType().Count > 1 && !string.IsNullOrEmpty(pokemon.getListType()[1]) && pokemonAdverse.getListType().Count > 1 && !string.IsNullOrEmpty(pokemonAdverse.getListType()[1]))
+                {
+                    float multiplicateurType2 = CalculerMultiplicateur2(pokemon.getListType()[1], pokemonAdverse.getListType()[1]);
+                    Console.WriteLine($"Multiplicateur type 2 = {multiplicateurType2}");
+                }
 
-            // Mise à jour des PV du Pokémon de l'adversaire
-            pokemonAdverse.Pv -= (int)degatsSubitPokemonAdverse;
+
+                float PvRestantPokemonJoueur = CalculerDegatSubitPokemonJoueur(pokemon.Pv, pokemonAdverse.getAtk());
+                float PvRestantPokemonAdverse = CalculerDegatSubitPokemonAdverse(pokemonAdverse.Pv, pokemon.getAtk());
+                
+
+                // Mise à jour des PV du Pokémon du joueur
+                pokemon.Pv = (int)PvRestantPokemonJoueur;
+
+                // Mise à jour des PV du Pokémon de l'adversaire
+                pokemonAdverse.Pv = (int)PvRestantPokemonAdverse;
+
+                Console.WriteLine($"Les nouveaux PV du Pokemon du joueur sont = {pokemon.Pv}");
+                Console.WriteLine($"Les nouveaux PV du Pokemon de l'adversaire sont = {pokemonAdverse.Pv}");
+            }
+            else
+            {
+                Console.WriteLine("Action non reconnue. Essayez 'Attaque'.");
+            }
+
+            // À ce stade, la boucle s'arrête car l'un des Pokémon a 0 PV ou moins
+            if (pokemon.Pv <= 0)
+            {
+                Console.WriteLine("Le Pokemon du joueur a perdu !");
+            }
+            if (pokemonAdverse.Pv <= 0)
+            {
+                Console.WriteLine("Le Pokemon de l'adversaire a perdu !");
+            }
         }
-
-        // À ce stade, la boucle s'arrête car l'un des Pokémon a 0 PV ou moins
-        if (pokemon.Pv <= 0)
-        {
-            Console.WriteLine("Le Pokemon du joueur a perdu !");
-        }
-        else
-        {
-            Console.WriteLine("Le Pokemon de l'adversaire a perdu !");
-        }
-
     }
 
     static float CalculerMultiplicateur(string typePokemon, string typeAdverse)
@@ -128,23 +149,23 @@ class AfficherPokemon
 
     static float CalculerDegatSubitPokemonJoueur(int pvPokemonJoueur, int atkPokemonAdverse)
     {
-        float degatsSubitPokemonJoueur = pvPokemonJoueur - atkPokemonAdverse;
-        if (degatsSubitPokemonJoueur < 0)
+        float PvRestantPokemonJoueur = pvPokemonJoueur - atkPokemonAdverse;
+        if (PvRestantPokemonJoueur < 0)
         {
-            degatsSubitPokemonJoueur = 0;
+            PvRestantPokemonJoueur = 0;
         }
 
-        return degatsSubitPokemonJoueur;
+        return PvRestantPokemonJoueur;
     }
 
     static float CalculerDegatSubitPokemonAdverse(int pvPokemonAdverse, int atkPokemonJoueur)
     {
-        float degatsSubitPokemonAdverse = pvPokemonAdverse - atkPokemonJoueur;
-        if (degatsSubitPokemonAdverse < 0)
+        float PvRestantPokemonAdverse = pvPokemonAdverse - atkPokemonJoueur;
+        if (PvRestantPokemonAdverse < 0)
         {
-            degatsSubitPokemonAdverse = 0;
+            PvRestantPokemonAdverse = 0;
         }
 
-        return degatsSubitPokemonAdverse;
+        return PvRestantPokemonAdverse;
     }
 }
