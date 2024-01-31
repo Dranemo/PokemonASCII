@@ -11,8 +11,7 @@ namespace pokemonConsole
         private string name;
         private int level;
 
-
-
+        public int Pv { get; set; }
         private int pv;
         private int atk;
         private int def;
@@ -35,10 +34,10 @@ namespace pokemonConsole
             this.name = name_;
             this.level = level_;
             this.listType = listType_;
-
             this.listEvo = listEvo_;
 
             this.listPv = listPv_;
+            this.Pv = FormulaStatsPv(this.level, this.listPv);
             this.listAtk = listAtk_;
             this.listDef = listDef_;
             this.listSpd = listSpd_;
@@ -92,48 +91,51 @@ namespace pokemonConsole
             return (int)(((((listStat[0] + listStat[1]) * 2 + Math.Sqrt(listStat[2]) / 4) * level) / 100) + 5);
         }
 
-
         public void Evolution()
         {
-            string nextEvo = this.listEvo[0];
-            string[] colonnes = nextEvo.Split(',');
-
-            this.name = colonnes[1];
-
-            this.listType[0] = colonnes[2];
-            if (colonnes[3] != "NONE")
+            if (this.listEvo.Count > 0)
             {
-                if(listType.Count == 1)
+                string nextEvo = this.listEvo[0];
+                string[] colonnes = nextEvo.Split(',');
+
+                this.name = colonnes[1];
+
+                this.listType[0] = colonnes[2];
+                if (colonnes[3] != "NONE")
                 {
-                    this.listType.Add(colonnes[3]);
+                    if (listType.Count == 1)
+                    {
+                        this.listType.Add(colonnes[3]);
+                    }
+                    else
+                    {
+                        this.listType[1] = colonnes[3];
+                    }
                 }
-                else
+
+                this.listPv[0] = int.Parse(colonnes[4]);
+                this.listAtk[0] = int.Parse(colonnes[5]);
+                this.listDef[0] = int.Parse(colonnes[6]);
+                this.listSpe[0] = int.Parse(colonnes[7]);
+                this.listSpd[0] = int.Parse(colonnes[8]);
+
+                this.Pv = FormulaStatsPv(this.level, this.listPv);
+                this.atk = FormulaStatsNotPv(this.level, this.listAtk);
+                this.def = FormulaStatsNotPv(this.level, this.listDef);
+                this.spe = FormulaStatsNotPv(this.level, this.listSpe);
+                this.spd = FormulaStatsNotPv(this.level, this.listSpd);
+
+                if (this.listEvo.Count > 1)
                 {
-                    this.listType[1] = colonnes[3];
-                }
-            }
-
-            this.listPv[0] = int.Parse(colonnes[4]);
-            this.listAtk[0] = int.Parse(colonnes[5]);
-            this.listDef[0] = int.Parse(colonnes[6]);
-            this.listSpe[0] = int.Parse(colonnes[7]);
-            this.listSpd[0] = int.Parse(colonnes[8]);
-
-            this.pv = FormulaStatsPv(this.level, this.listPv);
-            this.atk = FormulaStatsNotPv(this.level, this.listAtk);
-            this.def = FormulaStatsNotPv(this.level, this.listDef);
-            this.spe = FormulaStatsNotPv(this.level, this.listSpe);
-            this.spd = FormulaStatsNotPv(this.level, this.listSpd);
-
-            if(this.listEvo.Count > 1)
-            {
-                for(int i = 0; i < this.listEvo.Count-1; i++)
-                {
-                    string temp = this.listEvo[i+1];
-                    this.listEvo[i] = temp;
+                    for (int i = 0; i < this.listEvo.Count - 1; i++)
+                    {
+                        string temp = this.listEvo[i + 1];
+                        this.listEvo[i] = temp;
+                    }
                 }
             }
         }
+
 
 
 
