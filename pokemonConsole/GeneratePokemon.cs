@@ -12,7 +12,7 @@ namespace pokemonConsole
 {
     internal class GeneratePokemon
     {
-        private string fileCSV = "C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\pokemon.csv";
+        private string fileCSV = "C:\\Users\\moiqu\\OneDrive\\Bureau\\C-Pokemon\\pokemonConsole\\pokemon.csv";
 
         public static Pokemon generatePokemon(int id_generate, int level_generate, int ev_generate_all_stats = 0)
         {
@@ -94,6 +94,18 @@ namespace pokemonConsole
                 }
             }
 
+            string asciiArtFileName = $"ascii-art ({id_generate}).txt";
+            string asciiArtFilePath = Path.Combine("C:\\Users\\moiqu\\OneDrive\\Bureau\\C-Pokemon\\pokemonConsole\\Assets\\", asciiArtFileName);
+
+            if (File.Exists(asciiArtFilePath))
+            {
+                string asciiArt = File.ReadAllText(asciiArtFilePath);
+                Console.WriteLine(asciiArt);
+            }
+            else
+            {
+                Console.WriteLine($"Sprite ASCII non trouvé pour le Pokémon avec l'ID {id_generate}");
+            }
             listPv.Add(basePv); listPv.Add(dvPv); listPv.Add(ev_generate_all_stats);
             listAtk.Add(baseAtk); listAtk.Add(dvAtk); listAtk.Add(ev_generate_all_stats);
             listDef.Add(baseDef); listDef.Add(dvDef); listDef.Add(ev_generate_all_stats);
