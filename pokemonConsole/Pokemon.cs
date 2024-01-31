@@ -8,36 +8,45 @@ namespace pokemonConsole
 {
     internal class Pokemon
     {
-        private string name;
-        private int level;
+        public int id {  get; private set; }
+        public string name { get; private set; }
+        public int level { get; private set; }
 
-        public int Pv { get; set; }
-        private int pv;
-        private int atk;
-        private int def;
-        private int spe;
-        private int spd;
-
-        List<int> listPv = new List<int>();
-        List<int> listAtk = new List<int>();
-        List<int> listDef = new List<int>();
-        List<int> listSpe = new List<int>();
-        List<int> listSpd = new List<int>();
-
-        List<string> listType = new List<string>();
-
-        List<string> listEvo = new List<string>();
+        public int pv { get; private set; }
+        public int pvLeft {  get; set; }
+        public int atk { get; private set; }
+        public int def { get; private set; }
+        public int spe { get; private set; }
+        public int spd { get; private set; }
 
 
-        public Pokemon(int level_, string name_, List<string> listType_, List<int> listPv_, List<int> listAtk_, List<int> listDef_, List<int> listSpd_, List<int> listSpe_, List<string> listEvo_)
+        // Max EV = 35,565
+        // [0] = Base
+        // [1] = DV
+        // [2] = EV
+        private List<int> listPv = new List<int>();
+        private List<int> listAtk = new List<int>();
+        private List<int> listDef = new List<int>();
+        private List<int> listSpe = new List<int>();
+        private List<int> listSpd = new List<int>();
+
+        private List<string> listType = new List<string>();
+        private List<string> listEvo = new List<string>();
+
+        List<int> listAttackId = new List<int>();
+        List<int> listAttackLevel = new List<int>();
+        List<int> listAttackActual = new List<int>();
+
+        private string filePokemonCSV = "C:\\Users\\yanae\\Desktop\\C-Pokemon\\pokemonConsole\\pokemon.csv";
+        public Pokemon(int id_, int level_, string name_, List<string> listType_, List<int> listPv_, List<int> listAtk_, List<int> listDef_, List<int> listSpd_, List<int> listSpe_, List<string> listEvo_)
         {
+            this.id = id_;
             this.name = name_;
             this.level = level_;
             this.listType = listType_;
             this.listEvo = listEvo_;
 
             this.listPv = listPv_;
-            this.Pv = FormulaStatsPv(this.level, this.listPv);
             this.listAtk = listAtk_;
             this.listDef = listDef_;
             this.listSpd = listSpd_;
@@ -48,18 +57,18 @@ namespace pokemonConsole
             this.def = FormulaStatsNotPv(this.level, this.listDef);
             this.spe = FormulaStatsNotPv(this.level, this.listSpe);
             this.spd = FormulaStatsNotPv(this.level, this.listSpd);
+            this.pvLeft = pv;
         }
 
-
-        public string getName() { return this.name; }
-        public int getLevel() { return this.level; }
+        public List<int> getListPv() {  return this.listPv; }
+        public List<int> getListAtk() {  return this.listAtk; }
+        public List<int> getListDef() {  return this.listDef; }
+        public List<int> getListSpe() {  return this.listSpe; }
+        public List<int> getListSpd() {  return this.listSpd; }
         public List<string> getListType() {  return this.listType; }
-        public int getPv() { return this.pv; }
-        public int getAtk() {  return this.atk; }
-        public int getDef() { return this.def; }
-        public int getSpe() { return this.spe; }
-        public int getSpd() { return this.spd; }
         public List<string> getListEvo() { return this.listEvo; }
+
+
 
         public void AfficherDetailsPokemon()
         {
@@ -78,14 +87,11 @@ namespace pokemonConsole
             Console.WriteLine($"Spd = {this.spd}");
         }
 
-
-
         private int FormulaStatsPv(int level, List<int> listPv)
         {
 
             return (int)(((((listPv[0] + listPv[1]) * 2 + Math.Sqrt(listPv[2]) / 4) * level) / 100) + level + 10);
         }
-
         private int FormulaStatsNotPv(int level, List<int> listStat)
         {
             return (int)(((((listStat[0] + listStat[1]) * 2 + Math.Sqrt(listStat[2]) / 4) * level) / 100) + 5);
@@ -119,7 +125,7 @@ namespace pokemonConsole
                 this.listSpe[0] = int.Parse(colonnes[7]);
                 this.listSpd[0] = int.Parse(colonnes[8]);
 
-                this.Pv = FormulaStatsPv(this.level, this.listPv);
+                this.pv = FormulaStatsPv(this.level, this.listPv);
                 this.atk = FormulaStatsNotPv(this.level, this.listAtk);
                 this.def = FormulaStatsNotPv(this.level, this.listDef);
                 this.spe = FormulaStatsNotPv(this.level, this.listSpe);
@@ -137,9 +143,5 @@ namespace pokemonConsole
                 this.listEvo.RemoveAt(listEvo.Count - 1);
             }
         }
-
-
-
-
     }
 }

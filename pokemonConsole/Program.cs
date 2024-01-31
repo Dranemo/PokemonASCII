@@ -13,7 +13,7 @@ class Program
         /*Map.MapPlayer();*/
         /*Combat.UneLoopDeCombatDeAxel();*/
 
-        Pokemon pokemon = GeneratePokemon.generatePokemon(1, 25);
+        Pokemon pokemon = GeneratePokemon.generatePokemon(2, 25);
         pokemon.AfficherDetailsPokemon();
         
         while(pokemon.getListEvo().Count > 0 )

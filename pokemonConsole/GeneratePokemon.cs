@@ -43,12 +43,22 @@ namespace pokemonConsole
             List<string> listEvo = new List<string>();
 
 
+
+            List<int> listAttackId = new List<int>();
+            List<int> listAttackLevel = new List<int>();
+            List<int> listAttackStart = new List<int>();
+
+            List<Capacity> listAttackActual = new List<Capacity>();
+
+
             using (StreamReader sr = new StreamReader(gen.fileCSV))
             {
                 string line;
                 bool pokemonFound = false;
                 bool pokemonFinishReading = false;
 
+                line = sr.ReadLine(); 
+                line = sr.ReadLine();
 
                 while ((line = sr.ReadLine()) != null && !pokemonFinishReading)
                 {
@@ -61,24 +71,32 @@ namespace pokemonConsole
                         if (id_search == id_generate)
                         {
                             name = colonnes[1];
-                            basePv = int.Parse(colonnes[4]);
-                            baseAtk = int.Parse(colonnes[5]);
-                            baseDef = int.Parse(colonnes[6]);
-                            baseSpe = int.Parse(colonnes[7]);
-                            baseSpd = int.Parse(colonnes[8]);
-
                             listType.Add(colonnes[2]);
                             if (colonnes[3] != "NONE")
                             {
                                 listType.Add(colonnes[3]);
                             }
-
-                            pokemonFound = true;
-
+                            basePv = int.Parse(colonnes[4]);
+                            baseAtk = int.Parse(colonnes[5]);
+                            baseDef = int.Parse(colonnes[6]);
+                            baseSpe = int.Parse(colonnes[7]);
+                            baseSpd = int.Parse(colonnes[8]);
                             if (colonnes[9] == "FALSE")
                             {
                                 pokemonFinishReading = true;
                             }
+
+                            string[] temp = colonnes[15].Split("/");
+                            listAttackStart = temp.Select(int.Parse).ToList();
+
+                            temp = colonnes[16].Split("/");
+                            listAttackId = temp.Select(int.Parse).ToList();
+
+                            temp = colonnes[17].Split("/");
+                            listAttackLevel = temp.Select(int.Parse).ToList();
+
+
+                            pokemonFound = true;
                         }
                     }
 
@@ -95,8 +113,132 @@ namespace pokemonConsole
                 }
             }
 
+            listPv.Add(basePv); listPv.Add(dvPv); listPv.Add(ev_generate_all_stats);
+            listAtk.Add(baseAtk); listAtk.Add(dvAtk); listAtk.Add(ev_generate_all_stats);
+            listDef.Add(baseDef); listDef.Add(dvDef); listDef.Add(ev_generate_all_stats);
+            listSpe.Add(baseSpe); listSpe.Add(dvSpe); listSpe.Add(ev_generate_all_stats);
+            listSpd.Add(baseSpd); listSpd.Add(dvSpd); listSpd.Add(ev_generate_all_stats);
+
+            // Attaques 
+            int numberOfAttacksAvailaible = listAttackStart.Count;
+            int numberOfAttackLevel = 0;
+
+            for (int i = listAttackLevel.Count-1; i >= 0; i--)
+            {
+                if (listAttackLevel[i] <= level_generate)
+                {
+                    numberOfAttacksAvailaible++;
+                    numberOfAttackLevel++;
+                }
+            }
+
+            for (int i = 0; i < listAttackLevel.Count; i++)
+            {
+                for (int j = 0; j < listAttackId.Count; j++)
+                {
+                    if (listAttackId[j] == listAttackLevel[i])
+                    {
+                        numberOfAttacksAvailaible--;
+                    }
+                }
+            }
+
+
+            int numberAssigned = 0;
+            if (numberOfAttacksAvailaible <= 4)
+            {
+                foreach (int AttackStart in listAttackStart)
+                {
+                    listAttackActual.Add(new Capacity(AttackStart));
+                    numberAssigned++;
+                }
+
+                while (numberAssigned < numberOfAttacksAvailaible)
+                {
+                    foreach (int AttackId in listAttackId)
+                    {
+                        bool AttackTaken = false;
+                        foreach(Capacity AttackActual in listAttackActual)
+                        {
+                            if (AttackActual.id == AttackId)
+                            {
+                                AttackTaken = true;
+                            }
+                        }
+                        if (!AttackTaken)
+                        {
+                            listAttackActual.Add(new Capacity(AttackId));
+                            numberAssigned++;
+                        }
+                        if (numberAssigned == numberOfAttacksAvailaible)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+
+
+            else if (numberOfAttacksAvailaible > 4)
+            {
+                if (numberOfAttackLevel < 4)
+                {
+                    List<Capacity> temp = new List<Capacity>();
+                    
+                    for (int i = 0; i < numberOfAttackLevel; i++) 
+                    {
+                        temp.Add(new Capacity(listAttackId[i]));
+                    }
+
+                    for (int i = listAttackStart.Count - (numberOfAttacksAvailaible - numberOfAttackLevel);i < listAttackStart.Count; i++)
+                    {
+                        bool AttackAlreadyTaken = false;
+                        foreach (Capacity AttackActual in temp)
+                        {
+                            if (listAttackStart[i] == AttackActual.id)
+                            {
+                                AttackAlreadyTaken = true;
+                            }
+                        }
+                        if (!AttackAlreadyTaken)
+                        {
+                            listAttackActual.Add(new Capacity(listAttackStart[i]));
+                        }
+                    }
+
+                    foreach (Capacity AttackActual in temp)
+                    {
+                        listAttackActual.Add(AttackActual);
+                    }
+                }
+
+
+
+                if (numberOfAttackLevel >= 4)
+                {
+                    int AttackAEviter = numberOfAttackLevel - 4;
+                    for (int i = AttackAEviter; i < AttackAEviter + 4; i++)
+                    {
+                        listAttackActual.Add(new Capacity(listAttackId[i]));
+                    }
+                }
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             string asciiArtFileName = $"ascii-art ({id_generate}).txt";
-            string asciiArtFilePath = Path.Combine("C:\\Users\\moiqu\\OneDrive\\Bureau\\C-Pokemon\\pokemonConsole\\Assets\\", asciiArtFileName);
+            string asciiArtFilePath = Path.Combine("C:\\Users\\yanae\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\", asciiArtFileName);
 
             if (File.Exists(asciiArtFilePath))
             {
@@ -107,13 +249,8 @@ namespace pokemonConsole
             {
                 Console.WriteLine($"Sprite ASCII non trouvé pour le Pokémon avec l'ID {id_generate}");
             }
-            listPv.Add(basePv); listPv.Add(dvPv); listPv.Add(ev_generate_all_stats);
-            listAtk.Add(baseAtk); listAtk.Add(dvAtk); listAtk.Add(ev_generate_all_stats);
-            listDef.Add(baseDef); listDef.Add(dvDef); listDef.Add(ev_generate_all_stats);
-            listSpe.Add(baseSpe); listSpe.Add(dvSpe); listSpe.Add(ev_generate_all_stats);
-            listSpd.Add(baseSpd); listSpd.Add(dvSpd); listSpd.Add(ev_generate_all_stats);
 
-            Pokemon pokemonGenerated = new Pokemon(level_generate, name,listType, listPv, listAtk, listDef, listSpd, listSpe, listEvo);
+            Pokemon pokemonGenerated = new Pokemon(id_generate, level_generate, name,listType, listPv, listAtk, listDef, listSpd, listSpe, listEvo);
             return pokemonGenerated;
 
         }
