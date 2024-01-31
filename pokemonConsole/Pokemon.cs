@@ -133,6 +133,8 @@ namespace pokemonConsole
                         this.listEvo[i] = temp;
                     }
                 }
+
+                this.listEvo.RemoveAt(listEvo.Count - 1);
             }
         }
 

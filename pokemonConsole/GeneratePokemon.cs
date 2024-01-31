@@ -12,7 +12,7 @@ namespace pokemonConsole
 {
     internal class GeneratePokemon
     {
-        private string fileCSV = "C:\\Users\\GolfOcean33\\OneDrive\\Bureau\\Nouveau dossier\\pokemonConsole\\pokemon.csv";
+        private string fileCSV = "C:\\Users\\yanae\\Desktop\\C-Pokemon\\pokemonConsole\\pokemon.csv";
 
 
         public static Pokemon generatePokemon(int id_generate, int level_generate, int ev_generate_all_stats = 0)
@@ -75,7 +75,7 @@ namespace pokemonConsole
 
                             pokemonFound = true;
 
-                            if (colonnes[10] == "false")
+                            if (colonnes[9] == "FALSE")
                             {
                                 pokemonFinishReading = true;
                             }
@@ -87,7 +87,7 @@ namespace pokemonConsole
                         listEvo.Add(line);
 
                         string[] colonnes = line.Split(',');
-                        if (colonnes[10] == "false")
+                        if (colonnes[9] == "FALSE")
                         {
                             pokemonFinishReading = true;
                         }
