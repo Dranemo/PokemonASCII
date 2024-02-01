@@ -9,7 +9,7 @@ internal class Map
     static string currentMapFileName="";
     public static void MapPlayer()
     {
-        LoadMap("C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\route_1.txt");
+        LoadMap("route_1.txt");
 
         ConsoleKeyInfo keyInfo;
 
@@ -51,7 +51,6 @@ internal class Map
 
                 playerX = newX;
                 playerY = newY;
-
                 Console.SetCursorPosition(playerX, playerY);
                 Console.Write("P");
 
@@ -60,7 +59,7 @@ internal class Map
                 {
                     Console.WriteLine("Vous arrivez à Bourg Palette !");
                     Thread.Sleep(1000);
-                    LoadMap("C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\bourg_palette.txt");
+                    LoadMap("bourg_palette.txt");
                     playerX += 3;
                     playerY = 0;
                 }
@@ -68,9 +67,26 @@ internal class Map
                 {
                     Console.WriteLine("\nVers la route 1 !");
                     Thread.Sleep(1000);
-                    LoadMap("C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\route_1.txt");
+                    LoadMap("route_1.txt");
                     playerX -= 3;
                     playerY = 35;
+                }
+                else if (IsCurrentMap("bourg_palette.txt") && newX == 13 && newY == 10)
+                {
+                    Console.WriteLine("\nVers le labo du Pr.Chen...");
+                    Thread.Sleep(1000);
+                    LoadMap("chen.txt");
+                    playerX = 5;
+                    playerY = 8;
+                }
+                else if (IsCurrentMap("chen.txt") && newY == 8)
+                {
+                    Console.WriteLine("\nVers Bourg-Palette...");
+                    Console.WriteLine(currentMapFileName);
+                    Thread.Sleep(1000);
+                    LoadMap("bourg_palette.txt");
+                    playerX = 13;
+                    playerY = 11;
                 }
 
                 // Si le joueur marche sur un '#', chance aléatoire de lancer un combat
@@ -89,8 +105,8 @@ internal class Map
 
     static void LoadMap(string filename)
     {
-        currentMapFileName = filename;
-        string[] lines = File.ReadAllLines(filename);
+        currentMapFileName = "C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\"+filename;
+        string[] lines = File.ReadAllLines(currentMapFileName);
 
         int width = lines[0].Length;
         int height = lines.Length;
@@ -136,9 +152,10 @@ internal class Map
             Console.WriteLine();
         }
     }
-    static bool IsCurrentMap(string currentMapFileName)
+    static bool IsCurrentMap(string mapToCheck)
     {
-        return currentMapFileName.Equals(currentMapFileName, StringComparison.OrdinalIgnoreCase);
+        string fullPathToCheck = "C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\" + mapToCheck;
+        return currentMapFileName.Equals(fullPathToCheck, StringComparison.OrdinalIgnoreCase);
     }
     static void DrawPlayer()
     {
@@ -171,6 +188,6 @@ internal class Map
 
     static bool IsWalkable(int x, int y)
     {
-        return map[x, y] == ' ' || map[x, y] == '#';
+        return map[x, y] == ' ' || map[x, y] == '#' || map[x, y] == 'D';
     }
 }

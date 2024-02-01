@@ -11,7 +11,7 @@ class Program
 
     static void Main()
     {
-        /*Map.MapPlayer();*/
+        Map.MapPlayer();
         /*Combat.UneLoopDeCombatDeAxel();*/
 
         Pokemon pokemon = new Pokemon(9, 46);
