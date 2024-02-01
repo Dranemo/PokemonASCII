@@ -14,11 +14,11 @@ class Program
         /*Map.MapPlayer();*/
         /*Combat.UneLoopDeCombatDeAxel();*/
 
-        Pokemon pokemon = new Pokemon(2, 46);
+        Pokemon pokemon = new Pokemon(9, 46);
         pokemon.AfficherDetailsPokemon();
 
-        pokemon.LevelUp();
-        pokemon.AfficherDetailsPokemon();
+        //pokemon.LevelUp();
+        //pokemon.AfficherDetailsPokemon();
 
 
     }
