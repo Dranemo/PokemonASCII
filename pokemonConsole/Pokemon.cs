@@ -47,6 +47,7 @@ namespace pokemonConsole
 
         // ------------------ Etat ------------------ //
         private string StatusProblem;
+        public bool ko {  get; set; }
 
         // ------------------ Back ------------------ //
         private List<string> listEvo = new List<string>();
@@ -64,7 +65,7 @@ namespace pokemonConsole
         public int tauxCapture {  get; private set; }
 
 
-        private string filePokemonCSV = "C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\pokemon.csv";
+        private string filePokemonCSV = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\pokemon.csv";
 
 
 
@@ -196,6 +197,7 @@ namespace pokemonConsole
             spe = FormulaStatsNotPv(this.level, this.listSpe);
             spd = FormulaStatsNotPv(this.level, this.listSpd);
             pvLeft = pv;
+            ko = false;
 
             if (expCourbe == "rapide")
             {
@@ -328,7 +330,7 @@ namespace pokemonConsole
 
             // Sprite
             string asciiArtFileName = $"ascii-art ({id_generate}).txt";
-            string asciiArtFilePath = Path.Combine("C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\", asciiArtFileName);
+            string asciiArtFilePath = Path.Combine("C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\", asciiArtFileName);
 
             if (File.Exists(asciiArtFilePath))
             {
@@ -770,10 +772,10 @@ namespace pokemonConsole
         }
         private void EvolutionAnimation(string sprite_oldPokemon, string sprite_newPokemon, string name_oldPokemon, string name_newPokemon, ConsoleColor color_oldPokemon, ConsoleColor color_newPokemon)
         {
-            int first_time = 1500;
-            int second_time = 500;
+            int first_time = 750;
+            int second_time = 250;
 
-            int next_pokemon = 250;
+            int next_pokemon = 125;
 
             bool evolved = false;
             int timesSwitch = 0;
@@ -798,6 +800,27 @@ namespace pokemonConsole
 
                     timesSwitch++;
                 }
+
+                while (timesSwitch < 6) 
+                {
+                    Console.Clear();
+                    Console.WriteLine("Quoi ?");
+                    Console.WriteLine($"{name_oldPokemon} évolue !");
+
+                    AfficherSprite(color_oldPokemon, sprite_oldPokemon);
+                    Thread.Sleep((second_time));
+
+                    Console.Clear();
+                    Console.WriteLine("Quoi ?");
+                    Console.WriteLine($"{name_oldPokemon} évolue !");
+
+                    AfficherSprite(color_newPokemon, sprite_newPokemon);
+                    Thread.Sleep((next_pokemon));
+
+                    timesSwitch++;
+                }
+
+
 
                 while (timesSwitch < 6) 
                 {
