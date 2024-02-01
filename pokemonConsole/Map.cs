@@ -2,14 +2,14 @@
 
 internal class Map
 {
-    static int playerX = 6;
-    static int playerY = 34;
+    static int playerX = 8;
+    static int playerY = 8;
     static char[,] map;
     static Random random = new Random();
     static string currentMapFileName="";
     public static void MapPlayer()
     {
-        LoadMap("route_1.txt");
+        LoadMap("bedroom.txt");
 
         ConsoleKeyInfo keyInfo;
 
@@ -48,17 +48,20 @@ internal class Map
             {
                 Console.SetCursorPosition(playerX, playerY);
                 Console.Write(map[playerX, playerY]);
-
                 playerX = newX;
                 playerY = newY;
                 Console.SetCursorPosition(playerX, playerY);
+
+                /*Console.WriteLine($"{newX}+{newY}");
+                Thread.Sleep(500);*/
                 Console.Write("P");
 
-                // Vérifier si le joueur atteint le point le plus bas de la carte "route_1.txt"
+                // Transitions entre les maps
+
                 if (IsCurrentMap("route_1.txt") && newY == 35)
                 {
                     Console.WriteLine("Vous arrivez à Bourg Palette !");
-                    Thread.Sleep(1000);
+                    Thread.Sleep(500);
                     LoadMap("bourg_palette.txt");
                     playerX += 3;
                     playerY = 0;
@@ -66,7 +69,7 @@ internal class Map
                 else if (IsCurrentMap("bourg_palette.txt") && newY == 0)
                 {
                     Console.WriteLine("\nVers la route 1 !");
-                    Thread.Sleep(1000);
+                    Thread.Sleep(500);
                     LoadMap("route_1.txt");
                     playerX -= 3;
                     playerY = 35;
@@ -74,25 +77,56 @@ internal class Map
                 else if (IsCurrentMap("bourg_palette.txt") && newX == 13 && newY == 10)
                 {
                     Console.WriteLine("\nVers le labo du Pr.Chen...");
-                    Thread.Sleep(1000);
+                    Thread.Sleep(500);
                     LoadMap("chen.txt");
                     playerX = 5;
+                    playerY = 8;
+                }
+                else if (IsCurrentMap("bourg_palette.txt") && newX == 6 && newY == 5)
+                {
+                    Console.WriteLine("\nMaman");
+                    Thread.Sleep(500);
+                    LoadMap("mom.txt");
+                    playerX = 3;
                     playerY = 8;
                 }
                 else if (IsCurrentMap("chen.txt") && newY == 8)
                 {
                     Console.WriteLine("\nVers Bourg-Palette...");
-                    Console.WriteLine(currentMapFileName);
-                    Thread.Sleep(1000);
+                    Thread.Sleep(500);
                     LoadMap("bourg_palette.txt");
                     playerX = 13;
                     playerY = 11;
                 }
+                else if (IsCurrentMap("mom.txt") && newY == 8)
+                {
+                    Console.WriteLine("\nVers Bourg-Palette...");
+                    Thread.Sleep(500);
+                    LoadMap("bourg_palette.txt");
+                    playerX = 6;
+                    playerY = 6;
+                }
+                else if (IsCurrentMap("mom.txt") && newX == 8 && newY == 1)
+                {
+                    Console.WriteLine("\nChambre");
+                    Thread.Sleep(500);
+                    LoadMap("bedroom.txt");
+                    playerX = 15;
+                    playerY = 1;
+                }
+                else if (IsCurrentMap("bedroom.txt") && newX == 15 && newY == 1)
+                {
+                    Console.WriteLine("\nMaman");
+                    Thread.Sleep(500);
+                    LoadMap("mom.txt");
+                    playerX = 8;
+                    playerY = 1;
+                }
 
-                // Si le joueur marche sur un '#', chance aléatoire de lancer un combat
+
                 if (map[playerX, playerY] == '#')
                 {
-                    if (random.Next(1, 101) <= 6) // 25% de chance de lancer un combat (ajustez selon vos besoins)
+                    if (random.Next(1, 101) <= 10) // chance de rencontrer un Pokemon dans les hautes herbes
                     {
                         Console.WriteLine($"\nCombat lancé !");
                         Thread.Sleep(1000);
@@ -165,7 +199,7 @@ internal class Map
 
     static void MovePlayer(int deltaX, int deltaY)
     {
-        // Vérifier les limites du déplacement pour éviter de sortir de la carte
+        // limites du déplacement pour éviter de sortir de la carte
         int newX = playerX + deltaX;
         int newY = playerY + deltaY;
 
