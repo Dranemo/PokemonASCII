@@ -1,7 +1,7 @@
 ____________
 |HHHH  HHHH|
 |          |
-|     0 0 0|
+|       000|
 |          |
 |HHHH  HHHH|
 |HHHH  HHHH|
