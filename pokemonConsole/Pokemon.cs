@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,6 +13,8 @@ namespace pokemonConsole
         public int id {  get; private set; }
         public string name { get; private set; }
         private List<string> listType = new List<string>();
+        public string asciiArt { get; private set; }
+        private ConsoleColor color ;
 
 
         // ------------------ Level ------------------ //
@@ -62,7 +65,7 @@ namespace pokemonConsole
         public int tauxCapture {  get; private set; }
 
 
-        private string filePokemonCSV = "C:\\Users\\yanae\\Desktop\\C-Pokemon\\pokemonConsole\\pokemon.csv";
+        private string filePokemonCSV = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\pokemon.csv";
 
 
 
@@ -195,23 +198,28 @@ namespace pokemonConsole
             spd = FormulaStatsNotPv(this.level, this.listSpd);
             pvLeft = pv;
 
-            expActuel = 0;
             if (expCourbe == "rapide")
             {
-                expToLevelUp = FormulaCourbeRapide(level);
+                expActuel = FormulaCourbeLente(level);
+                expToLevelUp = FormulaCourbeRapide(level+1);
             }
             else if (expCourbe == "moyenne")
             {
-                expToLevelUp = FormulaCourbeMoyenne(level);
+                expActuel = FormulaCourbeLente(level);
+                expToLevelUp = FormulaCourbeMoyenne(level+1);
             }
             else if (expCourbe == "parabolique")
             {
-                expToLevelUp = FormulaCourbePara(level);
+                expActuel = FormulaCourbeLente(level);
+                expToLevelUp = FormulaCourbePara(level+1);
             }
             else if (expCourbe == "lente")
             {
-                expToLevelUp = FormulaCourbeLente(level);
+                expActuel = FormulaCourbeLente(level);
+                expToLevelUp = FormulaCourbeLente(level+1);
             }
+
+            StatusProblem = "OK";
 
             // Attaques 
             int numberOfAttacksAvailaible = listAttackStart.Count;
@@ -321,17 +329,21 @@ namespace pokemonConsole
 
             // Sprite
             string asciiArtFileName = $"ascii-art ({id_generate}).txt";
-            string asciiArtFilePath = Path.Combine("C:\\Users\\yanae\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\", asciiArtFileName);
+            string asciiArtFilePath = Path.Combine("C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\", asciiArtFileName);
 
             if (File.Exists(asciiArtFilePath))
             {
-                string asciiArt = File.ReadAllText(asciiArtFilePath);
-                Console.WriteLine(asciiArt);
+                asciiArt = File.ReadAllText(asciiArtFilePath);
             }
             else
             {
                 Console.WriteLine($"Sprite ASCII non trouvé pour le Pokémon avec l'ID {id_generate}");
             }
+
+
+            ColorForegroundCheck();
+
+
         }
 
         public List<int> getListPv() {  return this.listPv; }
@@ -346,26 +358,52 @@ namespace pokemonConsole
 
         public void AfficherDetailsPokemon()
         {
-            Console.WriteLine($"N°{id}");
+            AfficherSprite();
+
             Console.WriteLine($"Name = {this.name}");
             Console.WriteLine($"Level = {this.level}");
+            Console.WriteLine($"Pv = {pvLeft} / {pv}");
+            Console.WriteLine($"Status : {StatusProblem}");
+
+            Console.WriteLine($"N°{id}");
 
             for (int i = 0; i < this.listType.Count; i++)
             {
                 Console.WriteLine($"Type {i + 1} = {this.listType[i]}");
             }
-
-            Console.WriteLine($"Pv = {pvLeft} / {pv}");
+            Console.WriteLine();
             Console.WriteLine($"Atk = {this.atk}");
             Console.WriteLine($"Def = {this.def}");
             Console.WriteLine($"Spe = {this.spe}");
             Console.WriteLine($"Spd = {this.spd}");
+            Console.WriteLine();
+
+            Console.WriteLine($"Exp Point : {expActuel}");
+            if (level < 100)
+            {
+                Console.WriteLine("Level Up");
+                Console.WriteLine($"{expToLevelUp - expActuel} to: {level + 1}");
+            }
+
+            Console.WriteLine();
 
             foreach(Capacity item in listAttackActual)
             {
                 Console.WriteLine(item.name);
             }
         }
+        public void AfficherSprite()
+        {
+            AfficherSprite(color, asciiArt);
+        }
+        public void AfficherSprite(ConsoleColor color_, string asciiArt_)
+        {
+            Console.ForegroundColor = color_;
+            Console.WriteLine(asciiArt_);
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+
         private void Evolution()
         {
             if (this.listEvo.Count > 0)
@@ -373,8 +411,26 @@ namespace pokemonConsole
                 string nextEvo = this.listEvo[0];
                 string[] colonnes = nextEvo.Split(',');
 
+
+                string old_name = name;
+                string old_sprite = asciiArt;
+                ConsoleColor old_color = color;
+
                 this.id = int.Parse(colonnes[0]);
                 this.name = colonnes[1];
+
+                // Sprite
+                string asciiArtFileName = $"ascii-art ({id}).txt";
+                string asciiArtFilePath = Path.Combine("C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\", asciiArtFileName);
+
+                if (File.Exists(asciiArtFilePath))
+                {
+                    asciiArt = File.ReadAllText(asciiArtFilePath);
+                }
+                else
+                {
+                    Console.WriteLine($"Sprite ASCII non trouvé pour le Pokémon avec l'ID {id}");
+                }
 
                 this.listType[0] = colonnes[2];
                 if (colonnes[3] != "NONE")
@@ -388,6 +444,11 @@ namespace pokemonConsole
                         this.listType[1] = colonnes[3];
                     }
                 }
+
+                ColorForegroundCheck();
+
+
+                EvolutionAnimation(old_sprite, asciiArt, old_name, name, old_color, color);
 
                 this.listPv[0] = int.Parse(colonnes[4]);
                 this.listAtk[0] = int.Parse(colonnes[5]);
@@ -462,27 +523,21 @@ namespace pokemonConsole
         public void LevelUp()
         {
             level++;
-
-
-            if (expActuel >= expToLevelUp)
-            {
-                expActuel = expActuel - expToLevelUp;
-            }
             if (expCourbe == "rapide")
             {
-                expToLevelUp = FormulaCourbeRapide(level);
+                expToLevelUp = FormulaCourbeRapide(level + 1);
             }
             else if (expCourbe == "moyenne")
             {
-                expToLevelUp = FormulaCourbeMoyenne(level);
+                expToLevelUp = FormulaCourbeMoyenne(level + 1);
             }
             else if (expCourbe == "parabolique")
             {
-                expToLevelUp = FormulaCourbePara(level);
+                expToLevelUp = FormulaCourbePara(level+1);
             }
             else if (expCourbe == "lente")
             {
-                expToLevelUp = FormulaCourbeLente(level);
+                expToLevelUp = FormulaCourbeLente(level + 1);
             }
 
             int tempOldPv = pv;
@@ -504,126 +559,143 @@ namespace pokemonConsole
         {
             for (int i = 0; i < listAttackLevel.Count; i++)
             {
+                
                 if (level == listAttackLevel[i])
                 {
-                    if (listAttackActual.Count < 4)
+                    Capacity cap = new Capacity(listAttackId[i]);
+
+                    bool AttackAlreadyLearned = false;
+                    foreach(Capacity capacity in listAttackActual)
                     {
-                        listAttackActual.Add(new Capacity(listAttackId[i]));
-                        Console.WriteLine($"{name} a appris {listAttackActual[listAttackActual.Count - 1].name}.");
-                    }
-                    else
-                    {
-                        Capacity cap = new Capacity(listAttackId[i]);
-                        bool choiceFinished = false;
-                        bool loop2Question = true;
-                        while (loop2Question)
+                        if (capacity.id == cap.id)
                         {
-                            bool loop1Question = true;
-                            while (loop1Question)
-                            {
-                                Console.WriteLine();
-                                Console.WriteLine($"Votre POKEMON souhaite apprendre l'attaque {cap.name}.");
-                                Console.WriteLine("Mais votre POKEMON ne peut plus rien apprendre");
-                                Console.WriteLine($"Voulez vous remplacer une attaque pour apprendre l'attaque {cap.name} ?");
-                                Console.WriteLine("[OUI] [NON]");
-                                string userInput2 = Console.ReadLine();
+                            AttackAlreadyLearned = true;
+                        }
+                    }
 
-                                if (string.Equals(userInput2, "oui", StringComparison.OrdinalIgnoreCase))
+                    if (!AttackAlreadyLearned)
+                    {
+                        if (listAttackActual.Count < 4)
+                        {
+                            listAttackActual.Add(cap);
+                            Console.WriteLine($"{name} a appris {cap.name}.");
+                        }
+                        else
+                        {
+                            bool choiceFinished = false;
+                            bool loop2Question = true;
+                            while (loop2Question)
+                            {
+                                bool loop1Question = true;
+                                while (loop1Question)
                                 {
-                                    bool loopQuestion3 = true;
-                                    Console.Clear();
-                                    Console.WriteLine("Quelle capacite souhaitez vous remplacer ?");
-                                    while (loop1Question)
+                                    Console.WriteLine();
+                                    Console.WriteLine($"Votre POKEMON souhaite apprendre l'attaque {cap.name}.");
+                                    Console.WriteLine("Mais votre POKEMON ne peut plus rien apprendre");
+                                    Console.WriteLine($"Voulez vous remplacer une attaque pour apprendre l'attaque {cap.name} ?");
+                                    Console.WriteLine("[OUI] [NON]");
+                                    string userInput2 = Console.ReadLine();
+
+                                    if (string.Equals(userInput2, "oui", StringComparison.OrdinalIgnoreCase))
                                     {
-                                        foreach (Capacity capacity in listAttackActual)
+                                        bool loopQuestion3 = true;
+                                        Console.Clear();
+                                        Console.WriteLine("Quelle capacite souhaitez vous remplacer ?");
+                                        while (loop1Question)
                                         {
-                                            Console.WriteLine(capacity.name);
-                                        }
-                                        string userInput3 = Console.ReadLine();
+                                            foreach (Capacity capacity in listAttackActual)
+                                            {
+                                                Console.WriteLine(capacity.name);
+                                            }
+                                            string userInput3 = Console.ReadLine();
 
-                                        if (string.Equals(userInput3, listAttackActual[0].name, StringComparison.OrdinalIgnoreCase))
-                                        {
-                                            Console.WriteLine("1... 2... 3... Tada !");
-                                            Console.WriteLine($"{name} a oublié {listAttackActual[0].name}...");
+                                            if (string.Equals(userInput3, listAttackActual[0].name, StringComparison.OrdinalIgnoreCase))
+                                            {
+                                                Console.WriteLine("1... 2... 3... Tada !");
+                                                Console.WriteLine($"{name} a oublié {listAttackActual[0].name}...");
+                                                Console.WriteLine($"Et il a appris {cap.name}.");
 
-                                            listAttackActual[0] = cap;
-                                            loopQuestion3 = false;
-                                            loop1Question = false;
-                                            loop2Question = false;
-                                            choiceFinished = true;
-                                        }
-                                        else if (string.Equals(userInput3, listAttackActual[1].name, StringComparison.OrdinalIgnoreCase))
-                                        {
-                                            Console.WriteLine("1... 2... 3... Tada !");
-                                            Console.WriteLine($"{name} a oublié {listAttackActual[1].name}...");
+                                                listAttackActual[0] = cap;
+                                                loopQuestion3 = false;
+                                                loop1Question = false;
+                                                loop2Question = false;
+                                                choiceFinished = true;
+                                            }
+                                            else if (string.Equals(userInput3, listAttackActual[1].name, StringComparison.OrdinalIgnoreCase))
+                                            {
+                                                Console.WriteLine("1... 2... 3... Tada !");
+                                                Console.WriteLine($"{name} a oublié {listAttackActual[1].name}...");
+                                                Console.WriteLine($"Et il a appris {cap.name}.");
 
-                                            listAttackActual[1] = cap;
-                                            loopQuestion3 = false;
-                                            loop1Question = false;
-                                            loop2Question = false;
-                                            choiceFinished = true;
-                                        }
-                                        else if (string.Equals(userInput3, listAttackActual[2].name, StringComparison.OrdinalIgnoreCase))
-                                        {
-                                            Console.WriteLine("1... 2... 3... Tada !");
-                                            Console.WriteLine($"{name} a oublié {listAttackActual[2].name}...");
+                                                listAttackActual[1] = cap;
+                                                loopQuestion3 = false;
+                                                loop1Question = false;
+                                                loop2Question = false;
+                                                choiceFinished = true;
+                                            }
+                                            else if (string.Equals(userInput3, listAttackActual[2].name, StringComparison.OrdinalIgnoreCase))
+                                            {
+                                                Console.WriteLine("1... 2... 3... Tada !");
+                                                Console.WriteLine($"{name} a oublié {listAttackActual[2].name}...");
+                                                Console.WriteLine($"Et il a appris {cap.name}.");
 
-                                            listAttackActual[2] = cap;
-                                            loopQuestion3 = false;
-                                            loop1Question = false;
-                                            loop2Question = false;
-                                            choiceFinished = true;
-                                        }
-                                        else if (string.Equals(userInput3, listAttackActual[3].name, StringComparison.OrdinalIgnoreCase))
-                                        {
-                                            Console.WriteLine("1... 2... 3... Tada !");
-                                            Console.WriteLine($"{name} a oublié {listAttackActual[3].name}...");
+                                                listAttackActual[2] = cap;
+                                                loopQuestion3 = false;
+                                                loop1Question = false;
+                                                loop2Question = false;
+                                                choiceFinished = true;
+                                            }
+                                            else if (string.Equals(userInput3, listAttackActual[3].name, StringComparison.OrdinalIgnoreCase))
+                                            {
+                                                Console.WriteLine("1... 2... 3... Tada !");
+                                                Console.WriteLine($"{name} a oublié {listAttackActual[3].name}...");
+                                                Console.WriteLine($"Et il a appris {cap.name}.");
 
-                                            listAttackActual[3] = cap;
-                                            loopQuestion3 = false;
-                                            loop1Question = false;
-                                            loop2Question = false;
-                                            choiceFinished = true;
+                                                listAttackActual[3] = cap;
+                                                loopQuestion3 = false;
+                                                loop1Question = false;
+                                                loop2Question = false;
+                                                choiceFinished = true;
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine("Réponse invalide. Veuillez répondre par 'oui' ou 'non'.");
+                                            }
+
+
                                         }
-                                        else
-                                        {
-                                            Console.WriteLine("Réponse invalide. Veuillez répondre par 'oui' ou 'non'.");
-                                        }
-                                        
-                                        
-                                        Console.WriteLine($"Et il a appris {cap.name}.");
+
                                     }
-                                    
+                                    else if (string.Equals(userInput2, "non", StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        loop1Question = false;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Réponse invalide. Veuillez répondre par 'oui' ou 'non'.");
+                                    }
                                 }
-                                else if (string.Equals(userInput2, "non", StringComparison.OrdinalIgnoreCase))
-                                {
-                                    loop1Question = false;
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Réponse invalide. Veuillez répondre par 'oui' ou 'non'.");
-                                }
-                            }
 
-                            if (!choiceFinished)
-                            {
-                                Console.Clear();
-                                Console.WriteLine($"Voulez vous vraiment renoncer a apprendre {cap.name} ?");
-                                Console.WriteLine("[OUI] [NON]");
-                                string userInput = Console.ReadLine();
+                                if (!choiceFinished)
+                                {
+                                    Console.Clear();
+                                    Console.WriteLine($"Voulez vous vraiment renoncer a apprendre {cap.name} ?");
+                                    Console.WriteLine("[OUI] [NON]");
+                                    string userInput = Console.ReadLine();
 
-                                if (string.Equals(userInput, "oui", StringComparison.OrdinalIgnoreCase))
-                                {
-                                    Console.WriteLine($"Vous n'avez pas appris {cap.name}");
-                                    loop2Question = false;
-                                }
-                                else if (string.Equals(userInput, "non", StringComparison.OrdinalIgnoreCase))
-                                {
-                                    loop1Question = true;
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Réponse invalide. Veuillez répondre par 'oui' ou 'non'.");
+                                    if (string.Equals(userInput, "oui", StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        Console.WriteLine($"Vous n'avez pas appris {cap.name}");
+                                        loop2Question = false;
+                                    }
+                                    else if (string.Equals(userInput, "non", StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        loop1Question = true;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Réponse invalide. Veuillez répondre par 'oui' ou 'non'.");
+                                    }
                                 }
                             }
                         }
@@ -631,6 +703,127 @@ namespace pokemonConsole
                 }
             }
             Console.WriteLine();
+        }
+
+
+        private void ColorForegroundCheck()
+        {
+            if (listType[0] == "NORMAL")
+            {
+                color = ConsoleColor.White;
+            }
+            else if (listType[0] == "FEU")
+            {
+                color = ConsoleColor.DarkRed;
+            }
+            else if (listType[0] == "EAU")
+            {
+                color = ConsoleColor.Blue;
+            }
+            else if (listType[0] == "PLANTE")
+            {
+                color = ConsoleColor.DarkGreen;
+            }
+            else if (listType[0] == "ELECTRIK")
+            {
+                color = ConsoleColor.DarkYellow;
+            }
+            else if (listType[0] == "GLACE")
+            {
+                color = ConsoleColor.Cyan;
+            }
+            else if (listType[0] == "COMBAT")
+            {
+                color = ConsoleColor.DarkRed;
+            }
+            else if (listType[0] == "POISON")
+            {
+                color = ConsoleColor.DarkMagenta;
+            }
+            else if (listType[0] == "SOL")
+            {
+                color = ConsoleColor.Yellow;
+            }
+            else if (listType[0] == "VOL")
+            {
+                color = ConsoleColor.Gray;
+            }
+            else if (listType[0] == "PSY")
+            {
+                color = ConsoleColor.Red;
+            }
+            else if (listType[0] == "INSECTE")
+            {
+                color = ConsoleColor.Green;
+            }
+            else if (listType[0] == "ROCHE")
+            {
+                color = ConsoleColor.DarkGray;
+            }
+            else if (listType[0] == "SPECTRE")
+            {
+                color = ConsoleColor.DarkMagenta;
+            }
+            else if (listType[0] == "DRAGON")
+            {
+                color = ConsoleColor.DarkBlue;
+            }
+        }
+        private void EvolutionAnimation(string sprite_oldPokemon, string sprite_newPokemon, string name_oldPokemon, string name_newPokemon, ConsoleColor color_oldPokemon, ConsoleColor color_newPokemon)
+        {
+            int first_time = 1500;
+            int second_time = 500;
+
+            int next_pokemon = 250;
+
+            bool evolved = false;
+            int timesSwitch = 0;
+
+            while(!evolved)
+            {
+                while (timesSwitch < 3) 
+                {
+                    Console.Clear();
+                    Console.WriteLine("Quoi ?");
+                    Console.WriteLine($"{name_oldPokemon} évolue !");
+
+                    AfficherSprite(color_oldPokemon, sprite_oldPokemon);
+                    Thread.Sleep((first_time));
+
+                    Console.Clear();
+                    Console.WriteLine("Quoi ?");
+                    Console.WriteLine($"{name_oldPokemon} évolue !");
+
+                    AfficherSprite(color_newPokemon, sprite_newPokemon);   
+                    Thread.Sleep((next_pokemon));
+
+                    timesSwitch++;
+                }
+
+                while (timesSwitch < 6) 
+                {
+                    Console.Clear();
+                    Console.WriteLine("Quoi ?");
+                    Console.WriteLine($"{name_oldPokemon} évolue !");
+
+                    AfficherSprite(color_oldPokemon, sprite_oldPokemon);
+                    Thread.Sleep((second_time));
+
+                    Console.Clear();
+                    Console.WriteLine("Quoi ?");
+                    Console.WriteLine($"{name_oldPokemon} évolue !");
+
+                    AfficherSprite(color_newPokemon, sprite_newPokemon);
+                    Thread.Sleep((next_pokemon));
+
+                    timesSwitch++;
+                }
+                Console.WriteLine($"Félicitation ! Votre {name_oldPokemon} a évolué en {name_newPokemon} ! ");
+                Console.ReadLine();
+                Console.Clear();
+                evolved = true;
+            }
+
         }
 
 
