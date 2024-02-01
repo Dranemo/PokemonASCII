@@ -62,7 +62,7 @@ namespace pokemonConsole
         public int tauxCapture {  get; private set; }
 
 
-        private string filePokemonCSV = "C:\\Users\\yanae\\Desktop\\C-Pokemon\\pokemonConsole\\pokemon.csv";
+        private string filePokemonCSV = "C:\\Users\\agathelier\\Desktop\\Nouveau dossier\\pokemonConsole\\pokemon.csv";
 
 
 
