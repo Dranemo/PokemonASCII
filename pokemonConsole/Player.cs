@@ -1,8 +1,30 @@
 ﻿using System;
 using inventory;
-using pokemonConsole;
-class Player
-	{
-	public int playerX;
-	public int playerY;
+
+namespace pokemonConsole
+{
+    class Player
+    {
+        public string name { get; private set; }
+        public int id { get; private set; }
+
+        public List<Pokemon> pokemonParty = new List<Pokemon>();
+
+
+        public Player(string name_)
+        {
+            Random random = new Random();
+            name = name_;
+            id = random.Next(1, 65536);
+        }
+
+        public void addPokemonToParty(Pokemon pokemon)
+        {
+            if (pokemonParty.Count <= 6)
+            {
+                pokemonParty.Add(pokemon);
+            }
+        }
+    }
 }
+

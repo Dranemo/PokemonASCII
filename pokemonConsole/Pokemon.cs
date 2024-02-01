@@ -21,6 +21,10 @@ namespace pokemonConsole
         public int expToLevelUp { get; private set; }
         public int expActuel { get; set; }
 
+        public int expToLevelUpLevel { get; set; }
+        public int expActuelLevel { get; set; }
+        public int expPervingt { get; set; }
+
         // ------------------ Statistiques ------------------ //
         public int pv { get; private set; }
         public int pvLeft {  get; set; }
@@ -47,6 +51,7 @@ namespace pokemonConsole
 
         // ------------------ Etat ------------------ //
         private string StatusProblem;
+        public bool ko {  get; set; }
 
         // ------------------ Back ------------------ //
         private List<string> listEvo = new List<string>();
@@ -64,7 +69,7 @@ namespace pokemonConsole
         public int tauxCapture {  get; private set; }
 
 
-        private string filePokemonCSV = "C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\pokemon.csv";
+        private string filePokemonCSV = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\pokemon.csv";
 
 
 
@@ -196,20 +201,21 @@ namespace pokemonConsole
             spe = FormulaStatsNotPv(this.level, this.listSpe);
             spd = FormulaStatsNotPv(this.level, this.listSpd);
             pvLeft = pv;
+            ko = false;
 
             if (expCourbe == "rapide")
             {
-                expActuel = FormulaCourbeLente(level);
+                expActuel = FormulaCourbeRapide(level);
                 expToLevelUp = FormulaCourbeRapide(level+1);
             }
             else if (expCourbe == "moyenne")
             {
-                expActuel = FormulaCourbeLente(level);
+                expActuel = FormulaCourbeMoyenne(level);
                 expToLevelUp = FormulaCourbeMoyenne(level+1);
             }
             else if (expCourbe == "parabolique")
             {
-                expActuel = FormulaCourbeLente(level);
+                expActuel = FormulaCourbePara(level);
                 expToLevelUp = FormulaCourbePara(level+1);
             }
             else if (expCourbe == "lente")
@@ -217,6 +223,12 @@ namespace pokemonConsole
                 expActuel = FormulaCourbeLente(level);
                 expToLevelUp = FormulaCourbeLente(level+1);
             }
+
+            expToLevelUpLevel = expToLevelUp - expActuel;
+            expActuelLevel = 0;
+
+
+            expPervingt = expActuelLevel * 20 / expToLevelUpLevel;
 
             StatusProblem = "OK";
 
@@ -328,7 +340,7 @@ namespace pokemonConsole
 
             // Sprite
             string asciiArtFileName = $"ascii-art ({id_generate}).txt";
-            string asciiArtFilePath = Path.Combine("C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\", asciiArtFileName);
+            string asciiArtFilePath = Path.Combine("C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Sprites\\", asciiArtFileName);
 
             if (File.Exists(asciiArtFilePath))
             {
@@ -382,6 +394,19 @@ namespace pokemonConsole
             {
                 Console.WriteLine("Level Up");
                 Console.WriteLine($"{expToLevelUp - expActuel} to: {level + 1}");
+
+                string tempExpBar = "[";
+                for(int i = 0; i < this.expPervingt; i++)
+                {
+                    tempExpBar += "_";
+                }
+                while (tempExpBar.Length <= 21)
+                {
+                    tempExpBar += " ";
+                }
+                tempExpBar += "]";
+
+                Console.WriteLine(tempExpBar);
             }
 
             Console.WriteLine();
@@ -420,7 +445,7 @@ namespace pokemonConsole
 
                 // Sprite
                 string asciiArtFileName = $"ascii-art ({id}).txt";
-                string asciiArtFilePath = Path.Combine("C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\", asciiArtFileName);
+                string asciiArtFilePath = Path.Combine("C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Sprites\\", asciiArtFileName);
 
                 if (File.Exists(asciiArtFilePath))
                 {
@@ -522,22 +547,33 @@ namespace pokemonConsole
         public void LevelUp()
         {
             level++;
+            int temp = 0;
             if (expCourbe == "rapide")
             {
                 expToLevelUp = FormulaCourbeRapide(level + 1);
+                temp = FormulaCourbeRapide(level);
             }
             else if (expCourbe == "moyenne")
             {
                 expToLevelUp = FormulaCourbeMoyenne(level + 1);
+                temp = FormulaCourbeRapide(level);
             }
             else if (expCourbe == "parabolique")
             {
                 expToLevelUp = FormulaCourbePara(level+1);
+                temp = FormulaCourbeRapide(level);
             }
             else if (expCourbe == "lente")
             {
                 expToLevelUp = FormulaCourbeLente(level + 1);
+                temp = FormulaCourbeRapide(level);
             }
+
+            expToLevelUpLevel = expToLevelUp - temp;
+            expActuelLevel = expActuel - temp;
+
+            expPervingt = expActuelLevel * 20 / expToLevelUpLevel;
+
 
             int tempOldPv = pv;
             this.pv = FormulaStatsPv(this.level, this.listPv);
@@ -703,6 +739,22 @@ namespace pokemonConsole
             }
             Console.WriteLine();
         }
+        public void GainExp(int expGained)
+        {
+            expActuel += expGained;
+            
+            if (expActuel > expToLevelUp)
+            {
+                LevelUp();
+            }
+            else
+            {
+                expActuelLevel += expGained;
+                expPervingt = expActuelLevel * 20 / expToLevelUpLevel;
+            }
+
+
+        }
 
 
         private void ColorForegroundCheck()
@@ -770,10 +822,10 @@ namespace pokemonConsole
         }
         private void EvolutionAnimation(string sprite_oldPokemon, string sprite_newPokemon, string name_oldPokemon, string name_newPokemon, ConsoleColor color_oldPokemon, ConsoleColor color_newPokemon)
         {
-            int first_time = 1500;
-            int second_time = 500;
+            int first_time = 750;
+            int second_time = 250;
 
-            int next_pokemon = 250;
+            int next_pokemon = 125;
 
             bool evolved = false;
             int timesSwitch = 0;
@@ -798,6 +850,27 @@ namespace pokemonConsole
 
                     timesSwitch++;
                 }
+
+                while (timesSwitch < 6) 
+                {
+                    Console.Clear();
+                    Console.WriteLine("Quoi ?");
+                    Console.WriteLine($"{name_oldPokemon} évolue !");
+
+                    AfficherSprite(color_oldPokemon, sprite_oldPokemon);
+                    Thread.Sleep((second_time));
+
+                    Console.Clear();
+                    Console.WriteLine("Quoi ?");
+                    Console.WriteLine($"{name_oldPokemon} évolue !");
+
+                    AfficherSprite(color_newPokemon, sprite_newPokemon);
+                    Thread.Sleep((next_pokemon));
+
+                    timesSwitch++;
+                }
+
+
 
                 while (timesSwitch < 6) 
                 {
@@ -848,7 +921,8 @@ namespace pokemonConsole
         }
         private int FormulaCourbePara(int level)
         {
-            double result = 1.2 * (level * level * level) - 15 * (level * level) + 100 * level - 140;
+            double result = (1.2 * (level * level * level)) - (15 * (level * level)) + (100 * level) - 140;
+            Console.WriteLine(result);
             return (int)Math.Round(result);
         }
         private int FormulaCourbeLente(int level)

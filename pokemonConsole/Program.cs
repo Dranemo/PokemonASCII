@@ -5,21 +5,30 @@ using System.Collections;
 using System.Data;
 ﻿using System;
 using System.Collections.Generic;
+using inventory;
 
 class Program
 {
 
     static void Main()
     {
-        Map.MapPlayer();
+        //Map.MapPlayer();
         /*Combat.UneLoopDeCombatDeAxel();*/
 
-        Pokemon pokemon = new Pokemon(9, 46);
-        pokemon.AfficherDetailsPokemon();
+        MainMenu.Start();
 
-        //pokemon.LevelUp();
-        //pokemon.AfficherDetailsPokemon();
+        Player player = new Player("player");
 
 
+        Pokemon salameche = new Pokemon(52, 55);
+
+        player.addPokemonToParty(salameche);
+
+        foreach (Pokemon pokemon in player.pokemonParty) 
+        {
+            pokemon.AfficherDetailsPokemon();
+            pokemon.GainExp(15000);
+            pokemon.AfficherDetailsPokemon();
+        }
     }
 }
