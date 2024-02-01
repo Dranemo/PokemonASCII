@@ -8,12 +8,13 @@ using System.Collections.Generic;
 
 class Program
 {
+
     static void Main()
     {
         /*Map.MapPlayer();*/
         /*Combat.UneLoopDeCombatDeAxel();*/
 
-        Pokemon pokemon = new Pokemon(147, 99);
+        Pokemon pokemon = new Pokemon(2, 46);
         pokemon.AfficherDetailsPokemon();
 
         pokemon.LevelUp();
