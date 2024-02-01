@@ -8,22 +8,10 @@ using System.Collections.Generic;
 
 class Program
 {
+
     static void Main()
     {
-        /*Map.MapPlayer();*/
-        /*Combat.UneLoopDeCombatDeAxel();*/
-
-        Pokemon pokemon = new Pokemon(129, 19);
-        pokemon.AfficherDetailsPokemon();
-
-        Console.WriteLine();
-        Console.WriteLine();
-
-        pokemon.LevelUp();
-        pokemon.AfficherDetailsPokemon();
-
-
-
-
+        Combat.UneLoopDeCombatDeAxel();
+        Console.ReadKey();
     }
 }

@@ -8,7 +8,7 @@ internal class Map
     static Random random = new Random();
     public static void MapPlayer()
     {
-        LoadMap("C:\\Users\\yanae\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\route_1.txt");
+        LoadMap("C:\\Users\\agathelier\\Desktop\\Nouveau dossier\\pokemonConsole\\Assets\\Maps\\route_1.txt");
 
         ConsoleKeyInfo keyInfo;
 
