@@ -13,8 +13,8 @@ namespace pokemonConsole
 
         public static void UneLoopDeCombatDeAxel()
         {
-            Pokemon pokemon = GeneratePokemon.generatePokemon(27, 25);
-            Pokemon pokemonAdverse = GeneratePokemon.generatePokemon(95, 25);
+            Pokemon pokemon = new Pokemon(27, 25);
+            Pokemon pokemonAdverse = new Pokemon(95, 25);
 
             pokemon.AfficherDetailsPokemon();
             pokemonAdverse.AfficherDetailsPokemon();
