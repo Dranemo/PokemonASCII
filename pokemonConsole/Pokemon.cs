@@ -23,7 +23,7 @@ namespace pokemonConsole
 
         public int expToLevelUpLevel { get; set; }
         public int expActuelLevel { get; set; }
-        public int expPercent { get; set; }
+        public int expPervingt { get; set; }
 
         // ------------------ Statistiques ------------------ //
         public int pv { get; private set; }
@@ -69,7 +69,7 @@ namespace pokemonConsole
         public int tauxCapture {  get; private set; }
 
 
-        private string filePokemonCSV = "C:\\Users\\yanae\\Desktop\\C-Pokemon\\pokemonConsole\\pokemon.csv";
+        private string filePokemonCSV = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\pokemon.csv";
 
 
 
@@ -225,8 +225,10 @@ namespace pokemonConsole
             }
 
             expToLevelUpLevel = expToLevelUp - expActuel;
-            expActuelLevel = 
-            expPercent = expActuel * 100 / expToLevelUp;
+            expActuelLevel = 0;
+
+
+            expPervingt = expActuelLevel * 20 / expToLevelUpLevel;
 
             StatusProblem = "OK";
 
@@ -338,7 +340,7 @@ namespace pokemonConsole
 
             // Sprite
             string asciiArtFileName = $"ascii-art ({id_generate}).txt";
-            string asciiArtFilePath = Path.Combine("C:\\Users\\yanae\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Sprites\\", asciiArtFileName);
+            string asciiArtFilePath = Path.Combine("C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Sprites\\", asciiArtFileName);
 
             if (File.Exists(asciiArtFilePath))
             {
@@ -394,11 +396,11 @@ namespace pokemonConsole
                 Console.WriteLine($"{expToLevelUp - expActuel} to: {level + 1}");
 
                 string tempExpBar = "[";
-                for(int i = 0; i < this.expPercent; i++)
+                for(int i = 0; i < this.expPervingt; i++)
                 {
                     tempExpBar += "_";
                 }
-                while (tempExpBar.Length <= 101)
+                while (tempExpBar.Length <= 21)
                 {
                     tempExpBar += " ";
                 }
@@ -443,7 +445,7 @@ namespace pokemonConsole
 
                 // Sprite
                 string asciiArtFileName = $"ascii-art ({id}).txt";
-                string asciiArtFilePath = Path.Combine("C:\\Users\\yanae\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Sprites\\", asciiArtFileName);
+                string asciiArtFilePath = Path.Combine("C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Sprites\\", asciiArtFileName);
 
                 if (File.Exists(asciiArtFilePath))
                 {
@@ -545,22 +547,33 @@ namespace pokemonConsole
         public void LevelUp()
         {
             level++;
+            int temp = 0;
             if (expCourbe == "rapide")
             {
                 expToLevelUp = FormulaCourbeRapide(level + 1);
+                temp = FormulaCourbeRapide(level);
             }
             else if (expCourbe == "moyenne")
             {
                 expToLevelUp = FormulaCourbeMoyenne(level + 1);
+                temp = FormulaCourbeRapide(level);
             }
             else if (expCourbe == "parabolique")
             {
                 expToLevelUp = FormulaCourbePara(level+1);
+                temp = FormulaCourbeRapide(level);
             }
             else if (expCourbe == "lente")
             {
                 expToLevelUp = FormulaCourbeLente(level + 1);
+                temp = FormulaCourbeRapide(level);
             }
+
+            expToLevelUpLevel = expToLevelUp - temp;
+            expActuelLevel = expActuel - temp;
+
+            expPervingt = expActuelLevel * 20 / expToLevelUpLevel;
+
 
             int tempOldPv = pv;
             this.pv = FormulaStatsPv(this.level, this.listPv);
@@ -725,6 +738,22 @@ namespace pokemonConsole
                 }
             }
             Console.WriteLine();
+        }
+        public void GainExp(int expGained)
+        {
+            expActuel += expGained;
+            
+            if (expActuel > expToLevelUp)
+            {
+                LevelUp();
+            }
+            else
+            {
+                expActuelLevel += expGained;
+                expPervingt = expActuelLevel * 20 / expToLevelUpLevel;
+            }
+
+
         }
 
 

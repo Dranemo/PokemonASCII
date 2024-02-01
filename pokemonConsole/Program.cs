@@ -5,6 +5,7 @@ using System.Collections;
 using System.Data;
 ﻿using System;
 using System.Collections.Generic;
+using inventory;
 
 class Program
 {
@@ -26,8 +27,8 @@ class Program
         foreach (Pokemon pokemon in player.pokemonParty) 
         {
             pokemon.AfficherDetailsPokemon();
-            //pokemon.LevelUp();
-            //pokemon.AfficherDetailsPokemon();
+            pokemon.GainExp(15000);
+            pokemon.AfficherDetailsPokemon();
         }
     }
 }
