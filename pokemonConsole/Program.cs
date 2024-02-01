@@ -8,6 +8,7 @@ using System.Collections.Generic;
 
 class Program
 {
+
     static void Main()
     {
         Map.MapPlayer();
@@ -21,8 +22,6 @@ class Program
 
         pokemon.LevelUp();
         pokemon.AfficherDetailsPokemon();
-
-
 
 
     }
