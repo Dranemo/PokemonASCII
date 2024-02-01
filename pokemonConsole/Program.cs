@@ -10,10 +10,10 @@ class Program
 {
     static void Main()
     {
-        /*Map.MapPlayer();*/
+        Map.MapPlayer();
         /*Combat.UneLoopDeCombatDeAxel();*/
 
-        Pokemon pokemon = new Pokemon(129, 19);
+        Pokemon pokemon = new Pokemon(2, 46);
         pokemon.AfficherDetailsPokemon();
 
         Console.WriteLine();

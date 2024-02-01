@@ -3,12 +3,12 @@
 internal class Map
 {
     static int playerX = 6;
-    static int playerY = 15;
+    static int playerY = 10;
     static char[,] map;
     static Random random = new Random();
     public static void MapPlayer()
     {
-        LoadMap("C:\\Users\\yanae\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\route_1.txt");
+        LoadMap("C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\bourg_palette.txt");
 
         ConsoleKeyInfo keyInfo;
 
@@ -94,6 +94,23 @@ internal class Map
         {
             for (int x = 0; x < map.GetLength(0); x++)
             {
+                
+                if (map[x, y] == '~')
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                }
+                else if (map[x, y] == '#')
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkGreen;
+                }
+                else if (map[x, y] == '/' || map[x, y] == '|' || map[x, y] == '\\' || map[x, y] == '_')
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
                 Console.Write(map[x, y]);
             }
             Console.WriteLine();
