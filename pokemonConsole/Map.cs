@@ -105,7 +105,7 @@ internal class Map
 
     static void LoadMap(string filename)
     {
-        currentMapFileName = "C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\"+filename;
+        currentMapFileName = "C:\\Users\\yanae\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\" + filename;
         string[] lines = File.ReadAllLines(currentMapFileName);
 
         int width = lines[0].Length;
@@ -154,7 +154,7 @@ internal class Map
     }
     static bool IsCurrentMap(string mapToCheck)
     {
-        string fullPathToCheck = "C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\" + mapToCheck;
+        string fullPathToCheck = "C:\\Users\\yanae\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\" + mapToCheck;
         return currentMapFileName.Equals(fullPathToCheck, StringComparison.OrdinalIgnoreCase);
     }
     static void DrawPlayer()

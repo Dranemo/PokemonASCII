@@ -14,17 +14,20 @@ class Program
         //Map.MapPlayer();
         /*Combat.UneLoopDeCombatDeAxel();*/
 
+        MainMenu.Start();
 
-        Pokemon salameche = new Pokemon(148, 55);
         Player player = new Player("player");
+
+
+        Pokemon salameche = new Pokemon(52, 55);
 
         player.addPokemonToParty(salameche);
 
         foreach (Pokemon pokemon in player.pokemonParty) 
         {
             pokemon.AfficherDetailsPokemon();
-            pokemon.LevelUp();
-            pokemon.AfficherDetailsPokemon();
+            //pokemon.LevelUp();
+            //pokemon.AfficherDetailsPokemon();
         }
     }
 }

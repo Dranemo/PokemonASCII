@@ -21,6 +21,10 @@ namespace pokemonConsole
         public int expToLevelUp { get; private set; }
         public int expActuel { get; set; }
 
+        public int expToLevelUpLevel { get; set; }
+        public int expActuelLevel { get; set; }
+        public int expPercent { get; set; }
+
         // ------------------ Statistiques ------------------ //
         public int pv { get; private set; }
         public int pvLeft {  get; set; }
@@ -65,7 +69,7 @@ namespace pokemonConsole
         public int tauxCapture {  get; private set; }
 
 
-        private string filePokemonCSV = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\pokemon.csv";
+        private string filePokemonCSV = "C:\\Users\\yanae\\Desktop\\C-Pokemon\\pokemonConsole\\pokemon.csv";
 
 
 
@@ -201,17 +205,17 @@ namespace pokemonConsole
 
             if (expCourbe == "rapide")
             {
-                expActuel = FormulaCourbeLente(level);
+                expActuel = FormulaCourbeRapide(level);
                 expToLevelUp = FormulaCourbeRapide(level+1);
             }
             else if (expCourbe == "moyenne")
             {
-                expActuel = FormulaCourbeLente(level);
+                expActuel = FormulaCourbeMoyenne(level);
                 expToLevelUp = FormulaCourbeMoyenne(level+1);
             }
             else if (expCourbe == "parabolique")
             {
-                expActuel = FormulaCourbeLente(level);
+                expActuel = FormulaCourbePara(level);
                 expToLevelUp = FormulaCourbePara(level+1);
             }
             else if (expCourbe == "lente")
@@ -219,6 +223,10 @@ namespace pokemonConsole
                 expActuel = FormulaCourbeLente(level);
                 expToLevelUp = FormulaCourbeLente(level+1);
             }
+
+            expToLevelUpLevel = expToLevelUp - expActuel;
+            expActuelLevel = 
+            expPercent = expActuel * 100 / expToLevelUp;
 
             StatusProblem = "OK";
 
@@ -330,7 +338,7 @@ namespace pokemonConsole
 
             // Sprite
             string asciiArtFileName = $"ascii-art ({id_generate}).txt";
-            string asciiArtFilePath = Path.Combine("C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\", asciiArtFileName);
+            string asciiArtFilePath = Path.Combine("C:\\Users\\yanae\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Sprites\\", asciiArtFileName);
 
             if (File.Exists(asciiArtFilePath))
             {
@@ -384,6 +392,19 @@ namespace pokemonConsole
             {
                 Console.WriteLine("Level Up");
                 Console.WriteLine($"{expToLevelUp - expActuel} to: {level + 1}");
+
+                string tempExpBar = "[";
+                for(int i = 0; i < this.expPercent; i++)
+                {
+                    tempExpBar += "_";
+                }
+                while (tempExpBar.Length <= 101)
+                {
+                    tempExpBar += " ";
+                }
+                tempExpBar += "]";
+
+                Console.WriteLine(tempExpBar);
             }
 
             Console.WriteLine();
@@ -422,7 +443,7 @@ namespace pokemonConsole
 
                 // Sprite
                 string asciiArtFileName = $"ascii-art ({id}).txt";
-                string asciiArtFilePath = Path.Combine("C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\", asciiArtFileName);
+                string asciiArtFilePath = Path.Combine("C:\\Users\\yanae\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Sprites\\", asciiArtFileName);
 
                 if (File.Exists(asciiArtFilePath))
                 {
@@ -871,7 +892,8 @@ namespace pokemonConsole
         }
         private int FormulaCourbePara(int level)
         {
-            double result = 1.2 * (level * level * level) - 15 * (level * level) + 100 * level - 140;
+            double result = (1.2 * (level * level * level)) - (15 * (level * level)) + (100 * level) - 140;
+            Console.WriteLine(result);
             return (int)Math.Round(result);
         }
         private int FormulaCourbeLente(int level)
