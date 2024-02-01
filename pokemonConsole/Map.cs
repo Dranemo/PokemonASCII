@@ -3,12 +3,13 @@
 internal class Map
 {
     static int playerX = 6;
-    static int playerY = 15;
+    static int playerY = 34;
     static char[,] map;
     static Random random = new Random();
+    static string currentMapFileName="";
     public static void MapPlayer()
     {
-        LoadMap("C:\\Users\\yanae\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\route_1.txt");
+        LoadMap("C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\route_1.txt");
 
         ConsoleKeyInfo keyInfo;
 
@@ -54,12 +55,30 @@ internal class Map
                 Console.SetCursorPosition(playerX, playerY);
                 Console.Write("P");
 
+                // Vérifier si le joueur atteint le point le plus bas de la carte "route_1.txt"
+                if (IsCurrentMap("route_1.txt") && newY == 35)
+                {
+                    Console.WriteLine("Vous arrivez à Bourg Palette !");
+                    Thread.Sleep(1000);
+                    LoadMap("C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\bourg_palette.txt");
+                    playerX += 3;
+                    playerY = 0;
+                }
+                else if (IsCurrentMap("bourg_palette.txt") && newY == 0)
+                {
+                    Console.WriteLine("\nVers la route 1 !");
+                    Thread.Sleep(1000);
+                    LoadMap("C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\route_1.txt");
+                    playerX -= 3;
+                    playerY = 35;
+                }
+
                 // Si le joueur marche sur un '#', chance aléatoire de lancer un combat
                 if (map[playerX, playerY] == '#')
                 {
                     if (random.Next(1, 101) <= 6) // 25% de chance de lancer un combat (ajustez selon vos besoins)
                     {
-                        Console.WriteLine("\nCombat lancé !");
+                        Console.WriteLine($"\nCombat lancé !");
                         Thread.Sleep(1000);
                     }
                 }
@@ -70,6 +89,7 @@ internal class Map
 
     static void LoadMap(string filename)
     {
+        currentMapFileName = filename;
         string[] lines = File.ReadAllLines(filename);
 
         int width = lines[0].Length;
@@ -94,12 +114,32 @@ internal class Map
         {
             for (int x = 0; x < map.GetLength(0); x++)
             {
+                
+                if (map[x, y] == '~')
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                }
+                else if (map[x, y] == '#')
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkGreen;
+                }
+                else if (map[x, y] == '0')
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
                 Console.Write(map[x, y]);
             }
             Console.WriteLine();
         }
     }
-
+    static bool IsCurrentMap(string currentMapFileName)
+    {
+        return currentMapFileName.Equals(currentMapFileName, StringComparison.OrdinalIgnoreCase);
+    }
     static void DrawPlayer()
     {
         Console.SetCursorPosition(playerX, playerY);

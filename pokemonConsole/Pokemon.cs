@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace pokemonConsole
 {
     internal class Pokemon
@@ -62,7 +61,7 @@ namespace pokemonConsole
         public int tauxCapture {  get; private set; }
 
 
-        private string filePokemonCSV = "C:\\Users\\yanae\\Desktop\\C-Pokemon\\pokemonConsole\\pokemon.csv";
+        private string filePokemonCSV = "C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\pokemon.csv";
 
 
 
@@ -321,7 +320,7 @@ namespace pokemonConsole
 
             // Sprite
             string asciiArtFileName = $"ascii-art ({id_generate}).txt";
-            string asciiArtFilePath = Path.Combine("C:\\Users\\yanae\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\", asciiArtFileName);
+            string asciiArtFilePath = Path.Combine("C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\", asciiArtFileName);
 
             if (File.Exists(asciiArtFilePath))
             {
