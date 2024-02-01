@@ -13,15 +13,14 @@ class Program
         /*Map.MapPlayer();*/
         /*Combat.UneLoopDeCombatDeAxel();*/
 
-        Pokemon pokemon = GeneratePokemon.generatePokemon(2, 25);
+        Pokemon pokemon = new Pokemon(129, 19);
         pokemon.AfficherDetailsPokemon();
-        
-        while(pokemon.getListEvo().Count > 0 )
-        {
-            Console.WriteLine();
-            pokemon.Evolution();
-            pokemon.AfficherDetailsPokemon();
-        }
+
+        Console.WriteLine();
+        Console.WriteLine();
+
+        pokemon.LevelUp();
+        pokemon.AfficherDetailsPokemon();
 
 
 
