@@ -12,8 +12,6 @@ class Program
 
     static void Main()
     {
-        /*Combat.UneLoopDeCombatDeAxel();*/
-
         MainMenu.Start();
 
         Player player = new Player("player");
@@ -23,11 +21,22 @@ class Program
 
         player.addPokemonToParty(salameche);
 
-        foreach (Pokemon pokemon in player.pokemonParty) 
+        foreach (Pokemon pokemon in player.pokemonParty)
         {
             pokemon.AfficherDetailsPokemon();
             pokemon.GainExp(15000);
             pokemon.AfficherDetailsPokemon();
+        } } }
+    namespace FunctionUsefull
+{
+    class Functions
+    {
+        public static void ClearInputBuffer()
+        {
+            while (Console.KeyAvailable)
+            {
+                Console.ReadKey(intercept: true);
+            }
         }
     }
 }
