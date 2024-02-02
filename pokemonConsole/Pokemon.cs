@@ -4,6 +4,11 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+
+
+using Usefull;
+
+
 namespace pokemonConsole
 {
     internal class Pokemon
@@ -74,7 +79,7 @@ namespace pokemonConsole
         public int tauxCapture {  get; private set; }
 
 
-        private string filePokemonCSV = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\pokemon.csv";
+        private string filePokemonCSV = AdresseFile.FileDirection + "CSV\\pokemon.csv";
 
         public int appartenant {  get; set; }
         public int echange {  get; set; }
@@ -366,7 +371,7 @@ namespace pokemonConsole
 
             // Sprite
             string asciiArtFileName = $"ascii-art ({id_generate}).txt";
-            string asciiArtFilePath = Path.Combine("C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Sprites\\", asciiArtFileName);
+            string asciiArtFilePath = Path.Combine(AdresseFile.FileDirection, "Assets\\Sprites\\Pokemon\\", asciiArtFileName);
 
             if (File.Exists(asciiArtFilePath))
             {
@@ -374,7 +379,7 @@ namespace pokemonConsole
             }
             else
             {
-                Console.WriteLine($"Sprite ASCII non trouvé pour le Pokémon avec l'ID {id_generate}");
+                Console.WriteLine($"Sprite ASCII non trouve pour le Pokemon avec l'ID {id_generate}");
             }
 
 
@@ -498,7 +503,7 @@ namespace pokemonConsole
 
                 // Sprite
                 string asciiArtFileName = $"ascii-art ({id}).txt";
-                string asciiArtFilePath = Path.Combine("CC:\\Users\\agathelier\\Desktop\\Nouveau dossier\\pokemonConsole\\Assets\\Sprites\\", asciiArtFileName);
+                string asciiArtFilePath = Path.Combine(AdresseFile.FileDirection, "Assets\\Sprites\\Pokemon\\", asciiArtFileName);
 
                 if (File.Exists(asciiArtFilePath))
                 {
@@ -506,7 +511,7 @@ namespace pokemonConsole
                 }
                 else
                 {
-                    Console.WriteLine($"Sprite ASCII non trouvé pour le Pokémon avec l'ID {id}");
+                    Console.WriteLine($"Sprite ASCII non trouve pour le Pokemon avec l'ID {id}");
                 }
 
                 this.listType[0] = colonnes[2];
@@ -700,7 +705,7 @@ namespace pokemonConsole
                                             if (string.Equals(userInput3, listAttackActual[0].name, StringComparison.OrdinalIgnoreCase))
                                             {
                                                 Console.WriteLine("1... 2... 3... Tada !");
-                                                Console.WriteLine($"{name} a oublié {listAttackActual[0].name}...");
+                                                Console.WriteLine($"{name} a oublie {listAttackActual[0].name}...");
                                                 Console.WriteLine($"Et il a appris {cap.name}.");
 
                                                 listAttackActual[0] = cap;
@@ -712,7 +717,7 @@ namespace pokemonConsole
                                             else if (string.Equals(userInput3, listAttackActual[1].name, StringComparison.OrdinalIgnoreCase))
                                             {
                                                 Console.WriteLine("1... 2... 3... Tada !");
-                                                Console.WriteLine($"{name} a oublié {listAttackActual[1].name}...");
+                                                Console.WriteLine($"{name} a oublie {listAttackActual[1].name}...");
                                                 Console.WriteLine($"Et il a appris {cap.name}.");
 
                                                 listAttackActual[1] = cap;
@@ -724,7 +729,7 @@ namespace pokemonConsole
                                             else if (string.Equals(userInput3, listAttackActual[2].name, StringComparison.OrdinalIgnoreCase))
                                             {
                                                 Console.WriteLine("1... 2... 3... Tada !");
-                                                Console.WriteLine($"{name} a oublié {listAttackActual[2].name}...");
+                                                Console.WriteLine($"{name} a oublie {listAttackActual[2].name}...");
                                                 Console.WriteLine($"Et il a appris {cap.name}.");
 
                                                 listAttackActual[2] = cap;
@@ -736,7 +741,7 @@ namespace pokemonConsole
                                             else if (string.Equals(userInput3, listAttackActual[3].name, StringComparison.OrdinalIgnoreCase))
                                             {
                                                 Console.WriteLine("1... 2... 3... Tada !");
-                                                Console.WriteLine($"{name} a oublié {listAttackActual[3].name}...");
+                                                Console.WriteLine($"{name} a oublie {listAttackActual[3].name}...");
                                                 Console.WriteLine($"Et il a appris {cap.name}.");
 
                                                 listAttackActual[3] = cap;
@@ -747,7 +752,7 @@ namespace pokemonConsole
                                             }
                                             else
                                             {
-                                                Console.WriteLine("Réponse invalide. Veuillez répondre par 'oui' ou 'non'.");
+                                                Console.WriteLine("Reponse invalide. Veuillez repondre par 'oui' ou 'non'.");
                                             }
 
 
@@ -760,7 +765,7 @@ namespace pokemonConsole
                                     }
                                     else
                                     {
-                                        Console.WriteLine("Réponse invalide. Veuillez répondre par 'oui' ou 'non'.");
+                                        Console.WriteLine("Reponse invalide. Veuillez repondre par 'oui' ou 'non'.");
                                     }
                                 }
 
@@ -782,7 +787,7 @@ namespace pokemonConsole
                                     }
                                     else
                                     {
-                                        Console.WriteLine("Réponse invalide. Veuillez répondre par 'oui' ou 'non'.");
+                                        Console.WriteLine("Reponse invalide. Veuillez repondre par 'oui' ou 'non'.");
                                     }
                                 }
                             }
@@ -932,14 +937,14 @@ namespace pokemonConsole
                 {
                     Console.Clear();
                     Console.WriteLine("Quoi ?");
-                    Console.WriteLine($"{name_oldPokemon} évolue !");
+                    Console.WriteLine($"{name_oldPokemon} evolue !");
 
                     AfficherSprite(color_oldPokemon, sprite_oldPokemon);
                     Thread.Sleep((first_time));
 
                     Console.Clear();
                     Console.WriteLine("Quoi ?");
-                    Console.WriteLine($"{name_oldPokemon} évolue !");
+                    Console.WriteLine($"{name_oldPokemon} evolue !");
 
                     AfficherSprite(color_newPokemon, sprite_newPokemon);   
                     Thread.Sleep((next_pokemon));
@@ -951,14 +956,14 @@ namespace pokemonConsole
                 {
                     Console.Clear();
                     Console.WriteLine("Quoi ?");
-                    Console.WriteLine($"{name_oldPokemon} évolue !");
+                    Console.WriteLine($"{name_oldPokemon} evolue !");
 
                     AfficherSprite(color_oldPokemon, sprite_oldPokemon);
                     Thread.Sleep((second_time));
 
                     Console.Clear();
                     Console.WriteLine("Quoi ?");
-                    Console.WriteLine($"{name_oldPokemon} évolue !");
+                    Console.WriteLine($"{name_oldPokemon} evolue !");
 
                     AfficherSprite(color_newPokemon, sprite_newPokemon);
                     Thread.Sleep((next_pokemon));
@@ -972,21 +977,21 @@ namespace pokemonConsole
                 {
                     Console.Clear();
                     Console.WriteLine("Quoi ?");
-                    Console.WriteLine($"{name_oldPokemon} évolue !");
+                    Console.WriteLine($"{name_oldPokemon} evolue !");
 
                     AfficherSprite(color_oldPokemon, sprite_oldPokemon);
                     Thread.Sleep((second_time));
 
                     Console.Clear();
                     Console.WriteLine("Quoi ?");
-                    Console.WriteLine($"{name_oldPokemon} évolue !");
+                    Console.WriteLine($"{name_oldPokemon} evolue !");
 
                     AfficherSprite(color_newPokemon, sprite_newPokemon);
                     Thread.Sleep((next_pokemon));
 
                     timesSwitch++;
                 }
-                Console.WriteLine($"Félicitation ! Votre {name_oldPokemon} a évolué en {name_newPokemon} ! ");
+                Console.WriteLine($"Felicitation ! Votre {name_oldPokemon} a evolue en {name_newPokemon} ! ");
                 Console.ReadLine();
                 Console.Clear();
                 evolved = true;

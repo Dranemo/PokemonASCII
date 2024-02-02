@@ -1,6 +1,7 @@
 ﻿using pokemonConsole;
 using System;
 using System.Reflection;
+using Usefull;
 
 internal class Map
 {
@@ -22,7 +23,7 @@ internal class Map
 
             keyInfo = Console.ReadKey();
 
-            // Déplacer le joueur en fonction de la touche pressée
+            // Deplacer le joueur en fonction de la touche pressee
             int deltaX = 0, deltaY = 0;
 
             switch (keyInfo.Key)
@@ -41,7 +42,7 @@ internal class Map
                     break;
             }
 
-            // Vérifier si la nouvelle position est marchable
+            // Verifier si la nouvelle position est marchable
             int newX = playerX + deltaX;
             int newY = playerY + deltaY;
 
@@ -64,7 +65,7 @@ internal class Map
 
                 if (IsCurrentMap("chen.txt"))
                 {
-                    CanTalk("chen.txt", 'C', 2, 7, "Blue? Heu... Ah, c'est vrai! Je t'ai dit de venir... Tiens, Joueur! Voici 3 Pokémon! Mais... Ils sont dans des Poké Balls. Plus jeune, j'étais un sacré Dresseur de Pokémon! Et oui! Mais avec l'âge, il ne m'en reste plus que 3! Choisis-en un!", playerX, playerY, keyInfo);
+                    CanTalk("chen.txt", 'C', 2, 7, "Blue? Heu... Ah, c'est vrai! Je t'ai dit de venir... Tiens, Joueur! Voici 3 Pokemon! Mais... Ils sont dans des Poke Balls. Plus jeune, j'etais un sacre Dresseur de Pokemon! Et oui! Mais avec l'âge, il ne m'en reste plus que 3! Choisis-en un!", playerX, playerY, keyInfo);
                     CanTalk("chen.txt", 'R', 4, 4, "Yo !", playerX, playerY, keyInfo);
                 }
 
@@ -140,7 +141,7 @@ internal class Map
                 {
                     if (random.Next(1, 101) <= 10) // chance de rencontrer un Pokemon dans les hautes herbes
                     {
-                        Console.WriteLine($"\nCombat lancé !");
+                        Console.WriteLine($"\nCombat lance !");
                         Thread.Sleep(1000);
                         Combat.LoopCombat(player);
                     }
@@ -151,7 +152,7 @@ internal class Map
     }
     static void CanTalk(string currentMapFileName, char caractere, int npcX, int npcY, string dialogue, int playerX, int playerY, ConsoleKeyInfo keyInfo)
     {
-        string filePath = $"C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\{currentMapFileName}";
+        string filePath = $"{AdresseFile.FileDirection}Assets\\Maps\\{currentMapFileName}";
         string[] lines = File.ReadAllLines(filePath);
 
         for (int i = 0; i < lines.Length; i++)
@@ -179,12 +180,12 @@ internal class Map
         }
         else
         {
-            Console.WriteLine($"Le caractère '{caractere}' n'a pas été trouvé.");
+            Console.WriteLine($"Le caractère '{caractere}' n'a pas ete trouve.");
         }
     }
     static void LoadMap(string filename)
     {
-        currentMapFileName = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\" + filename;
+        currentMapFileName = AdresseFile.FileDirection + "Assets\\Maps\\" + filename;
         string[] lines = File.ReadAllLines(currentMapFileName);
 
         int width = lines[0].Length;
@@ -233,7 +234,7 @@ internal class Map
     }
     static bool IsCurrentMap(string mapToCheck)
     {
-        string fullPathToCheck = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\" + mapToCheck;
+        string fullPathToCheck = AdresseFile.FileDirection + "Assets\\Maps\\" + mapToCheck;
         return currentMapFileName.Equals(fullPathToCheck, StringComparison.OrdinalIgnoreCase);
     }
     static void DrawPlayer()
@@ -244,7 +245,7 @@ internal class Map
 
     static void MovePlayer(int deltaX, int deltaY)
     {
-        // limites du déplacement pour éviter de sortir de la carte
+        // limites du deplacement pour eviter de sortir de la carte
         int newX = playerX + deltaX;
         int newY = playerY + deltaY;
 
