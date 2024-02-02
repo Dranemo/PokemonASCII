@@ -1,4 +1,5 @@
 ﻿using System;
+using Usefull;
 
 public class Entity
 {
@@ -23,10 +24,11 @@ public class NPC : Entity
     }
     public void DisplayMap()
     {
-        string[] lines = File.ReadAllLines($"C:\\Users\\agathelier\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\{Map}");
+
+        string[] lines = File.ReadAllLines($"{AdresseFile.FileDirection}Assets\\Maps\\{Map}");
         Console.WriteLine("test");
         Thread.Sleep(1000);
-        Console.SetCursorPosition(0, 0); // Réinitialisez la position du curseur au début
+        Console.SetCursorPosition(0, 0); // Reinitialisez la position du curseur au debut
 
         for (int i = 0; i < lines.Length; i++)
         {
@@ -44,7 +46,7 @@ public class NPC : Entity
             }
         }
 
-        Console.SetCursorPosition(0, lines.Length); // Déplacez le curseur après la fin de la carte
+        Console.SetCursorPosition(0, lines.Length); // Deplacez le curseur après la fin de la carte
 
     }
 }

@@ -19,7 +19,7 @@ class Program
 
 }
 
-namespace FunctionUsefull
+namespace Usefull
 {
     class Functions
     {
@@ -30,5 +30,10 @@ namespace FunctionUsefull
                 Console.ReadKey(intercept: true);
             }
         }
+    }
+
+    class AdresseFile
+    {
+        public static string FileDirection = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\GameFiles\\";
     }
 }

@@ -124,7 +124,7 @@ namespace pokemonConsole
                                 Console.WriteLine(capacityUsed.name);
                             }
 
-                            Console.WriteLine("Vous n'avez pas réussi à fuir le Pokémon adverse !\n");
+                            Console.WriteLine("Vous n'avez pas reussi à fuir le Pokemon adverse !\n");
                             Console.WriteLine($"Les nouveaux PV du Pokemon du joueur sont = {pokemon.pvLeft}");
                             Console.WriteLine($"Les nouveaux PV du Pokemon de l'adversaire sont = {pokemonAdverse.pvLeft}\n");
                         }
@@ -139,7 +139,7 @@ namespace pokemonConsole
                 {
                     Console.WriteLine("Le Pokemon de l'adversaire a perdu !");
                     float appartenant ;
-                    float echange = 1; // echangé = 1.5x
+                    float echange = 1; // echange = 1.5x
                     int nombrePokemon = 1; // Le nombre de pokemo qui ont combattu
 
 
@@ -158,12 +158,12 @@ namespace pokemonConsole
                 }
                 if (fuiteReussit)
                 {
-                    Console.WriteLine("Vous avez réussi à fuir le combat");
+                    Console.WriteLine("Vous avez reussi à fuir le combat");
                 }
 
                 static double CalculerDegatSubitPokemon(Pokemon pokemon, Pokemon pokemonAdverse, Capacity capacity)
                 {
-                    // Dégâts infligés = (((((((Niveau × 2 ÷ 5) +2) × Puissance × Att[Spé] ÷ 50) ÷ Def[Spé]) × Mod1) +2) × CC × Mod2 × R ÷ 100) × STAB × Type1 × Type2 × Mod3
+                    // Degâts infliges = (((((((Niveau × 2 ÷ 5) +2) × Puissance × Att[Spe] ÷ 50) ÷ Def[Spe]) × Mod1) +2) × CC × Mod2 × R ÷ 100) × STAB × Type1 × Type2 × Mod3
 
                     Random random = new Random();
 
@@ -184,7 +184,7 @@ namespace pokemonConsole
                     }
 
 
-                    // Détermine si la capacité est physique ou spécial selon le type
+                    // Determine si la capacite est physique ou special selon le type
                     if (capacity.type == "DRAGON" || capacity.type == "EAU" || capacity.type == "ELECTRIK" || capacity.type == "FEU" || capacity.type == "GLACE" || capacity.type == "PLANTE" || capacity.type == "PSY")
                     {
                         atkSpeOrNot = pokemon.spe;
@@ -196,7 +196,7 @@ namespace pokemonConsole
                         defSpeOrNot = pokemonAdverse.def;
                     }
 
-                    // Si le Pokemon est burn, l'attaque est divisée par deux
+                    // Si le Pokemon est burn, l'attaque est divisee par deux
                     if (pokemon.statusProblem == "BRN")
                     {
                         isBurn = 0.5f;

@@ -6,21 +6,28 @@ using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 
-using FunctionUsefull;
+using Usefull;
 
 namespace pokemonConsole
 {
     internal class Intro
     {
-        private string asciiFileOak = "C:\\Users\\agathelier\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Sprites\\ascii-art_chen.txt";
-        private string asciiFileBlue = "C:\\Users\\agathelier\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Sprites\\ascii-art_blue.txt";
-        private string asciiFileRed = "C:\\Users\\agathelier\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Sprites\\ascii-art_red.txt";
-        private string scriptOak = "C:\\Users\\agathelier\\Desktop\\C-Pokemon\\pokemonConsole\\ScriptIntroChen.txt";
+
+        private string asciiFileOak = AdresseFile.FileDirection + "Assets\\Sprites\\ascii-art_chen.txt";
+        private string asciiFileBlue = AdresseFile.FileDirection + "Assets\\Sprites\\ascii-art_blue.txt";
+        private string asciiFileRed = AdresseFile.FileDirection + "Assets\\Sprites\\ascii-art_red.txt";
+        private string asciiFileMiddleBid = AdresseFile.FileDirection + "Assets\\Sprites\\ascii-art_middleBigRed.txt";
+        private string asciiFileMiddleLittle = AdresseFile.FileDirection + "Assets\\Sprites\\ascii-art_middleLittleRed.txt";
+        private string asciiFileLittleRed = AdresseFile.FileDirection + "Assets\\Sprites\\ascii-art_littleRed.txt";
+        private string scriptOak = AdresseFile.FileDirection + "Scripts\\ScriptIntroChen.txt";
 
         private string asciiOak = "";
         private string asciiBlue = "";
         private string asciiRedHalf = "";
         private string asciiRed = "";
+        private string asciiMiddleBigRed = "";
+        private string asciiMiddleLittleRed = "";
+        private string asciiLittleRed = "";
 
 
         private int widthOak = 45;
@@ -95,6 +102,7 @@ namespace pokemonConsole
                         }
                     }
                 }
+                intro.AnimationRedShrink();
             }
         }
 
@@ -107,11 +115,15 @@ namespace pokemonConsole
             }
             else if ( lineReading <= 14) 
             {
+                Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine(asciiBlue);
+                Console.ForegroundColor = ConsoleColor.White;
             }
             else 
-            { 
-                Console.WriteLine(asciiRedHalf); 
+            {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine(asciiRedHalf);
+                Console.ForegroundColor = ConsoleColor.White;
             }
             
 
@@ -200,6 +212,9 @@ namespace pokemonConsole
             asciiOak = File.ReadAllText(asciiFileOak);
             asciiBlue = File.ReadAllText(asciiFileBlue);
             asciiRed = File.ReadAllText(asciiFileRed);
+            asciiMiddleBigRed = File.ReadAllText(asciiFileMiddleBid);
+            asciiMiddleLittleRed = File.ReadAllText(asciiFileMiddleLittle);
+            asciiLittleRed = File.ReadAllText(asciiFileLittleRed);
             using (StreamReader sr = new StreamReader(asciiFileRed))
             {
                 for (int i = 0; i < 31; i++)
@@ -212,6 +227,25 @@ namespace pokemonConsole
 
         private void AnimationRedShrink()
         {
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.Clear();
+            Console.WriteLine(asciiRed);
+            Thread.Sleep(200);
+
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Clear();
+            Console.WriteLine(asciiMiddleBigRed);
+            Thread.Sleep(200);
+
+            Console.Clear();
+            Console.WriteLine(asciiMiddleLittleRed);
+            Thread.Sleep(200);
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Clear();
+            Console.WriteLine(asciiLittleRed);
+            Thread.Sleep(200);
+
 
         }
 

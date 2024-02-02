@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Usefull;
 
 namespace pokemonConsole
 {
@@ -26,8 +27,8 @@ namespace pokemonConsole
 
         private int ppLeft;
 
+        private string fileCSV = AdresseFile.FileDirection + "CSV\\capacites.csv";
 
-        private string fileCSV = "C:\\Users\\agathelier\\Desktop\\C-Pokemon\\pokemonConsole";
 
         public Capacity(int id_) 
         {
