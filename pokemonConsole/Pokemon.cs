@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FunctionUsefull;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -941,6 +942,7 @@ namespace pokemonConsole
 
                     AfficherSprite(color_oldPokemon, sprite_oldPokemon);
                     Thread.Sleep((first_time));
+                    Functions.ClearInputBuffer();
 
                     Console.Clear();
                     Console.WriteLine("Quoi ?");
@@ -948,6 +950,7 @@ namespace pokemonConsole
 
                     AfficherSprite(color_newPokemon, sprite_newPokemon);   
                     Thread.Sleep((next_pokemon));
+                    Functions.ClearInputBuffer();
 
                     timesSwitch++;
                 }
@@ -960,6 +963,7 @@ namespace pokemonConsole
 
                     AfficherSprite(color_oldPokemon, sprite_oldPokemon);
                     Thread.Sleep((second_time));
+                    Functions.ClearInputBuffer();
 
                     Console.Clear();
                     Console.WriteLine("Quoi ?");
@@ -967,6 +971,7 @@ namespace pokemonConsole
 
                     AfficherSprite(color_newPokemon, sprite_newPokemon);
                     Thread.Sleep((next_pokemon));
+                    Functions.ClearInputBuffer();
 
                     timesSwitch++;
                 }
@@ -981,6 +986,7 @@ namespace pokemonConsole
 
                     AfficherSprite(color_oldPokemon, sprite_oldPokemon);
                     Thread.Sleep((second_time));
+                    Functions.ClearInputBuffer();
 
                     Console.Clear();
                     Console.WriteLine("Quoi ?");
@@ -988,6 +994,7 @@ namespace pokemonConsole
 
                     AfficherSprite(color_newPokemon, sprite_newPokemon);
                     Thread.Sleep((next_pokemon));
+                    Functions.ClearInputBuffer();
 
                     timesSwitch++;
                 }

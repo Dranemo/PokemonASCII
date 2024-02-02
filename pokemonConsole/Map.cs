@@ -12,7 +12,7 @@ internal class Map
     static string currentMapFileName="";
     public static void MapPlayer(Player player)
     {
-        LoadMap("bourg_palette.txt");
+        LoadMap("chen.txt");
         ConsoleKeyInfo keyInfo;
 
         do
@@ -65,8 +65,11 @@ internal class Map
 
                 if (IsCurrentMap("chen.txt"))
                 {
-                    CanTalk("chen.txt", 'C', 2, 7, "Blue? Heu... Ah, c'est vrai! Je t'ai dit de venir... Tiens, Joueur! Voici 3 Pokemon! Mais... Ils sont dans des Poke Balls. Plus jeune, j'etais un sacre Dresseur de Pokemon! Et oui! Mais avec l'âge, il ne m'en reste plus que 3! Choisis-en un!", playerX, playerY, keyInfo);
-                    CanTalk("chen.txt", 'R', 4, 4, "Yo !", playerX, playerY, keyInfo);
+                    CanTalk("chen.txt", 'C', 2, 7, "Voici 3 Pokémon! Mais... Ils sont dans des Poké Balls. Plus jeune, j'étais un sacré Dresseur de Pokémon! Et oui! Mais avec l'âge, il ne m'en reste plus que 3! Choisis-en un!", playerX, playerY, keyInfo);
+                    CanTalk("chen.txt", 'R', 4, 4, "Yo minable !", playerX, playerY, keyInfo);
+                    Open("chen.txt", 'o', 3, 8, "Salamèche", playerX, playerY, keyInfo);
+                    Open("chen.txt", 'o', 3, 9, "Carapuce", playerX, playerY, keyInfo);
+                    Open("chen.txt", 'o', 3, 10, "Bulbizarre", playerX, playerY, keyInfo);
                 }
 
                 // Transitions entre les maps
@@ -75,6 +78,7 @@ internal class Map
                 {
                     Console.WriteLine("Vous arrivez à Bourg Palette !");
                     Thread.Sleep(500);
+                    Functions.ClearInputBuffer();
                     LoadMap("bourg_palette.txt");
                     playerX += 3;
                     playerY = 0;
@@ -83,6 +87,7 @@ internal class Map
                 {
                     Console.WriteLine("\nVers la route 1 !");
                     Thread.Sleep(500);
+                    Functions.ClearInputBuffer();
                     LoadMap("route_1.txt");
                     playerX -= 3;
                     playerY = 35;
@@ -91,6 +96,7 @@ internal class Map
                 {
                     Console.WriteLine("\nVers le labo du Pr.Chen...");
                     Thread.Sleep(500);
+                    Functions.ClearInputBuffer();
                     LoadMap("chen.txt");
                     playerX = 5;
                     playerY = 8;
@@ -99,6 +105,7 @@ internal class Map
                 {
                     Console.WriteLine("\nMaman");
                     Thread.Sleep(500);
+                    Functions.ClearInputBuffer();
                     LoadMap("mom.txt");
                     playerX = 3;
                     playerY = 8;
@@ -107,6 +114,7 @@ internal class Map
                 {
                     Console.WriteLine("\nVers Bourg-Palette...");
                     Thread.Sleep(500);
+                    Functions.ClearInputBuffer();
                     LoadMap("bourg_palette.txt");
                     playerX = 13;
                     playerY = 11;
@@ -115,6 +123,7 @@ internal class Map
                 {
                     Console.WriteLine("\nVers Bourg-Palette...");
                     Thread.Sleep(500);
+                    Functions.ClearInputBuffer();
                     LoadMap("bourg_palette.txt");
                     playerX = 6;
                     playerY = 6;
@@ -123,6 +132,7 @@ internal class Map
                 {
                     Console.WriteLine("\nChambre");
                     Thread.Sleep(500);
+                    Functions.ClearInputBuffer();
                     LoadMap("bedroom.txt");
                     playerX = 15;
                     playerY = 1;
@@ -131,6 +141,7 @@ internal class Map
                 {
                     Console.WriteLine("\nMaman");
                     Thread.Sleep(500);
+                    Functions.ClearInputBuffer();
                     LoadMap("mom.txt");
                     playerX = 8;
                     playerY = 1;
@@ -141,9 +152,10 @@ internal class Map
                 {
                     if (random.Next(1, 101) <= 10) // chance de rencontrer un Pokemon dans les hautes herbes
                     {
-                        Console.WriteLine($"\nCombat lance !");
-                        Thread.Sleep(1000);
-                        Combat.LoopCombat(player);
+                        Console.WriteLine($"\nCombat lancé !");
+                        Thread.Sleep(500);
+                        Functions.ClearInputBuffer();
+                        Combat.LoopCombat();
                     }
                 }
             }
@@ -172,10 +184,51 @@ internal class Map
             {
                 if (keyInfo.Key == ConsoleKey.Enter)
                 {
-                    Console.WriteLine(dialogue);
-                    Thread.Sleep(1000);
+                    if (!string.IsNullOrEmpty(dialogue))
+                    {
+                        foreach (char c in dialogue)
+                        {
+                            Console.Write(c);
+                            Task.Delay(50).Wait();
+                        }
+                    }
+                    Console.ReadKey();
                 }
                 
+            }
+        }
+        else
+        {
+            Console.WriteLine($"Le caractère '{caractere}' n'a pas été trouvé.");
+        }
+    }
+    static void Open(string currentMapFileName, char caractere, int chestX, int chestY, string dialogue, int playerX, int playerY, ConsoleKeyInfo keyInfo)
+    {
+        string filePath = $"C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\{currentMapFileName}";
+        string[] lines = File.ReadAllLines(filePath);
+
+        for (int i = 0; i < lines.Length; i++)
+        {
+            int charIndex = lines[i].IndexOf(caractere);
+            if (charIndex != -1)
+            {
+                chestX = charIndex;
+                chestY = i;
+                break;
+            }
+        }
+
+        if (chestX != -1 && chestY != -1)
+        {
+            if ((playerX + 1 == chestX && playerY == chestY) || (playerX - 1 == chestX && playerY == chestY) || (playerX == chestX && playerY - 1 == chestY) || (playerX == chestX && playerY + 1 == chestY))
+            {
+                if (keyInfo.Key == ConsoleKey.Enter)
+                {
+                    Console.WriteLine(dialogue);
+                    Thread.Sleep(1000);
+                    Functions.ClearInputBuffer();
+                }
+
             }
         }
         else
