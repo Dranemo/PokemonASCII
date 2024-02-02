@@ -3,7 +3,7 @@ using inventory;
 
 namespace pokemonConsole
 {
-    class Player
+    class Player : Entity
     {
         public string name { get; set; }
         public int id { get; private set; }

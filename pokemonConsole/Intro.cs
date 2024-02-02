@@ -12,13 +12,15 @@ namespace pokemonConsole
 {
     internal class Intro
     {
-        public string asciiFileOak { get; private set; } = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Sprites\\ascii-art_chen.txt";
-        public string asciiFileBlue { get; private set; } = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Sprites\\ascii-art_blue.txt";
-        public string asciiFileRed { get; private set; } = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Sprites\\ascii-art_red.txt";
-        public string scriptOak { get; private set; } = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\ScriptIntroChen.txt";
-        public string asciiOak { get; private set; } = "";
-        public string asciiBlue { get; private set; } = "";
-        public string asciiRed { get; private set; } = "";
+        private string asciiFileOak = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Sprites\\ascii-art_chen.txt";
+        private string asciiFileBlue = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Sprites\\ascii-art_blue.txt";
+        private string asciiFileRed = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Sprites\\ascii-art_red.txt";
+        private string scriptOak = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\ScriptIntroChen.txt";
+
+        private string asciiOak = "";
+        private string asciiBlue = "";
+        private string asciiRedHalf = "";
+        private string asciiRed = "";
 
 
         private int widthOak = 45;
@@ -31,16 +33,9 @@ namespace pokemonConsole
         static public void LaunchIntro(Player player, Rival rival)
         {
             Intro intro = new Intro();
+            intro.LoadAllASCII();
 
-            intro.asciiOak = File.ReadAllText(intro.asciiFileOak);
-            intro.asciiBlue = File.ReadAllText(intro.asciiFileBlue);
-            using (StreamReader sr = new StreamReader(intro.asciiFileRed))
-            {
-                for (int i = 0; i < 31; i++)
-                {
-                    intro.asciiRed += sr.ReadLine() + Environment.NewLine;
-                }
-            }
+
             string line = "0";
 
             using (StreamReader sr = new StreamReader(intro.scriptOak))
@@ -116,7 +111,7 @@ namespace pokemonConsole
             }
             else 
             { 
-                Console.WriteLine(asciiRed); 
+                Console.WriteLine(asciiRedHalf); 
             }
             
 
@@ -200,9 +195,25 @@ namespace pokemonConsole
                 }
             }
         }
+        public void LoadAllASCII()
+        {
+            asciiOak = File.ReadAllText(asciiFileOak);
+            asciiBlue = File.ReadAllText(asciiFileBlue);
+            asciiRed = File.ReadAllText(asciiFileRed);
+            using (StreamReader sr = new StreamReader(asciiFileRed))
+            {
+                for (int i = 0; i < 31; i++)
+                {
+                    asciiRedHalf += sr.ReadLine() + Environment.NewLine;
+                }
+            }
+        }
 
 
+        private void AnimationRedShrink()
+        {
 
+        }
 
     }
 }

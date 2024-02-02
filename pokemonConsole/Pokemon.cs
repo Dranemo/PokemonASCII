@@ -498,7 +498,7 @@ namespace pokemonConsole
 
                 // Sprite
                 string asciiArtFileName = $"ascii-art ({id}).txt";
-                string asciiArtFilePath = Path.Combine("C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Sprites\\", asciiArtFileName);
+                string asciiArtFilePath = Path.Combine("CC:\\Users\\agathelier\\Desktop\\Nouveau dossier\\pokemonConsole\\Assets\\Sprites\\", asciiArtFileName);
 
                 if (File.Exists(asciiArtFilePath))
                 {
