@@ -9,7 +9,7 @@ internal class Map
     static char[,] map;
     static Random random = new Random();
     static string currentMapFileName="";
-    public static void MapPlayer()
+    public static void MapPlayer(Player player)
     {
         LoadMap("chen.txt");
         ConsoleKeyInfo keyInfo;
@@ -163,7 +163,7 @@ internal class Map
     }
     static void CanTalk(string currentMapFileName, char caractere, int npcX, int npcY, string dialogue, int playerX, int playerY, ConsoleKeyInfo keyInfo)
     {
-        string filePath = $"C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\{currentMapFileName}";
+        string filePath = $"C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\{currentMapFileName}";
         string[] lines = File.ReadAllLines(filePath);
 
         for (int i = 0; i < lines.Length; i++)

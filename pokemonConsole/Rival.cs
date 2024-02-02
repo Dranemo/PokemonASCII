@@ -1,21 +1,17 @@
-﻿using System;
+using System;
 using inventory;
 
 namespace pokemonConsole
 {
-    class Player : Entity
+    class Rival
     {
         public string name { get; set; }
-        public int id { get; private set; }
 
         public List<Pokemon> pokemonParty = new List<Pokemon>();
 
-
-        public Player()
+        public Rival()
         {
-            name = "Player";
-            Random random = new Random();
-            id = random.Next(1, 65536);
+             name = "Rival";
         }
 
         public void addPokemonToParty(Pokemon pokemon)

@@ -13,21 +13,13 @@ class Program
     static void Main()
     {
         MainMenu.Start();
+    }
 
-        Player player = new Player("player");
+    
 
+}
 
-        Pokemon salameche = new Pokemon(52, 55);
-
-        player.addPokemonToParty(salameche);
-
-        foreach (Pokemon pokemon in player.pokemonParty)
-        {
-            pokemon.AfficherDetailsPokemon();
-            pokemon.GainExp(15000);
-            pokemon.AfficherDetailsPokemon();
-        } } }
-    namespace FunctionUsefull
+namespace FunctionUsefull
 {
     class Functions
     {
