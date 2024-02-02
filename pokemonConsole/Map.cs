@@ -1,4 +1,5 @@
-﻿using System;
+﻿using pokemonConsole;
+using System;
 
 internal class Map
 {
@@ -7,9 +8,9 @@ internal class Map
     static char[,] map;
     static Random random = new Random();
     static string currentMapFileName="";
-    public static void MapPlayer()
+    public static void MapPlayer(Player player)
     {
-        LoadMap("bedroom.txt");
+        LoadMap("route_1.txt");
 
         ConsoleKeyInfo keyInfo;
 
@@ -130,6 +131,7 @@ internal class Map
                     {
                         Console.WriteLine($"\nCombat lancé !");
                         Thread.Sleep(1000);
+                        Combat.UneLoopDeCombatDeAxel(player);
                     }
                 }
             }
@@ -139,7 +141,7 @@ internal class Map
 
     static void LoadMap(string filename)
     {
-        currentMapFileName = "C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\" + filename;
+        currentMapFileName = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\" + filename;
         string[] lines = File.ReadAllLines(currentMapFileName);
 
         int width = lines[0].Length;
@@ -188,7 +190,7 @@ internal class Map
     }
     static bool IsCurrentMap(string mapToCheck)
     {
-        string fullPathToCheck = "C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\" + mapToCheck;
+        string fullPathToCheck = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\" + mapToCheck;
         return currentMapFileName.Equals(fullPathToCheck, StringComparison.OrdinalIgnoreCase);
     }
     static void DrawPlayer()
