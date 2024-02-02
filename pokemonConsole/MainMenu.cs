@@ -14,7 +14,7 @@ namespace pokemonConsole
         public string quitGame { get; set; } = "QUITTER ";
         public string logoMainMenuPokemon { get; set; } = "";
         public string logoMainMenuAscii { get; set; } = "";
-        public string pathLogoFile { get; private set; } = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\mainMenuLogo.txt";
+        public string pathLogoFile { get; private set; } = "C:\\Users\\mguellaff\\Desktop\\c#\\C-Pokemon\\pokemonConsole\\Assets\\mainMenuLogo.txt";
 
 
 

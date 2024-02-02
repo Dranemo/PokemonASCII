@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FunctionUsefull;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -72,7 +73,6 @@ namespace pokemonConsole
         private List<int> evolutionItemId = new List<int>();
 
         public int tauxCapture {  get; private set; }
-
 
         private string filePokemonCSV = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\pokemon.csv";
 
@@ -366,7 +366,7 @@ namespace pokemonConsole
 
             // Sprite
             string asciiArtFileName = $"ascii-art ({id_generate}).txt";
-            string asciiArtFilePath = Path.Combine("C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Sprites\\", asciiArtFileName);
+            string asciiArtFilePath = Path.Combine("C:\\Users\\mguellaff\\Desktop\\c#\\C-Pokemon\\pokemonConsole\\Assets\\Sprites\\", asciiArtFileName);
 
             if (File.Exists(asciiArtFilePath))
             {
@@ -498,7 +498,7 @@ namespace pokemonConsole
 
                 // Sprite
                 string asciiArtFileName = $"ascii-art ({id}).txt";
-                string asciiArtFilePath = Path.Combine("CC:\\Users\\agathelier\\Desktop\\Nouveau dossier\\pokemonConsole\\Assets\\Sprites\\", asciiArtFileName);
+                string asciiArtFilePath = Path.Combine("C:\\Users\\mguellaff\\Desktop\\c#\\C-Pokemon\\pokemonConsole\\Assets\\Sprites\\", asciiArtFileName);
 
                 if (File.Exists(asciiArtFilePath))
                 {
@@ -936,6 +936,7 @@ namespace pokemonConsole
 
                     AfficherSprite(color_oldPokemon, sprite_oldPokemon);
                     Thread.Sleep((first_time));
+                    Functions.ClearInputBuffer();
 
                     Console.Clear();
                     Console.WriteLine("Quoi ?");
@@ -943,6 +944,7 @@ namespace pokemonConsole
 
                     AfficherSprite(color_newPokemon, sprite_newPokemon);   
                     Thread.Sleep((next_pokemon));
+                    Functions.ClearInputBuffer();
 
                     timesSwitch++;
                 }
@@ -955,6 +957,7 @@ namespace pokemonConsole
 
                     AfficherSprite(color_oldPokemon, sprite_oldPokemon);
                     Thread.Sleep((second_time));
+                    Functions.ClearInputBuffer();
 
                     Console.Clear();
                     Console.WriteLine("Quoi ?");
@@ -962,6 +965,7 @@ namespace pokemonConsole
 
                     AfficherSprite(color_newPokemon, sprite_newPokemon);
                     Thread.Sleep((next_pokemon));
+                    Functions.ClearInputBuffer();
 
                     timesSwitch++;
                 }
@@ -976,6 +980,7 @@ namespace pokemonConsole
 
                     AfficherSprite(color_oldPokemon, sprite_oldPokemon);
                     Thread.Sleep((second_time));
+                    Functions.ClearInputBuffer();
 
                     Console.Clear();
                     Console.WriteLine("Quoi ?");
@@ -983,6 +988,7 @@ namespace pokemonConsole
 
                     AfficherSprite(color_newPokemon, sprite_newPokemon);
                     Thread.Sleep((next_pokemon));
+                    Functions.ClearInputBuffer();
 
                     timesSwitch++;
                 }
