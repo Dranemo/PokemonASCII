@@ -14,7 +14,7 @@ namespace pokemonConsole
         public string quitGame { get; set; } = "QUITTER ";
         public string logoMainMenuPokemon { get; set; } = "";
         public string logoMainMenuAscii { get; set; } = "";
-        public string pathLogoFile { get; private set; } = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\mainMenuLogo.txt";
+        public string pathLogoFile { get; private set; } = "C:\\Users\\agathelier\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\mainMenuLogo.txt";
 
 
 
@@ -105,7 +105,8 @@ namespace pokemonConsole
                             if (mainMenu.newGame[0] == '>')
                             {
                                 //Intro.LaunchIntro(player, rival);
-                                Map.MapPlayer(player);
+                                //Map.MapPlayer(player);$
+                                Combat.LoopCombat(player);
                             }
                             else if (mainMenu.canLoadGame && mainMenu.loadGame[0] == '>')
                             {
@@ -131,9 +132,9 @@ namespace pokemonConsole
             Console.Clear();
 
             Console.WriteLine(newGame);
-            if (File.Exists("C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\save.txt"))
+            if (File.Exists("C:\\Users\\agathelier\\Desktop\\C-Pokemon\\pokemonConsole\\save.txt"))
             {
-                FileInfo fileInfo = new FileInfo("C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\save.txt");
+                FileInfo fileInfo = new FileInfo("C:\\Users\\agathelier\\Desktop\\C-Pokemon\\pokemonConsole\\save.txt");
                 if (fileInfo.Length != 0)
                 {
                     Console.WriteLine(loadGame);

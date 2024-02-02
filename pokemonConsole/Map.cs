@@ -151,7 +151,7 @@ internal class Map
     }
     static void CanTalk(string currentMapFileName, char caractere, int npcX, int npcY, string dialogue, int playerX, int playerY, ConsoleKeyInfo keyInfo)
     {
-        string filePath = $"C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\{currentMapFileName}";
+        string filePath = $"C:\\Users\\agathelier\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\{currentMapFileName}";
         string[] lines = File.ReadAllLines(filePath);
 
         for (int i = 0; i < lines.Length; i++)
@@ -184,7 +184,7 @@ internal class Map
     }
     static void LoadMap(string filename)
     {
-        currentMapFileName = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\" + filename;
+        currentMapFileName = "C:\\Users\\agathelier\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\" + filename;
         string[] lines = File.ReadAllLines(currentMapFileName);
 
         int width = lines[0].Length;

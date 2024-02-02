@@ -12,10 +12,10 @@ namespace pokemonConsole
 {
     internal class Intro
     {
-        private string asciiFileOak = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Sprites\\ascii-art_chen.txt";
-        private string asciiFileBlue = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Sprites\\ascii-art_blue.txt";
-        private string asciiFileRed = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Sprites\\ascii-art_red.txt";
-        private string scriptOak = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\ScriptIntroChen.txt";
+        private string asciiFileOak = "C:\\Users\\agathelier\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Sprites\\ascii-art_chen.txt";
+        private string asciiFileBlue = "C:\\Users\\agathelier\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Sprites\\ascii-art_blue.txt";
+        private string asciiFileRed = "C:\\Users\\agathelier\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Sprites\\ascii-art_red.txt";
+        private string scriptOak = "C:\\Users\\agathelier\\Desktop\\C-Pokemon\\pokemonConsole\\ScriptIntroChen.txt";
 
         private string asciiOak = "";
         private string asciiBlue = "";

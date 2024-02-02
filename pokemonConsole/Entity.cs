@@ -23,7 +23,7 @@ public class NPC : Entity
     }
     public void DisplayMap()
     {
-        string[] lines = File.ReadAllLines($"C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\{Map}");
+        string[] lines = File.ReadAllLines($"C:\\Users\\agathelier\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\{Map}");
         Console.WriteLine("test");
         Thread.Sleep(1000);
         Console.SetCursorPosition(0, 0); // Réinitialisez la position du curseur au début
