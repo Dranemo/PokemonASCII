@@ -27,7 +27,7 @@ namespace pokemonConsole
         private int ppLeft;
 
 
-        private string fileCSV = "C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\capacites.csv";
+        private string fileCSV = "C:\\Users\\agathelier\\Desktop\\Nouveau dossier\\pokemonConsole\\capacites.csv";
 
         public Capacity(int id_) 
         {
