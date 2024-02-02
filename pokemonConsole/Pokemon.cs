@@ -46,11 +46,11 @@ namespace pokemonConsole
 
 
         // ------------------ Capacites ------------------ //
-        List<Capacity> listAttackActual = new List<Capacity>();
+        public List<Capacity> listAttackActual = new List<Capacity>();
 
 
         // ------------------ Etat ------------------ //
-        private string StatusProblem;
+        public string statusProblem { get; set; }
         public bool ko {  get; set; }
 
         // ------------------ Back ------------------ //
@@ -230,7 +230,7 @@ namespace pokemonConsole
 
             expPervingt = expActuelLevel * 20 / expToLevelUpLevel;
 
-            StatusProblem = "OK";
+            statusProblem = "OK";
 
             // Attaques 
             int numberOfAttacksAvailaible = listAttackStart.Count;
@@ -340,7 +340,7 @@ namespace pokemonConsole
 
             // Sprite
             string asciiArtFileName = $"ascii-art ({id_generate}).txt";
-            string asciiArtFilePath = Path.Combine("C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Sprites\\", asciiArtFileName);
+            string asciiArtFilePath = Path.Combine("C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Sprites\\", asciiArtFileName);
 
             if (File.Exists(asciiArtFilePath))
             {
@@ -374,7 +374,7 @@ namespace pokemonConsole
             Console.WriteLine($"Name = {this.name}");
             Console.WriteLine($"Level = {this.level}");
             Console.WriteLine($"Pv = {pvLeft} / {pv}");
-            Console.WriteLine($"Status : {StatusProblem}");
+            Console.WriteLine($"Status : {statusProblem}");
 
             Console.WriteLine($"N°{id}");
 

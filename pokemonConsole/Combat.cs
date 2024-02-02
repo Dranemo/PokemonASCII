@@ -10,8 +10,9 @@ namespace pokemonConsole
     {
         public static void UneLoopDeCombatDeAxel()
         {
-            Pokemon pokemon = new Pokemon(78, 19);
-            Pokemon pokemonAdverse = new Pokemon(129, 19);
+            Pokemon pokemon = new Pokemon(9, 19);
+            Pokemon pokemonAdverse = new Pokemon(78, 19);
+            Random random = new Random();
 
             pokemon.AfficherDetailsPokemon();
             Console.WriteLine();
@@ -20,38 +21,85 @@ namespace pokemonConsole
             Console.WriteLine();
             Console.WriteLine();
 
-            pokemon.LevelUp();
-
-            pokemon.pvLeft = pokemon.pv;
-            pokemonAdverse.pvLeft = pokemonAdverse.pv;
-
             while (pokemon.pvLeft > 0 && pokemonAdverse.pvLeft > 0)
             {
                 // Demander à l'utilisateur d'entrer son action
-                Console.WriteLine("Entrez 'Attaque' pour attaquer : ");
-                string modeAttaque = Console.ReadLine();
-
-                if (modeAttaque.ToLower() == "attaque")
+                Console.WriteLine("Attaque");
+                Console.WriteLine("Pokemon");
+                Console.WriteLine("Sac");
+                Console.WriteLine("Fuite");
+                int choix = int.Parse(Console.ReadLine());
+                List<Capacity> listAttackActual = pokemon.listAttackActual;
+                switch (choix)
                 {
-                    // Calculer les dégâts subis par le Pokémon du joueur
-                    float PvRestantPokemonJoueur = CalculerDegatSubitPokemonJoueur(pokemon, pokemonAdverse, 1f, 1f, 1f, 1f);
+                    case 1:
 
-                    // Calculer les dégâts subis par le Pokémon de l'adversaire
-                    float PvRestantPokemonAdverse = CalculerDegatSubitPokemonAdverse(pokemon, pokemonAdverse, 1f, 1f, 1f, 1f);
+                        foreach (Capacity attaque in listAttackActual)
+                        {
+                            Console.WriteLine(attaque.name);
+                        }
 
-                    // Mise à jour des PV du Pokémon du joueur
-                    pokemon.pvLeft = (int)PvRestantPokemonJoueur;
+                        int choixAttaque = int.Parse(Console.ReadLine());
+                        Capacity capacityUsed = new Capacity(1);
 
-                    // Mise à jour des PV du Pokémon de l'adversaire
-                    pokemonAdverse.pvLeft = (int)PvRestantPokemonAdverse;
+                        //METTRE VERIF
 
-                    Console.WriteLine($"Les nouveaux PV du Pokemon du joueur sont = {pokemon.pvLeft}");
-                    Console.WriteLine($"Les nouveaux PV du Pokemon de l'adversaire sont = {pokemonAdverse.pvLeft}\n");
+                        switch (choixAttaque)
+                        {
+                            case 1:
+                                capacityUsed = listAttackActual[0];
+                                break;
+                            case 2:
+                                capacityUsed = listAttackActual[1];
+                                break;
+                            case 3:
+                                capacityUsed = listAttackActual[2];
+                                break;
+                            case 4:
+                                capacityUsed = listAttackActual[3];
+                                break;
+                        }
+
+                        int PvRestantPokemonAdverse = pokemonAdverse.pvLeft;
+                        if (capacityUsed.categorie == 1)
+                        {
+
+                            PvRestantPokemonAdverse -= (int)Math.Round(CalculerDegatSubitPokemon(pokemon, pokemonAdverse, capacityUsed));
+                            Console.WriteLine(capacityUsed.name);
+                        }
+
+                        capacityUsed = pokemonAdverse.listAttackActual[random.Next(0, pokemonAdverse.listAttackActual.Count)];
+                        int PvRestantPokemon = pokemon.pvLeft;
+                        if (capacityUsed.categorie == 1)
+                        {
+
+                            PvRestantPokemon -= (int)Math.Round(CalculerDegatSubitPokemon(pokemonAdverse, pokemon, capacityUsed));
+                            Console.WriteLine(capacityUsed.name);
+                        }
+                        else
+                        {
+                            Console.WriteLine(capacityUsed.name);
+                        }
+                        // Calculer les dégâts subis par le Pokémon du joueur
+
+
+                        // Mise à jour des PV du Pokémon du joueur
+                        pokemon.pvLeft = (int)PvRestantPokemon;
+
+                        // Mise à jour des PV du Pokémon de l'adversaire
+                        pokemonAdverse.pvLeft = PvRestantPokemonAdverse;
+
+                        Console.WriteLine($"Les nouveaux PV du Pokemon du joueur sont = {pokemon.pvLeft}");
+                        Console.WriteLine($"Les nouveaux PV du Pokemon de l'adversaire sont = {pokemonAdverse.pvLeft}\n");
+                        break;
+                    case 2:;
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
                 }
-                else
-                {
-                    Console.WriteLine("Action non reconnue. Essayez 'Attaque'.\n");
-                }
+        
 
                 // À ce stade, la boucle s'arrête car l'un des Pokémon a 0 PV ou moins
                 if (pokemon.pvLeft <= 0)
@@ -65,113 +113,90 @@ namespace pokemonConsole
             }
         }
 
-        static float CalculerDegatSubitPokemonJoueur(Pokemon pokemon, Pokemon pokemonAdverse, float ATT, float puiATT, float mod, float STAB)
+        static double CalculerDegatSubitPokemon(Pokemon pokemon, Pokemon pokemonAdverse, Capacity capacity)
         {
-            // Nouvelles variables pour stocker les nouveaux PV
-            float PvRestantPokemonJoueur;
-
-            float multiplicateurType1 = TypeModifier.CalculerMultiplicateur(pokemon.getListType()[0], pokemonAdverse.getListType()[0]);
-            float multiplicateurType2 = 1f;
-
-            if (pokemon.getListType().Count > 1 && !string.IsNullOrEmpty(pokemon.getListType()[1]) &&
-                pokemonAdverse.getListType().Count > 1 && !string.IsNullOrEmpty(pokemonAdverse.getListType()[1]))
-            {
-                multiplicateurType2 = TypeModifier.CalculerMultiplicateur(pokemon.getListType()[1], pokemonAdverse.getListType()[1]);
-            }
-
-            double randomFactor = (new Random().NextDouble() * (1 - 0.85)) + 0.85;
-
-            // A Changer dès que les comps seront intégrées
-            float PUI = ATT * puiATT * mod;
+            // Dégâts infligés = (((((((Niveau × 2 ÷ 5) +2) × Puissance × Att[Spé] ÷ 50) ÷ Def[Spé]) × Mod1) +2) × CC × Mod2 × R ÷ 100) × STAB × Type1 × Type2 × Mod3
 
             Random random = new Random();
-            double randomDouble = random.NextDouble() * 100.0;
-            float randomChanceTauxCrits = (float)Math.Round(randomDouble, 2);
 
-            int vitessePokemon = pokemon.spd;
-            int vitesseArrondie = (int)Math.Round((double)vitessePokemon / 2) * 2;
-            float chanceTauxCrits = (float)(vitesseArrondie / 256.0 * 100.0);
-            float chanceTauxCritsArrondi = (float)Math.Round(chanceTauxCrits, 2);
+            int atkSpeOrNot = 0;
+            int defSpeOrNot = 0;
+            float isBurn = 1;
+            float critChance = 1;
+            float critDamage = 1;
+            float randomMod = (random.Next(217, 256) * 100) / 255;
+            int stab = 1;
 
-            double DamageEffectue = (((((pokemon.level * 0.4 + 2) * ATT * PUI) / pokemonAdverse.def) / 50) + 2) * multiplicateurType1 * multiplicateurType2 * randomFactor * STAB;
-            double DamageEffectueCrits = DamageEffectue * ((2 * pokemon.spd + 5) / (pokemon.level + 5));
+            float efficaciteType1 = TypeModifier.CalculerMultiplicateur(capacity.type, pokemonAdverse.getListType()[0]);
+            float efficaciteType2 = 1;
 
-            if (randomChanceTauxCrits <= chanceTauxCritsArrondi)
+            if (pokemonAdverse.getListType().Count > 1)
             {
-                PvRestantPokemonJoueur = (float)(pokemon.pvLeft - DamageEffectueCrits);
+                efficaciteType2 = TypeModifier.CalculerMultiplicateur(capacity.type, pokemonAdverse.getListType()[1]);
+            }
+
+
+            // Détermine si la capacité est physique ou spécial selon le type
+            if (capacity.type == "DRAGON" || capacity.type == "EAU" || capacity.type == "ELECTRIK" || capacity.type == "FEU" || capacity.type == "GLACE" || capacity.type == "PLANTE" || capacity.type == "PSY")
+            {
+                atkSpeOrNot = pokemon.spe;
+                defSpeOrNot = pokemonAdverse.spe;
             }
             else
             {
-                PvRestantPokemonJoueur = (float)(pokemon.pvLeft - DamageEffectue);
+                atkSpeOrNot = pokemon.atk;
+                defSpeOrNot = pokemonAdverse.def;
             }
 
-            float PvRestantPokemonJoueurArrondi = (float)Math.Floor(PvRestantPokemonJoueur);
-
-            if (PvRestantPokemonJoueurArrondi < 0)
+            // Si le Pokemon est burn, l'attaque est divisée par deux
+            if (pokemon.statusProblem == "BRN")
             {
-                PvRestantPokemonJoueurArrondi = 0;
+                isBurn = 0.5f;
             }
 
-            return PvRestantPokemonJoueurArrondi;
-        }
-
-        static float CalculerDegatSubitPokemonAdverse(Pokemon pokemon, Pokemon pokemonAdverse, float ATT, float puiATT, float mod, float STAB)
-        {
-            // Nouvelles variables pour stocker les nouveaux PV
-            float PvRestantPokemonAdverse;
-
-            float multiplicateurType1 = TypeModifier.CalculerMultiplicateur(pokemon.getListType()[0], pokemonAdverse.getListType()[0]);
-            float multiplicateurType2 = 1f;
-
-            if (pokemon.getListType().Count > 1 && !string.IsNullOrEmpty(pokemon.getListType()[1]) &&
-                pokemonAdverse.getListType().Count > 1 && !string.IsNullOrEmpty(pokemonAdverse.getListType()[1]))
+            // Critique
+            critChance = ((int)Math.Round(pokemon.spd / 2.0) * 2) / 256;
+            if (critChance == 0)
             {
-                multiplicateurType2 = TypeModifier.CalculerMultiplicateur(pokemon.getListType()[1], pokemonAdverse.getListType()[1]);
-            }
-
-            double randomFactor = (new Random().NextDouble() * (1 - 0.85)) + 0.85;
-
-            // A Changer dès que les comps seront intégrées
-            float PUI = ATT * puiATT * mod;
-
-            Random random = new Random();
-            double randomDouble = random.NextDouble() * 100.0;
-            float randomChanceTauxCrits = (float)Math.Round(randomDouble, 2);
-
-            int vitessePokemon = pokemon.spd;
-            int vitesseArrondie = (int)Math.Round((double)vitessePokemon / 2) * 2;
-            float chanceTauxCrits = (float)(vitesseArrondie / 256.0 * 100.0);
-            float chanceTauxCritsArrondi = (float)Math.Round(chanceTauxCrits, 2);
-
-            double DamageEffectue = (((((pokemonAdverse.level * 0.4 + 2) * ATT * PUI) / pokemon.def) / 50) + 2) * multiplicateurType1 * multiplicateurType2 * randomFactor * STAB;
-            double DamageEffectueCrits = DamageEffectue * ((2 * pokemonAdverse.level + 5) / (pokemonAdverse.level + 5));
-
-            if (randomChanceTauxCrits <= chanceTauxCritsArrondi)
-            {
-                PvRestantPokemonAdverse = (float)(pokemonAdverse.pvLeft - DamageEffectueCrits);
+                critDamage = 1;
             }
             else
             {
-                PvRestantPokemonAdverse = (float)(pokemonAdverse.pvLeft - DamageEffectue);
+                critDamage = 2;
             }
-
-            float PvRestantPokemonAdverseArrondi = (float)Math.Floor(PvRestantPokemonAdverse);
-
-            if (PvRestantPokemonAdverseArrondi < 0)
+            foreach (string typePokemon in pokemon.getListType())
             {
-                PvRestantPokemonAdverseArrondi = 0;
+                if (capacity.type == typePokemon)
+                {
+                    stab = 2;
+                }
             }
 
-            return PvRestantPokemonAdverseArrondi;
-        }
-    }
-}
 
-public class TypeModifier
-{
-    public static float CalculerMultiplicateur(string typePokemon, string typeAdverse)
-    {
-        Dictionary<string, Dictionary<string, float>> multiplicateurs = new Dictionary<string, Dictionary<string, float>>()
+            if (efficaciteType1 * efficaciteType2 > 1)
+            {
+                Console.WriteLine("C'est super efficace !");
+            }
+            else if (efficaciteType1 * efficaciteType2 < 1 && efficaciteType1 * efficaciteType2 != 0)
+            {
+                Console.WriteLine("C'est pas tres efficace !");
+            }
+            else if (efficaciteType1 * efficaciteType2 == 0)
+            {
+                Console.WriteLine("Ca n'a pas d'effet");
+            }
+
+            double damageDone = (((((((pokemon.level * 2 / 5) + 2) * capacity.puissance * atkSpeOrNot / 50) / defSpeOrNot) * isBurn) + 2) * critDamage * randomMod / 100) * stab * efficaciteType1 * efficaciteType2;
+            return damageDone;
+        }
+
+
+
+        public class TypeModifier
+        {
+            public static float CalculerMultiplicateur(string typePokemon, string typeAdverse)
+            {
+                Dictionary<string, Dictionary<string, float>> multiplicateurs = new Dictionary<string, Dictionary<string, float>>()
     {
         {"NORMAL", new Dictionary<string, float>() {{"ROCHE", 0.5f}, {"SPECTRE", 0f}, {"default", 1f}}},
         {"FEU", new Dictionary<string, float>() {{"FEU", 0.5f}, {"EAU", 0.5f}, {"ROCHE", 0.5f}, {"DRAGON", 0.5f}, {"PLANTE", 2f}, {"GLACE", 2f}, {"INSECTE", 2f}, {"default", 1f}}},
@@ -190,22 +215,24 @@ public class TypeModifier
         {"DRAGON", new Dictionary<string, float>() {{"DRAGON", 2f}, { "default", 1f}}},
     };
 
-        if (multiplicateurs.ContainsKey(typePokemon))
-        {
-            if (multiplicateurs[typePokemon].ContainsKey(typeAdverse))
-            {
-                return multiplicateurs[typePokemon][typeAdverse];
-            }
-            else
-            {
-                return multiplicateurs[typePokemon]["default"];
-            }
-        }
-        else
-        {
-            return 1f;
-        }
+                if (multiplicateurs.ContainsKey(typePokemon))
+                {
+                    if (multiplicateurs[typePokemon].ContainsKey(typeAdverse))
+                    {
+                        return multiplicateurs[typePokemon][typeAdverse];
+                    }
+                    else
+                    {
+                        return multiplicateurs[typePokemon]["default"];
+                    }
+                }
+                else
+                {
+                    return 1f;
+                }
 
+            }
+        }
     }
 }
 

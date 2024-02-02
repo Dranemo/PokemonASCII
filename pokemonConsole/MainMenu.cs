@@ -102,8 +102,8 @@ namespace pokemonConsole
                         case ConsoleKey.Enter:
                             if (mainMenu.newGame[0] == '>')
                             {
-                                Intro.LaunchIntro();
-                                Map.MapPlayer();
+                                /*Intro.LaunchIntro();
+                                Map.MapPlayer();*/
                             }
                             else if (mainMenu.canLoadGame && mainMenu.loadGame[0] == '>')
                             {

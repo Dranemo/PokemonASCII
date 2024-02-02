@@ -12,10 +12,10 @@ namespace pokemonConsole
 
         public int id { get; private set; }
         public string name { get; private set; }
-        private string type;
-        private int categorie;
+        public string type { get; private set; }
+        public int categorie { get; private set; }
 
-        private string puissance;
+        public int puissance { get; private set; }
         private string precision;
         private int pp;
         private int ppMax;
@@ -52,7 +52,7 @@ namespace pokemonConsole
                         type = colonnes[2];
                         categorie = int.Parse(colonnes[3]);
 
-                        puissance = colonnes[4];
+                        puissance = int.Parse(colonnes[4]);
                         precision = colonnes[5];
                         pp = int.Parse(colonnes[6]);
                         ppMax = int.Parse(colonnes[7]);
