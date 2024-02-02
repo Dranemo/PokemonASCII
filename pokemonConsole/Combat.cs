@@ -12,7 +12,7 @@ namespace pokemonConsole
         {
 
             Random random = new Random();
-            if(player.pokemonParty.Count == 0)
+            if (player.pokemonParty.Count == 0)
             {
                 Pokemon pokemonPlayerGenerate = new Pokemon(6, 15);
                 player.addPokemonToParty(pokemonPlayerGenerate);

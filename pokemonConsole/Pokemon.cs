@@ -79,8 +79,8 @@ namespace pokemonConsole
 
         public int tauxCapture {  get; private set; }
 
-
         private string filePokemonCSV = AdresseFile.FileDirection + "CSV\\pokemon.csv";
+
 
         public int appartenant {  get; set; }
         public int echange {  get; set; }
@@ -372,6 +372,7 @@ namespace pokemonConsole
 
             // Sprite
             string asciiArtFileName = $"ascii-art ({id_generate}).txt";
+
             string asciiArtFilePath = Path.Combine(AdresseFile.FileDirection, "Assets\\Sprites\\Pokemon\\", asciiArtFileName);
 
             if (File.Exists(asciiArtFilePath))
@@ -504,7 +505,9 @@ namespace pokemonConsole
 
                 // Sprite
                 string asciiArtFileName = $"ascii-art ({id}).txt";
+
                 string asciiArtFilePath = Path.Combine(AdresseFile.FileDirection, "Assets\\Sprites\\Pokemon\\", asciiArtFileName);
+
 
                 if (File.Exists(asciiArtFilePath))
                 {

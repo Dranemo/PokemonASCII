@@ -27,8 +27,8 @@ namespace pokemonConsole
 
         private int ppLeft;
 
-
         private string fileCSV = AdresseFile.FileDirection + "CSV\\capacites.csv";
+
 
         public Capacity(int id_) 
         {

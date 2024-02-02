@@ -164,7 +164,9 @@ internal class Map
     }
     static void CanTalk(string currentMapFileName, char caractere, int npcX, int npcY, string dialogue, int playerX, int playerY, ConsoleKeyInfo keyInfo)
     {
+
         string filePath = $"{AdresseFile.FileDirection}Assets\\Maps\\{currentMapFileName}";
+
         string[] lines = File.ReadAllLines(filePath);
 
         for (int i = 0; i < lines.Length; i++)
@@ -238,7 +240,9 @@ internal class Map
     }
     static void LoadMap(string filename)
     {
+
         currentMapFileName = AdresseFile.FileDirection + "Assets\\Maps\\" + filename;
+
         string[] lines = File.ReadAllLines(currentMapFileName);
 
         int width = lines[0].Length;

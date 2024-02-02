@@ -24,6 +24,7 @@ public class NPC : Entity
     }
     public void DisplayMap()
     {
+
         string[] lines = File.ReadAllLines($"{AdresseFile.FileDirection}Assets\\Maps\\{Map}");
         Console.WriteLine("test");
         Thread.Sleep(1000);

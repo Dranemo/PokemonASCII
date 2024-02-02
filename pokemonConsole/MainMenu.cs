@@ -105,8 +105,11 @@ namespace pokemonConsole
                         case ConsoleKey.Enter:
                             if (mainMenu.newGame[0] == '>')
                             {
+
+                                Combat.LoopCombat(player);
                                 Intro.LaunchIntro(player, rival);
                                 Map.MapPlayer(player);
+
                             }
                             else if (mainMenu.canLoadGame && mainMenu.loadGame[0] == '>')
                             {
@@ -132,9 +135,11 @@ namespace pokemonConsole
             Console.Clear();
 
             Console.WriteLine(newGame);
+
             if (File.Exists(AdresseFile.FileDirection + "save.txt"))
             {
                 FileInfo fileInfo = new FileInfo(AdresseFile.FileDirection + "save.txt");
+              
                 if (fileInfo.Length != 0)
                 {
                     Console.WriteLine(loadGame);

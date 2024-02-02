@@ -12,6 +12,7 @@ namespace pokemonConsole
 {
     internal class Intro
     {
+
         private string asciiFileOak = AdresseFile.FileDirection + "Assets\\Sprites\\ascii-art_chen.txt";
         private string asciiFileBlue = AdresseFile.FileDirection + "Assets\\Sprites\\ascii-art_blue.txt";
         private string asciiFileRed = AdresseFile.FileDirection + "Assets\\Sprites\\ascii-art_red.txt";
