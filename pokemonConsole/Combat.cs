@@ -10,7 +10,7 @@ namespace pokemonConsole
     {
         public static void UneLoopDeCombatDeAxel()
         {
-            Pokemon pokemon = new Pokemon(9, 19);
+            Pokemon pokemon = new Pokemon(8, 19);
             Pokemon pokemonAdverse = new Pokemon(78, 19);
             Random random = new Random();
 
@@ -20,8 +20,10 @@ namespace pokemonConsole
 
             Console.WriteLine();
             Console.WriteLine();
-
-            while (pokemon.pvLeft > 0 && pokemonAdverse.pvLeft > 0)
+            int nbFuite = 0;
+            bool fuiteReussit = false;
+            Capacity capacityUsed = null;
+            while (pokemon.pvLeft > 0 && pokemonAdverse.pvLeft > 0 && !fuiteReussit)
             {
                 // Demander à l'utilisateur d'entrer son action
                 Console.WriteLine("Attaque");
@@ -29,21 +31,18 @@ namespace pokemonConsole
                 Console.WriteLine("Sac");
                 Console.WriteLine("Fuite");
                 int choix = int.Parse(Console.ReadLine());
+                Random randomFuite = new Random();
+                int PvRestantPokemon = pokemon.pvLeft;
                 List<Capacity> listAttackActual = pokemon.listAttackActual;
                 switch (choix)
                 {
                     case 1:
-
                         foreach (Capacity attaque in listAttackActual)
                         {
                             Console.WriteLine(attaque.name);
                         }
 
                         int choixAttaque = int.Parse(Console.ReadLine());
-                        Capacity capacityUsed = new Capacity(1);
-
-                        //METTRE VERIF
-
                         switch (choixAttaque)
                         {
                             case 1:
@@ -61,18 +60,15 @@ namespace pokemonConsole
                         }
 
                         int PvRestantPokemonAdverse = pokemonAdverse.pvLeft;
-                        if (capacityUsed.categorie == 1)
+                        if (capacityUsed != null && capacityUsed.categorie == 1)
                         {
-
                             PvRestantPokemonAdverse -= (int)Math.Round(CalculerDegatSubitPokemon(pokemon, pokemonAdverse, capacityUsed));
                             Console.WriteLine(capacityUsed.name);
                         }
 
                         capacityUsed = pokemonAdverse.listAttackActual[random.Next(0, pokemonAdverse.listAttackActual.Count)];
-                        int PvRestantPokemon = pokemon.pvLeft;
                         if (capacityUsed.categorie == 1)
                         {
-
                             PvRestantPokemon -= (int)Math.Round(CalculerDegatSubitPokemon(pokemonAdverse, pokemon, capacityUsed));
                             Console.WriteLine(capacityUsed.name);
                         }
@@ -80,28 +76,47 @@ namespace pokemonConsole
                         {
                             Console.WriteLine(capacityUsed.name);
                         }
-                        // Calculer les dégâts subis par le Pokémon du joueur
 
-
-                        // Mise à jour des PV du Pokémon du joueur
                         pokemon.pvLeft = (int)PvRestantPokemon;
-
-                        // Mise à jour des PV du Pokémon de l'adversaire
                         pokemonAdverse.pvLeft = PvRestantPokemonAdverse;
 
                         Console.WriteLine($"Les nouveaux PV du Pokemon du joueur sont = {pokemon.pvLeft}");
                         Console.WriteLine($"Les nouveaux PV du Pokemon de l'adversaire sont = {pokemonAdverse.pvLeft}\n");
                         break;
-                    case 2:;
+                    case 2:
+                        ;
                         break;
                     case 3:
                         break;
                     case 4:
+                        nbFuite++;
+                        int spdQuart = (int)Math.Floor(pokemonAdverse.spd / 4.0);
+                        int fuiteEuclidienne = (spdQuart % 255 == 0) ? 0 : 1;
+                        int randomFuiteValue = randomFuite.Next(0, 256);
+                        int fuite = (pokemon.spd * 32 / (spdQuart % 255)) + (30 * nbFuite);
+
+                        if (fuite > 255 || randomFuiteValue < fuite || fuiteEuclidienne == 0)
+                        {
+                            fuiteReussit = false;
+                            break;
+                        }
+                        else
+                        {
+                            capacityUsed = pokemonAdverse.listAttackActual[random.Next(0, pokemonAdverse.listAttackActual.Count)];
+
+                            if (capacityUsed.categorie > 0)
+                            {
+                                pokemon.pvLeft -= (int)Math.Round(CalculerDegatSubitPokemon(pokemonAdverse, pokemon, capacityUsed));
+                                Console.WriteLine(capacityUsed.name);
+                            }
+
+                            Console.WriteLine("Vous n'avez pas réussi à fuir le Pokémon adverse !\n");
+                            Console.WriteLine($"Les nouveaux PV du Pokemon du joueur sont = {pokemon.pvLeft}");
+                            Console.WriteLine($"Les nouveaux PV du Pokemon de l'adversaire sont = {pokemonAdverse.pvLeft}\n");
+                        }
                         break;
                 }
-        
 
-                // À ce stade, la boucle s'arrête car l'un des Pokémon a 0 PV ou moins
                 if (pokemon.pvLeft <= 0)
                 {
                     Console.WriteLine("Le Pokemon du joueur a perdu !");
@@ -110,84 +125,88 @@ namespace pokemonConsole
                 {
                     Console.WriteLine("Le Pokemon de l'adversaire a perdu !");
                 }
-            }
-        }
-
-        static double CalculerDegatSubitPokemon(Pokemon pokemon, Pokemon pokemonAdverse, Capacity capacity)
-        {
-            // Dégâts infligés = (((((((Niveau × 2 ÷ 5) +2) × Puissance × Att[Spé] ÷ 50) ÷ Def[Spé]) × Mod1) +2) × CC × Mod2 × R ÷ 100) × STAB × Type1 × Type2 × Mod3
-
-            Random random = new Random();
-
-            int atkSpeOrNot = 0;
-            int defSpeOrNot = 0;
-            float isBurn = 1;
-            float critChance = 1;
-            float critDamage = 1;
-            float randomMod = (random.Next(217, 256) * 100) / 255;
-            int stab = 1;
-
-            float efficaciteType1 = TypeModifier.CalculerMultiplicateur(capacity.type, pokemonAdverse.getListType()[0]);
-            float efficaciteType2 = 1;
-
-            if (pokemonAdverse.getListType().Count > 1)
-            {
-                efficaciteType2 = TypeModifier.CalculerMultiplicateur(capacity.type, pokemonAdverse.getListType()[1]);
-            }
-
-
-            // Détermine si la capacité est physique ou spécial selon le type
-            if (capacity.type == "DRAGON" || capacity.type == "EAU" || capacity.type == "ELECTRIK" || capacity.type == "FEU" || capacity.type == "GLACE" || capacity.type == "PLANTE" || capacity.type == "PSY")
-            {
-                atkSpeOrNot = pokemon.spe;
-                defSpeOrNot = pokemonAdverse.spe;
-            }
-            else
-            {
-                atkSpeOrNot = pokemon.atk;
-                defSpeOrNot = pokemonAdverse.def;
-            }
-
-            // Si le Pokemon est burn, l'attaque est divisée par deux
-            if (pokemon.statusProblem == "BRN")
-            {
-                isBurn = 0.5f;
-            }
-
-            // Critique
-            critChance = ((int)Math.Round(pokemon.spd / 2.0) * 2) / 256;
-            if (critChance == 0)
-            {
-                critDamage = 1;
-            }
-            else
-            {
-                critDamage = 2;
-            }
-            foreach (string typePokemon in pokemon.getListType())
-            {
-                if (capacity.type == typePokemon)
+                if (fuiteReussit)
                 {
-                    stab = 2;
+                    Console.WriteLine("Vous avez réussi à fuir le combat");
+                }
+
+                static double CalculerDegatSubitPokemon(Pokemon pokemon, Pokemon pokemonAdverse, Capacity capacity)
+                {
+                    // Dégâts infligés = (((((((Niveau × 2 ÷ 5) +2) × Puissance × Att[Spé] ÷ 50) ÷ Def[Spé]) × Mod1) +2) × CC × Mod2 × R ÷ 100) × STAB × Type1 × Type2 × Mod3
+
+                    Random random = new Random();
+
+                    int atkSpeOrNot = 0;
+                    int defSpeOrNot = 0;
+                    float isBurn = 1;
+                    float critChance = 1;
+                    float critDamage = 1;
+                    float randomMod = (random.Next(217, 256) * 100) / 255;
+                    int stab = 1;
+
+                    float efficaciteType1 = TypeModifier.CalculerMultiplicateur(capacity.type, pokemonAdverse.getListType()[0]);
+                    float efficaciteType2 = 1;
+
+                    if (pokemonAdverse.getListType().Count > 1)
+                    {
+                        efficaciteType2 = TypeModifier.CalculerMultiplicateur(capacity.type, pokemonAdverse.getListType()[1]);
+                    }
+
+
+                    // Détermine si la capacité est physique ou spécial selon le type
+                    if (capacity.type == "DRAGON" || capacity.type == "EAU" || capacity.type == "ELECTRIK" || capacity.type == "FEU" || capacity.type == "GLACE" || capacity.type == "PLANTE" || capacity.type == "PSY")
+                    {
+                        atkSpeOrNot = pokemon.spe;
+                        defSpeOrNot = pokemonAdverse.spe;
+                    }
+                    else
+                    {
+                        atkSpeOrNot = pokemon.atk;
+                        defSpeOrNot = pokemonAdverse.def;
+                    }
+
+                    // Si le Pokemon est burn, l'attaque est divisée par deux
+                    if (pokemon.statusProblem == "BRN")
+                    {
+                        isBurn = 0.5f;
+                    }
+
+                    // Critique
+                    critChance = ((int)Math.Round(pokemon.spd / 2.0) * 2) / 256;
+                    if (critChance == 0)
+                    {
+                        critDamage = 1;
+                    }
+                    else
+                    {
+                        critDamage = 2;
+                    }
+                    foreach (string typePokemon in pokemon.getListType())
+                    {
+                        if (capacity.type == typePokemon)
+                        {
+                            stab = 2;
+                        }
+                    }
+
+
+                    if (efficaciteType1 * efficaciteType2 > 1)
+                    {
+                        Console.WriteLine("C'est super efficace !");
+                    }
+                    else if (efficaciteType1 * efficaciteType2 < 1 && efficaciteType1 * efficaciteType2 != 0)
+                    {
+                        Console.WriteLine("C'est pas tres efficace !");
+                    }
+                    else if (efficaciteType1 * efficaciteType2 == 0)
+                    {
+                        Console.WriteLine("Ca n'a pas d'effet");
+                    }
+
+                    double damageDone = (((((((pokemon.level * 2 / 5) + 2) * capacity.puissance * atkSpeOrNot / 50) / defSpeOrNot) * isBurn) + 2) * critDamage * randomMod / 100) * stab * efficaciteType1 * efficaciteType2;
+                    return damageDone;
                 }
             }
-
-
-            if (efficaciteType1 * efficaciteType2 > 1)
-            {
-                Console.WriteLine("C'est super efficace !");
-            }
-            else if (efficaciteType1 * efficaciteType2 < 1 && efficaciteType1 * efficaciteType2 != 0)
-            {
-                Console.WriteLine("C'est pas tres efficace !");
-            }
-            else if (efficaciteType1 * efficaciteType2 == 0)
-            {
-                Console.WriteLine("Ca n'a pas d'effet");
-            }
-
-            double damageDone = (((((((pokemon.level * 2 / 5) + 2) * capacity.puissance * atkSpeOrNot / 50) / defSpeOrNot) * isBurn) + 2) * critDamage * randomMod / 100) * stab * efficaciteType1 * efficaciteType2;
-            return damageDone;
         }
 
 

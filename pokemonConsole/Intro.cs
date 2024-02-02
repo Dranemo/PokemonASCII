@@ -8,8 +8,8 @@ namespace pokemonConsole
 {
     internal class Intro
     {
-        public string asciiFileOak { get; private set; } = "C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Sprites\\ascii-art_chen.txt";
-        public string scriptOak { get; private set; } = "C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\ScriptIntroChen.txt";
+        public string asciiFileOak { get; private set; } = "C:\\Users\\agathelier\\Desktop\\Nouveau dossier\\pokemonConsole\\Assets\\Sprites\\ascii-art_chen.txt";
+        public string scriptOak { get; private set; } = "C:\\Users\\agathelier\\Desktop\\Nouveau dossier\\pokemonConsole\\ScriptIntroChen.txt";
         public string asciiOak { get; private set; } = "";
 
 
