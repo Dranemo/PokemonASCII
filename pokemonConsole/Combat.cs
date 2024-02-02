@@ -8,7 +8,7 @@ namespace pokemonConsole
 {
     internal class Combat
     {
-        public static void UneLoopDeCombatDeAxel()
+        public static void LoopCombat()
         {
             Pokemon pokemon = new Pokemon(8, 19);
             Pokemon pokemonAdverse = new Pokemon(78, 19);
