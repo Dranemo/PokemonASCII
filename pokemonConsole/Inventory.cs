@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using pokemonConsole;
 namespace inventory;
-// Interface pour les objets pouvant être stockés dans l'inventaire
+// Interface pour les objets pouvant être stockes dans l'inventaire
 public interface IInventorable
 {
     string Name { get; }
 }
 
-// Classe de base pour les Pokémon
+// Classe de base pour les Pokemon
 public class PokemonInv : IInventorable
 {
     public string Name { get; set; }
@@ -30,7 +30,7 @@ public class Item : IInventorable
     }
 }
 
-// Classe d'inventaire générique
+// Classe d'inventaire generique
 public class Inventory<T> where T : IInventorable
 {
     private List<T> items = new List<T>();
@@ -38,7 +38,7 @@ public class Inventory<T> where T : IInventorable
     public void AddItem(T item)
     {
             items.Add(item);
-            Console.WriteLine($"{item.Name} a été ajouté à l'inventaire.");
+            Console.WriteLine($"{item.Name} a ete ajoute à l'inventaire.");
     }
 
     public void DisplayInventory()
