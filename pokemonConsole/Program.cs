@@ -12,7 +12,6 @@ class Program
 
     static void Main()
     {
-        //Map.MapPlayer();
         /*Combat.UneLoopDeCombatDeAxel();*/
 
         MainMenu.Start();
