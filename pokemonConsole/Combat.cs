@@ -8,15 +8,29 @@ namespace pokemonConsole
 {
     internal class Combat
     {
-        public static void LoopCombat()
+        public static void LoopCombat(Player player)
         {
-            Pokemon pokemon = new Pokemon(8, 19);
-            Pokemon pokemonAdverse = new Pokemon(78, 19);
-            Random random = new Random();
 
-            pokemon.AfficherDetailsPokemon();
+            Random random = new Random();
+            if(player.pokemonParty.Count == 0)
+            {
+                Pokemon pokemonPlayerGenerate = new Pokemon(6, 15);
+                player.addPokemonToParty(pokemonPlayerGenerate);
+            }
+
+            Pokemon pokemon = player.pokemonParty[0];
+
+
+            int pokemonAdverseId = random.Next(1, 152);
+            int pokemonAdverseLevel = random.Next(pokemon.level - 2, pokemon.level + 3);
+
+            Console.WriteLine(pokemonAdverseId);
+            Console.WriteLine(pokemonAdverseLevel);
+            Pokemon pokemonAdverse = new Pokemon(pokemonAdverseId, pokemonAdverseLevel);
+
+            pokemon.AfficherCombat();
             Console.WriteLine();
-            pokemonAdverse.AfficherDetailsPokemon();
+            pokemonAdverse.AfficherCombat();
 
             Console.WriteLine();
             Console.WriteLine();
@@ -124,6 +138,23 @@ namespace pokemonConsole
                 if (pokemonAdverse.pvLeft <= 0)
                 {
                     Console.WriteLine("Le Pokemon de l'adversaire a perdu !");
+                    float appartenant ;
+                    float echange = 1; // echangé = 1.5x
+                    int nombrePokemon = 1; // Le nombre de pokemo qui ont combattu
+
+
+                    if (pokemonAdverse.appartenant == 0)
+                    {
+                        appartenant = 1;
+                    }
+                    else
+                    {
+                        appartenant = 1.5f;
+                    }
+
+                    float expWon = (appartenant * echange * pokemonAdverse.expDonne * pokemonAdverse.level) / 7 * nombrePokemon;
+                    pokemon.GainExp((int)Math.Round(expWon));
+                    pokemon.GainEV(pokemonAdverse.getListPv()[0], pokemonAdverse.getListAtk()[0], pokemonAdverse.getListDef()[0], pokemonAdverse.getListSpe()[0], pokemonAdverse.getListSpd()[0]);
                 }
                 if (fuiteReussit)
                 {

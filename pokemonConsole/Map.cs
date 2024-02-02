@@ -9,7 +9,7 @@ internal class Map
     static char[,] map;
     static Random random = new Random();
     static string currentMapFileName="";
-    public static void MapPlayer()
+    public static void MapPlayer(Player player)
     {
         LoadMap("bourg_palette.txt");
         ConsoleKeyInfo keyInfo;
@@ -142,7 +142,7 @@ internal class Map
                     {
                         Console.WriteLine($"\nCombat lancé !");
                         Thread.Sleep(1000);
-                        Combat.LoopCombat();
+                        Combat.LoopCombat(player);
                     }
                 }
             }
@@ -151,7 +151,7 @@ internal class Map
     }
     static void CanTalk(string currentMapFileName, char caractere, int npcX, int npcY, string dialogue, int playerX, int playerY, ConsoleKeyInfo keyInfo)
     {
-        string filePath = $"C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\{currentMapFileName}";
+        string filePath = $"C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\{currentMapFileName}";
         string[] lines = File.ReadAllLines(filePath);
 
         for (int i = 0; i < lines.Length; i++)
@@ -184,7 +184,7 @@ internal class Map
     }
     static void LoadMap(string filename)
     {
-        currentMapFileName = "C:\\Users\\agathelier\\Desktop\\Nouveau dossier\\pokemonConsole\\Assets\\Maps\\" + filename;
+        currentMapFileName = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\" + filename;
         string[] lines = File.ReadAllLines(currentMapFileName);
 
         int width = lines[0].Length;
@@ -233,7 +233,7 @@ internal class Map
     }
     static bool IsCurrentMap(string mapToCheck)
     {
-        string fullPathToCheck = "C:\\Users\\agathelier\\Desktop\\Nouveau dossier\\pokemonConsole\\Assets\\Maps\\" + mapToCheck;
+        string fullPathToCheck = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\" + mapToCheck;
         return currentMapFileName.Equals(fullPathToCheck, StringComparison.OrdinalIgnoreCase);
     }
     static void DrawPlayer()

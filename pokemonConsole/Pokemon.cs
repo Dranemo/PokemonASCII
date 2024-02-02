@@ -15,6 +15,9 @@ namespace pokemonConsole
         public string asciiArt { get; private set; }
         private ConsoleColor color ;
 
+        public int idOT { get; private set; }
+        public string nameOT { get; private set; }
+
 
         // ------------------ Level ------------------ //
         public int level { get; private set; }
@@ -34,7 +37,7 @@ namespace pokemonConsole
         public int spd { get; private set; }
 
 
-        // Max EV = 35,565
+        // Max EV = 65535 
         // [0] = Base
         // [1] = DV
         // [2] = EV
@@ -59,6 +62,8 @@ namespace pokemonConsole
         private List<int> listAttackId = new List<int>();
         private List<int> listAttackLevel = new List<int>();
 
+        private int maxEv = 65535;
+
         private string expCourbe;
         public int expDonne { get; private set; }
         private bool peutEvoluer;
@@ -69,13 +74,16 @@ namespace pokemonConsole
         public int tauxCapture {  get; private set; }
 
 
-        private string filePokemonCSV = "C:\\Users\\agathelier\\Desktop\\Nouveau dossier\\pokemonConsole\\pokemon.csv";
+        private string filePokemonCSV = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\pokemon.csv";
+
+        public int appartenant {  get; set; }
+        public int echange {  get; set; }
 
 
 
 
         // ------------------------------------- Fonctions ------------------------------------- //
-        public Pokemon(int id_generate, int level_generate, bool sauvage = true, bool player = false)
+        public Pokemon(int id_generate, int level_generate, int appartenant_ = 0, int idOT_ = 0, string nameOT_ = "OT") // appartenant -> 0 : sauvage, 1 : player, 2 : dresseur
         {
 
             Random random = new Random();
@@ -144,12 +152,12 @@ namespace pokemonConsole
                                 }
                                 else if (methodeEvolution == 2)
                                 {
-                                    evolutionItemId.Add(int.Parse(colonnes[11]));
+                                    //evolutionItemId.Add(int.Parse(colonnes[11]));
                                 }
                                 else if ((methodeEvolution == 3))
                                 {
-                                    string[] items = colonnes[11].Split('/');
-                                    evolutionItemId = items.Select(int.Parse).ToList();
+                                    //string[] items = colonnes[11].Split('/');
+                                    //evolutionItemId = items.Select(int.Parse).ToList();
                                 }
                             }
                             
@@ -161,11 +169,23 @@ namespace pokemonConsole
                             string[] temp = colonnes[15].Split("/");
                             listAttackStart = temp.Select(int.Parse).ToList();
 
-                            temp = colonnes[16].Split("/");
-                            listAttackId = temp.Select(int.Parse).ToList();
 
-                            temp = colonnes[17].Split("/");
-                            listAttackLevel = temp.Select(int.Parse).ToList();
+                            if (colonnes[16] != "")
+                            {
+                                temp = colonnes[16].Split("/");
+
+                                foreach (string item in temp)
+                                {
+                                    Console.WriteLine(item);
+                                }
+
+                                Console.WriteLine(colonnes[16]);
+
+                                listAttackId = temp.Select(int.Parse).ToList();
+
+                                temp = colonnes[17].Split("/");
+                                listAttackLevel = temp.Select(int.Parse).ToList();
+                            }
 
 
                             pokemonFound = true;
@@ -231,6 +251,12 @@ namespace pokemonConsole
             expPervingt = expActuelLevel * 20 / expToLevelUpLevel;
 
             statusProblem = "OK";
+            appartenant = appartenant_;
+            if (appartenant == 1)
+            {
+                idOT = idOT_;
+                nameOT = nameOT_;
+            }
 
             // Attaques 
             int numberOfAttacksAvailaible = listAttackStart.Count;
@@ -340,7 +366,7 @@ namespace pokemonConsole
 
             // Sprite
             string asciiArtFileName = $"ascii-art ({id_generate}).txt";
-            string asciiArtFilePath = Path.Combine("C:\\Users\\agathelier\\Desktop\\Nouveau dossier\\pokemonConsole\\Assets\\Sprites\\", asciiArtFileName);
+            string asciiArtFilePath = Path.Combine("C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Sprites\\", asciiArtFileName);
 
             if (File.Exists(asciiArtFilePath))
             {
@@ -371,17 +397,24 @@ namespace pokemonConsole
         {
             AfficherSprite();
 
+            Console.WriteLine($"N°{id}");
             Console.WriteLine($"Name = {this.name}");
             Console.WriteLine($"Level = {this.level}");
             Console.WriteLine($"Pv = {pvLeft} / {pv}");
             Console.WriteLine($"Status : {statusProblem}");
 
-            Console.WriteLine($"N°{id}");
-
             for (int i = 0; i < this.listType.Count; i++)
             {
                 Console.WriteLine($"Type {i + 1} = {this.listType[i]}");
             }
+            Console.WriteLine();
+
+            if(appartenant == 1)
+            {
+                Console.WriteLine($"IDOT = {idOT}");
+                Console.WriteLine($"OT = {nameOT}");
+            }
+
             Console.WriteLine();
             Console.WriteLine($"Atk = {this.atk}");
             Console.WriteLine($"Def = {this.def}");
@@ -398,7 +431,7 @@ namespace pokemonConsole
                 string tempExpBar = "[";
                 for(int i = 0; i < this.expPervingt; i++)
                 {
-                    tempExpBar += "_";
+                    tempExpBar += "#";
                 }
                 while (tempExpBar.Length <= 21)
                 {
@@ -426,9 +459,29 @@ namespace pokemonConsole
             Console.WriteLine(asciiArt_);
             Console.ForegroundColor = ConsoleColor.White;
         }
+        public void AfficherCombat()
+        {
+            AfficherSprite();
+            Console.WriteLine($"Name = {this.name}");
+            Console.WriteLine($"Level = {this.level}");
+            Console.WriteLine($"Pv = {pvLeft} / {pv}");
+            Console.WriteLine($"Status : {statusProblem}");
 
+            string tempExpBar = "[";
+            for (int i = 0; i < this.expPervingt; i++)
+            {
+                tempExpBar += "#";
+            }
+            while (tempExpBar.Length <= 21)
+            {
+                tempExpBar += " ";
+            }
+            tempExpBar += "]";
 
-        private void Evolution()
+            Console.WriteLine(tempExpBar);
+        }
+
+        public void Evolution()
         {
             if (this.listEvo.Count > 0)
             {
@@ -561,12 +614,12 @@ namespace pokemonConsole
             else if (expCourbe == "parabolique")
             {
                 expToLevelUp = FormulaCourbePara(level+1);
-                temp = FormulaCourbeRapide(level);
+                temp = FormulaCourbePara(level);
             }
             else if (expCourbe == "lente")
             {
                 expToLevelUp = FormulaCourbeLente(level + 1);
-                temp = FormulaCourbeRapide(level);
+                temp = FormulaCourbeLente(level);
             }
 
             expToLevelUpLevel = expToLevelUp - temp;
@@ -755,6 +808,49 @@ namespace pokemonConsole
 
 
         }
+        public void GainEV(int evHp, int evAtk, int evDef, int evSpe, int evSpd)
+        {
+            if(listPv[2] == maxEv)
+            {
+                listPv[2] += evHp;
+                if (listPv[2] > maxEv)
+                {
+                    listPv[2] = maxEv;
+                }
+            }
+            else if (listAtk[2] == maxEv)
+            {
+                listAtk[2] += evAtk;
+                if (listAtk[2] > maxEv)
+                {
+                    listAtk[2] = maxEv;
+                }
+            }
+            else if (listDef[2] == maxEv)
+            {
+                listDef[2] += evDef;
+                if (listDef[2] > maxEv)
+                {
+                    listDef[2] = maxEv;
+                }
+            }
+            else if (listSpe[2] == maxEv)
+            {
+                listSpe[2] += evSpe;
+                if (listSpe[2] > maxEv)
+                {
+                    listSpe[2] = maxEv;
+                }
+            }
+            else if (listSpd[2] == maxEv)
+            {
+                listSpd[2] += evSpd;
+                if (listSpd[2] > maxEv)
+                {
+                    listSpd[2] = maxEv;
+                }
+            }
+        }
 
 
         private void ColorForegroundCheck()
@@ -922,7 +1018,6 @@ namespace pokemonConsole
         private int FormulaCourbePara(int level)
         {
             double result = (1.2 * (level * level * level)) - (15 * (level * level)) + (100 * level) - 140;
-            Console.WriteLine(result);
             return (int)Math.Round(result);
         }
         private int FormulaCourbeLente(int level)

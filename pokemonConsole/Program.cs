@@ -12,22 +12,23 @@ class Program
 
     static void Main()
     {
-        /*Combat.UneLoopDeCombatDeAxel();*/
-
         MainMenu.Start();
+    }
 
-        Player player = new Player("player");
+    
 
+}
 
-        Pokemon salameche = new Pokemon(52, 55);
-
-        player.addPokemonToParty(salameche);
-
-        foreach (Pokemon pokemon in player.pokemonParty) 
+namespace FunctionUsefull
+{
+    class Functions
+    {
+        public static void ClearInputBuffer()
         {
-            pokemon.AfficherDetailsPokemon();
-            pokemon.GainExp(15000);
-            pokemon.AfficherDetailsPokemon();
+            while (Console.KeyAvailable)
+            {
+                Console.ReadKey(intercept: true);
+            }
         }
     }
 }

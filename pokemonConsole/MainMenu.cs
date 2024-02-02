@@ -14,13 +14,15 @@ namespace pokemonConsole
         public string quitGame { get; set; } = "QUITTER ";
         public string logoMainMenuPokemon { get; set; } = "";
         public string logoMainMenuAscii { get; set; } = "";
-        public string pathLogoFile { get; private set; } = "C:\\Users\\agathelier\\Desktop\\Nouveau dossier\\pokemonConsole\\Assets\\mainMenuLogo.txt";
+        public string pathLogoFile { get; private set; } = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\mainMenuLogo.txt";
 
 
 
         static public void Start()
         {
             MainMenu mainMenu = new MainMenu();
+            Player player = new Player();
+            Rival rival = new Rival();
 
             using (StreamReader reader = new StreamReader(mainMenu.pathLogoFile))
             {
@@ -102,8 +104,8 @@ namespace pokemonConsole
                         case ConsoleKey.Enter:
                             if (mainMenu.newGame[0] == '>')
                             {
-                                /*Intro.LaunchIntro();*/
-                                Map.MapPlayer();
+                                //Intro.LaunchIntro(player, rival);
+                                Map.MapPlayer(player);
                             }
                             else if (mainMenu.canLoadGame && mainMenu.loadGame[0] == '>')
                             {
@@ -129,9 +131,9 @@ namespace pokemonConsole
             Console.Clear();
 
             Console.WriteLine(newGame);
-            if (File.Exists("C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\save.txt"))
+            if (File.Exists("C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\save.txt"))
             {
-                FileInfo fileInfo = new FileInfo("C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\save.txt");
+                FileInfo fileInfo = new FileInfo("C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\save.txt");
                 if (fileInfo.Length != 0)
                 {
                     Console.WriteLine(loadGame);
