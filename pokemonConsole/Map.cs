@@ -1,4 +1,6 @@
-﻿using System;
+﻿using pokemonConsole;
+using System;
+using System.Reflection;
 
 internal class Map
 {
@@ -9,8 +11,7 @@ internal class Map
     static string currentMapFileName="";
     public static void MapPlayer()
     {
-        LoadMap("bedroom.txt");
-
+        LoadMap("bourg_palette.txt");
         ConsoleKeyInfo keyInfo;
 
         do
@@ -52,9 +53,20 @@ internal class Map
                 playerY = newY;
                 Console.SetCursorPosition(playerX, playerY);
 
-                /*Console.WriteLine($"{newX}+{newY}");
-                Thread.Sleep(500);*/
                 Console.Write("P");
+
+                // NPC
+
+                if (IsCurrentMap("mom.txt"))
+                {
+                    CanTalk("mom.txt", '8', 8, 4, "Bonjour mon fils ! Bien dormi ?", playerX, playerY, keyInfo);
+                }
+
+                if (IsCurrentMap("chen.txt"))
+                {
+                    CanTalk("chen.txt", 'C', 2, 7, "Blue? Heu... Ah, c'est vrai! Je t'ai dit de venir... Tiens, Joueur! Voici 3 Pokémon! Mais... Ils sont dans des Poké Balls. Plus jeune, j'étais un sacré Dresseur de Pokémon! Et oui! Mais avec l'âge, il ne m'en reste plus que 3! Choisis-en un!", playerX, playerY, keyInfo);
+                    CanTalk("chen.txt", 'R', 4, 4, "Yo !", playerX, playerY, keyInfo);
+                }
 
                 // Transitions entre les maps
 
@@ -130,13 +142,46 @@ internal class Map
                     {
                         Console.WriteLine($"\nCombat lancé !");
                         Thread.Sleep(1000);
+                        Combat.LoopCombat();
                     }
                 }
             }
 
         } while (keyInfo.Key != ConsoleKey.Escape);
     }
+    static void CanTalk(string currentMapFileName, char caractere, int npcX, int npcY, string dialogue, int playerX, int playerY, ConsoleKeyInfo keyInfo)
+    {
+        string filePath = $"C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\{currentMapFileName}";
+        string[] lines = File.ReadAllLines(filePath);
 
+        for (int i = 0; i < lines.Length; i++)
+        {
+            int charIndex = lines[i].IndexOf(caractere);
+            if (charIndex != -1)
+            {
+                npcX = charIndex;
+                npcY = i;
+                break;
+            }
+        }
+
+        if (npcX != -1 && npcY != -1)
+        {
+            if ((playerX + 1 == npcX && playerY == npcY) || (playerX - 1 == npcX && playerY == npcY) || (playerX == npcX && playerY - 1 == npcY) || (playerX == npcX && playerY + 1 == npcY))
+            {
+                if (keyInfo.Key == ConsoleKey.Enter)
+                {
+                    Console.WriteLine(dialogue);
+                    Thread.Sleep(1000);
+                }
+                
+            }
+        }
+        else
+        {
+            Console.WriteLine($"Le caractère '{caractere}' n'a pas été trouvé.");
+        }
+    }
     static void LoadMap(string filename)
     {
         currentMapFileName = "C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\" + filename;
@@ -173,7 +218,7 @@ internal class Map
                 {
                     Console.ForegroundColor = ConsoleColor.DarkGreen;
                 }
-                else if (map[x, y] == '0')
+                else if (map[x, y] == 'o')
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                 }

@@ -12,7 +12,7 @@ class Program
 
     static void Main()
     {
-        Combat.UneLoopDeCombatDeAxel();
+        /*Combat.UneLoopDeCombatDeAxel();*/
 
         MainMenu.Start();
 
