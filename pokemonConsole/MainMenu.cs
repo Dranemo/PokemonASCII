@@ -106,8 +106,8 @@ namespace pokemonConsole
                             if (mainMenu.newGame[0] == '>')
                             {
 
-                                Combat.LoopCombat(player);
-                                Intro.LaunchIntro(player, rival);
+                                /*Combat.LoopCombat(player);
+                                Intro.LaunchIntro(player, rival);*/
                                 Map.MapPlayer(player);
 
                             }

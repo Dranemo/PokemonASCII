@@ -60,6 +60,9 @@ internal class Map
 
                 if (IsCurrentMap("mom.txt"))
                 {
+                    Console.SetCursorPosition(6, 4);
+                    Console.Write(map[6, 4]);
+                    Console.Write("8");
                     CanTalk("mom.txt", '8', 8, 4, "Bonjour mon fils ! Bien dormi ?", playerX, playerY, keyInfo);
                 }
 
