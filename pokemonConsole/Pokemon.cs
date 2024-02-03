@@ -1,4 +1,4 @@
-﻿using FunctionUsefull;
+﻿using Usefull;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +18,7 @@ namespace pokemonConsole
         public int id {  get; private set; }
         public string name { get; private set; }
         private List<string> listType = new List<string>();
+        private string colorCSV;
         public string asciiArt { get; private set; }
         private ConsoleColor color ;
 
@@ -192,7 +193,7 @@ namespace pokemonConsole
                                 temp = colonnes[17].Split("/");
                                 listAttackLevel = temp.Select(int.Parse).ToList();
                             }
-
+                            colorCSV = colonnes[18];
 
                             pokemonFound = true;
                         }
@@ -860,69 +861,67 @@ namespace pokemonConsole
                 }
             }
         }
-
-
         private void ColorForegroundCheck()
         {
-            if (listType[0] == "NORMAL")
+            if (colorCSV == "White")
             {
                 color = ConsoleColor.White;
             }
-            else if (listType[0] == "FEU")
+            else if (colorCSV == "DarkBlue")
             {
-                color = ConsoleColor.DarkRed;
+                color = ConsoleColor.DarkBlue;
             }
-            else if (listType[0] == "EAU")
-            {
-                color = ConsoleColor.Blue;
-            }
-            else if (listType[0] == "PLANTE")
+            else if (colorCSV == "DarkGreen")
             {
                 color = ConsoleColor.DarkGreen;
             }
-            else if (listType[0] == "ELECTRIK")
+            else if (colorCSV == "DarkCyan")
             {
-                color = ConsoleColor.DarkYellow;
+                color = ConsoleColor.DarkCyan;
             }
-            else if (listType[0] == "GLACE")
-            {
-                color = ConsoleColor.Cyan;
-            }
-            else if (listType[0] == "COMBAT")
+            else if (colorCSV == "DarkRed")
             {
                 color = ConsoleColor.DarkRed;
             }
-            else if (listType[0] == "POISON")
+            else if (colorCSV == "DarkMagenta")
             {
                 color = ConsoleColor.DarkMagenta;
             }
-            else if (listType[0] == "SOL")
+            else if (colorCSV == "DarkYellow")
             {
-                color = ConsoleColor.Yellow;
+                color = ConsoleColor.DarkYellow;
             }
-            else if (listType[0] == "VOL")
+            else if (colorCSV == "Gray")
             {
                 color = ConsoleColor.Gray;
             }
-            else if (listType[0] == "PSY")
-            {
-                color = ConsoleColor.Red;
-            }
-            else if (listType[0] == "INSECTE")
-            {
-                color = ConsoleColor.Green;
-            }
-            else if (listType[0] == "ROCHE")
+            else if (colorCSV == "DarkGray")
             {
                 color = ConsoleColor.DarkGray;
             }
-            else if (listType[0] == "SPECTRE")
+            else if (colorCSV == "Blue")
             {
-                color = ConsoleColor.DarkMagenta;
+                color = ConsoleColor.Blue;
             }
-            else if (listType[0] == "DRAGON")
+            else if (colorCSV == "Green")
             {
-                color = ConsoleColor.DarkBlue;
+                color = ConsoleColor.Green;
+            }
+            else if (colorCSV == "Cyan")
+            {
+                color = ConsoleColor.Cyan;
+            }
+            else if (colorCSV == "Red")
+            {
+                color = ConsoleColor.Red;
+            }
+            else if (colorCSV == "Magenta")
+            {
+                color = ConsoleColor.Magenta;
+            }
+            else if (colorCSV == "Yellow")
+            {
+                color = ConsoleColor.Yellow;
             }
         }
         private void EvolutionAnimation(string sprite_oldPokemon, string sprite_newPokemon, string name_oldPokemon, string name_newPokemon, ConsoleColor color_oldPokemon, ConsoleColor color_newPokemon)

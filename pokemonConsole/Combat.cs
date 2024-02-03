@@ -20,7 +20,6 @@ namespace pokemonConsole
 
             Pokemon pokemon = player.pokemonParty[0];
 
-
             int pokemonAdverseId = random.Next(1, 152);
             int pokemonAdverseLevel = random.Next(pokemon.level - 2, pokemon.level + 3);
 

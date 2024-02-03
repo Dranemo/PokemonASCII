@@ -155,7 +155,7 @@ internal class Map
                         Console.WriteLine($"\nCombat lancé !");
                         Thread.Sleep(500);
                         Functions.ClearInputBuffer();
-                        Combat.LoopCombat();
+                        Combat.LoopCombat(player);
                     }
                 }
             }
@@ -206,7 +206,7 @@ internal class Map
     }
     static void Open(string currentMapFileName, char caractere, int chestX, int chestY, string dialogue, int playerX, int playerY, ConsoleKeyInfo keyInfo)
     {
-        string filePath = $"C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\Assets\\Maps\\{currentMapFileName}";
+        string filePath = $"C:\\Users\\moiqu\\OneDrive\\Bureau\\C-Pokemon\\pokemonConsole\\GameFiles\\Assets\\Maps\\{currentMapFileName}";
         string[] lines = File.ReadAllLines(filePath);
 
         for (int i = 0; i < lines.Length; i++)
