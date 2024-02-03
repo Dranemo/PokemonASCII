@@ -209,7 +209,7 @@ internal class Map
     }
     static void Open(string currentMapFileName, char caractere, int chestX, int chestY, string dialogue, int playerX, int playerY, ConsoleKeyInfo keyInfo)
     {
-        string filePath = $"C:\\Users\\moiqu\\OneDrive\\Bureau\\C-Pokemon\\pokemonConsole\\GameFiles\\Assets\\Maps\\{currentMapFileName}";
+        string filePath = $"C:\\Users\\GolfOcean33\\OneDrive\\Bureau\\Nouveau dossier\\pokemonConsole\\GameFiles\\Assets\\Maps\\{currentMapFileName}";
         string[] lines = File.ReadAllLines(filePath);
 
         for (int i = 0; i < lines.Length; i++)
