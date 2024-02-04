@@ -9,41 +9,40 @@ namespace pokemonConsole
 {
     internal class MainMenu
     {
-        public string newGame { get; set; } = "> NOUVELLE PARTIE <";
-        public string loadGame { get; set; } = "CHARGER ";
-        public bool canLoadGame { get; set; } = false;
-        public string quitGame { get; set; } = "QUITTER ";
-        public string logoMainMenuPokemon { get; set; } = "";
-        public string logoMainMenuAscii { get; set; } = "";
-        public string pathLogoFile { get; private set; } = AdresseFile.FileDirection + "Assets\\mainMenuLogo.txt";
+        private static string newGame = "> NOUVELLE PARTIE <";
+        private static string loadGame = "CHARGER ";
+        private static bool canLoadGame = false;
+        private static string quitGame = "QUITTER ";
+        private static string logoMainMenuPokemon = "";
+        private static string logoMainMenuAscii = "";
+        private static string pathLogoFile = AdresseFile.FileDirection + "Assets\\mainMenuLogo.txt";
 
 
 
         static public void Start()
         {
-            MainMenu mainMenu = new MainMenu();
             Player player = new Player();
             Rival rival = new Rival();
 
-            using (StreamReader reader = new StreamReader(mainMenu.pathLogoFile))
+            using (StreamReader reader = new StreamReader(pathLogoFile))
             {
                 for (int i = 0; i < 7; i++)
                 {
-                    mainMenu.logoMainMenuPokemon += reader.ReadLine() + Environment.NewLine;
+                    logoMainMenuPokemon += reader.ReadLine() + Environment.NewLine;
                 }
 
                 // Lire les lignes restantes dans un autre string
-                mainMenu.logoMainMenuAscii = reader.ReadToEnd();
+                logoMainMenuAscii = reader.ReadToEnd();
 
 
                 Console.ForegroundColor = ConsoleColor.Blue;
-                Console.Write(mainMenu.logoMainMenuPokemon);
+                Console.Write(logoMainMenuPokemon);
                 Console.ForegroundColor = ConsoleColor.DarkGray;
-                Console.Write(mainMenu.logoMainMenuAscii);
+                Console.Write(logoMainMenuAscii);
                 Console.ForegroundColor = ConsoleColor.White;
 
                 Console.ReadLine();
-                mainMenu.PrintMainMenu();
+                PrintMainMenu();
 
 
                 ConsoleKeyInfo keyInfo;
@@ -57,61 +56,59 @@ namespace pokemonConsole
                     switch (keyInfo.Key)
                     {
                         case ConsoleKey.DownArrow:
-                            if (mainMenu.newGame[0] == '>')
+                            if (newGame[0] == '>')
                             {
-                                mainMenu.newGame = mainMenu.newGame.Substring(2);
-                                mainMenu.newGame = mainMenu.newGame.Substring(0, mainMenu.newGame.Length - 2);
+                                newGame = newGame.Substring(2);
+                                newGame = newGame.Substring(0, newGame.Length - 2);
 
-                                if (mainMenu.canLoadGame)
+                                if (canLoadGame)
                                 {
-                                    mainMenu.loadGame = "> " + mainMenu.loadGame + " <";
+                                    loadGame = "> " + loadGame + " <";
                                 }
                                 else
                                 {
-                                    mainMenu.quitGame = "> " + mainMenu.quitGame + " <";
+                                    quitGame = "> " + quitGame + " <";
                                 }
                             }
-                            else if (mainMenu.canLoadGame && mainMenu.loadGame[0] == '>')
+                            else if (canLoadGame && loadGame[0] == '>')
                             {
-                                mainMenu.loadGame = mainMenu.loadGame.Substring(2);
-                                mainMenu.loadGame = mainMenu.loadGame.Substring(0, mainMenu.loadGame.Length - 2);
-                                mainMenu.quitGame = "> " + mainMenu.quitGame + " <";
+                                loadGame = loadGame.Substring(2);
+                                loadGame = loadGame.Substring(0, loadGame.Length - 2);
+                                quitGame = "> " + quitGame + " <";
                             }
                             break;
 
                         case ConsoleKey.UpArrow:
-                            if (mainMenu.quitGame[0] == '>')
+                            if (quitGame[0] == '>')
                             {
-                                mainMenu.quitGame = mainMenu.quitGame.Substring(2);
-                                mainMenu.quitGame = mainMenu.quitGame.Substring(0, mainMenu.quitGame.Length - 2);
+                                quitGame = quitGame.Substring(2);
+                                quitGame = quitGame.Substring(0, quitGame.Length - 2);
 
-                                if (mainMenu.canLoadGame)
+                                if (canLoadGame)
                                 {
-                                    mainMenu.loadGame = "> " + mainMenu.loadGame + " <";
+                                    loadGame = "> " + loadGame + " <";
                                 }
                                 else
                                 {
-                                    mainMenu.newGame = "> " + mainMenu.newGame + " <";
+                                    newGame = "> " + newGame + " <";
                                 }
                             }
-                            else if (mainMenu.canLoadGame && mainMenu.loadGame[0] == '>')
+                            else if (canLoadGame && loadGame[0] == '>')
                             {
-                                mainMenu.loadGame = mainMenu.loadGame.Substring(2);
-                                mainMenu.loadGame = mainMenu.loadGame.Substring(0, mainMenu.loadGame.Length - 2);
-                                mainMenu.newGame = "> " + mainMenu.newGame + " <";
+                                loadGame = loadGame.Substring(2);
+                                loadGame = loadGame.Substring(0, loadGame.Length - 2);
+                                newGame = "> " + newGame + " <";
                             }
                             break;
 
                         case ConsoleKey.Enter:
-                            if (mainMenu.newGame[0] == '>')
+                            if (newGame[0] == '>')
                             {
-
-                                Combat.LoopCombat(player);
-                                Intro.LaunchIntro(player, rival);
+                                //Intro.LaunchIntro(player, rival);
                                 Map.MapPlayer(player);
 
                             }
-                            else if (mainMenu.canLoadGame && mainMenu.loadGame[0] == '>')
+                            else if (canLoadGame && loadGame[0] == '>')
                             {
                                 Console.WriteLine("haha");
                             }
@@ -123,14 +120,14 @@ namespace pokemonConsole
                             break;
                     }
 
-                    mainMenu.PrintMainMenu();
+                    PrintMainMenu();
                 }
 
             }
         }
 
 
-        private void PrintMainMenu()
+        private static void PrintMainMenu()
         {
             Console.Clear();
 

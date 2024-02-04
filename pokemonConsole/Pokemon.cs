@@ -180,14 +180,6 @@ namespace pokemonConsole
                             if (colonnes[16] != "")
                             {
                                 temp = colonnes[16].Split("/");
-
-                                foreach (string item in temp)
-                                {
-                                    Console.WriteLine(item);
-                                }
-
-                                Console.WriteLine(colonnes[16]);
-
                                 listAttackId = temp.Select(int.Parse).ToList();
 
                                 temp = colonnes[17].Split("/");
@@ -267,22 +259,27 @@ namespace pokemonConsole
 
             // Attaques 
             int numberOfAttacksAvailaible = listAttackStart.Count;
+            int numberOfAllAttacksAvailaible = listAttackStart.Count;
             int numberOfAttackLevel = 0;
 
+
+            // Compter le nombre d'attaques disponibles au moment du level
             for (int i = listAttackLevel.Count - 1; i >= 0; i--)
             {
                 if (listAttackLevel[i] <= level_generate)
                 {
                     numberOfAttacksAvailaible++;
+                    numberOfAllAttacksAvailaible++;
                     numberOfAttackLevel++;
                 }
             }
 
-            for (int i = 0; i < listAttackLevel.Count; i++)
+            // Vérifier le nombre de doublons
+            for (int i = 0; i < listAttackStart.Count; i++)
             {
                 for (int j = 0; j < listAttackId.Count; j++)
                 {
-                    if (listAttackId[j] == listAttackLevel[i])
+                    if (listAttackId[j] == listAttackStart[i])
                     {
                         numberOfAttacksAvailaible--;
                     }
@@ -291,6 +288,8 @@ namespace pokemonConsole
 
 
             int numberAssigned = 0;
+
+            // si il y a pile le nombre qu'il faut pour faire les attaques
             if (numberOfAttacksAvailaible <= 4)
             {
                 foreach (int AttackStart in listAttackStart)
@@ -324,19 +323,23 @@ namespace pokemonConsole
                 }
             }
 
-
+            // S'il n'y a pas assez pour faire les attaques
             else if (numberOfAttacksAvailaible > 4)
             {
+
+                // s'il faut des attaques de départ 
                 if (numberOfAttackLevel < 4)
                 {
                     List<Capacity> temp = new List<Capacity>();
 
+                    // mettre les capacités de level up
                     for (int i = 0; i < numberOfAttackLevel; i++)
                     {
                         temp.Add(new Capacity(listAttackId[i]));
                     }
 
-                    for (int i = listAttackStart.Count - (numberOfAttacksAvailaible - numberOfAttackLevel); i < listAttackStart.Count; i++)
+                    // mettre les capacités de départ
+                    for (int i = (numberOfAttacksAvailaible - numberOfAttackLevel) - 1; i < listAttackStart.Count; i++)
                     {
                         bool AttackAlreadyTaken = false;
                         foreach (Capacity AttackActual in temp)

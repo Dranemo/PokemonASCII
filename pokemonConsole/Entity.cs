@@ -3,8 +3,8 @@ using Usefull;
 
 public class Entity
 {
-    public int PositionX;
-    public int PositionY;
+    public int PositionX { get; set; }
+    public int PositionY { get; set; }
 }
 
 public class NPC : Entity
@@ -13,15 +13,17 @@ public class NPC : Entity
     public string Dialogue { get; set; }
     public string Map { get; set; }
     public char Sprite { get; set; }
-    public NPC(int positionX, int positionY, string name, string dialogue, string map, char sprite)
+
+
+    public NPC(string name, string dialogue, string map, char sprite)
     {
-        PositionX = positionX;
-        PositionY = positionY;
         Name = name;
         Dialogue = dialogue;
         Map = map;
         Sprite = sprite;
     }
+
+
     public void DisplayMap()
     {
 
@@ -50,6 +52,11 @@ public class NPC : Entity
 
     }
 }
+
+
+
+
+
 public class Pokeball : Entity
 {
     public Pokeball(int positionX, int positionY, int id_pokemon, string map)

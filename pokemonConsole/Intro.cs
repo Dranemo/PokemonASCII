@@ -13,39 +13,38 @@ namespace pokemonConsole
     internal class Intro
     {
 
-        private string asciiFileOak = AdresseFile.FileDirection + "Assets\\Sprites\\ascii-art_chen.txt";
-        private string asciiFileBlue = AdresseFile.FileDirection + "Assets\\Sprites\\ascii-art_blue.txt";
-        private string asciiFileRed = AdresseFile.FileDirection + "Assets\\Sprites\\ascii-art_red.txt";
-        private string asciiFileMiddleBid = AdresseFile.FileDirection + "Assets\\Sprites\\ascii-art_middleBigRed.txt";
-        private string asciiFileMiddleLittle = AdresseFile.FileDirection + "Assets\\Sprites\\ascii-art_middleLittleRed.txt";
-        private string asciiFileLittleRed = AdresseFile.FileDirection + "Assets\\Sprites\\ascii-art_littleRed.txt";
-        private string scriptOak = AdresseFile.FileDirection + "Scripts\\ScriptIntroChen.txt";
+        private static string asciiFileOak = AdresseFile.FileDirection + "Assets\\Sprites\\ascii-art_chen.txt";
+        private static string asciiFileBlue = AdresseFile.FileDirection + "Assets\\Sprites\\ascii-art_blue.txt";
+        private static string asciiFileRed = AdresseFile.FileDirection + "Assets\\Sprites\\ascii-art_red.txt";
+        private static string asciiFileMiddleBid = AdresseFile.FileDirection + "Assets\\Sprites\\ascii-art_middleBigRed.txt";
+        private static string asciiFileMiddleLittle = AdresseFile.FileDirection + "Assets\\Sprites\\ascii-art_middleLittleRed.txt";
+        private static string asciiFileLittleRed = AdresseFile.FileDirection + "Assets\\Sprites\\ascii-art_littleRed.txt";
+        private static string scriptOak = AdresseFile.FileDirection + "Scripts\\ScriptIntroChen.txt";
 
-        private string asciiOak = "";
-        private string asciiBlue = "";
-        private string asciiRedHalf = "";
-        private string asciiRed = "";
-        private string asciiMiddleBigRed = "";
-        private string asciiMiddleLittleRed = "";
-        private string asciiLittleRed = "";
+        private static string asciiOak = "";
+        private static string asciiBlue = "";
+        private static string asciiRedHalf = "";
+        private static string asciiRed = "";
+        private static string asciiMiddleBigRed = "";
+        private static string asciiMiddleLittleRed = "";
+        private static string asciiLittleRed = "";
 
 
-        private int widthOak = 45;
+        private static int widthOak = 45;
 
-        private string hautTextZone = "_____________________________________________";
-        private string middleTextZone = "|                                           |";
+        private static string hautTextZone = "_____________________________________________";
+        private static string middleTextZone = "|                                           |";
 
 
 
         static public void LaunchIntro(Player player, Rival rival)
         {
-            Intro intro = new Intro();
-            intro.LoadAllASCII();
+            LoadAllASCII();
 
 
             string line = "0";
 
-            using (StreamReader sr = new StreamReader(intro.scriptOak))
+            using (StreamReader sr = new StreamReader(scriptOak))
             {
                 int lineVide = 0;
                 bool firstLine = true;
@@ -68,15 +67,15 @@ namespace pokemonConsole
                         {
                             if (line[i] == '*')
                             {
-                                intro.ReplaceCharacterWithPlayerName(ref line, '*', player.name);
+                                ReplaceCharacterWithPlayerName(ref line, '*', player.name);
                             }
                             else if (line[i] == '@')
                             {
-                                intro.ReplaceCharacterWithPlayerName(ref line, '@', rival.name);
+                                ReplaceCharacterWithPlayerName(ref line, '@', rival.name);
                             }
                         }
 
-                        intro.Print(line, lineReading);
+                        Print(line, lineReading);
                         Functions.ClearInputBuffer();
                         lineReading++;
                         
@@ -102,11 +101,11 @@ namespace pokemonConsole
                         }
                     }
                 }
-                intro.AnimationRedShrink();
+                AnimationRedShrink();
             }
         }
 
-        public void Print(string line, int lineReading)
+        private static void Print(string line, int lineReading)
         {
             Console.Clear();
             if (lineReading <= 9)
@@ -192,7 +191,7 @@ namespace pokemonConsole
             Console.WriteLine();
         }
 
-        public void ReplaceCharacterWithPlayerName(ref string line, char characterToReplace, string playerName)
+        private static void ReplaceCharacterWithPlayerName(ref string line, char characterToReplace, string playerName)
         {
             for (int i = 0; i < line.Length; i++)
             {
@@ -207,7 +206,7 @@ namespace pokemonConsole
                 }
             }
         }
-        public void LoadAllASCII()
+        private static void LoadAllASCII()
         {
             asciiOak = File.ReadAllText(asciiFileOak);
             asciiBlue = File.ReadAllText(asciiFileBlue);
@@ -225,7 +224,7 @@ namespace pokemonConsole
         }
 
 
-        private void AnimationRedShrink()
+        private static void AnimationRedShrink()
         {
             Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.Clear();
