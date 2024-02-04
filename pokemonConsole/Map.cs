@@ -46,29 +46,38 @@ internal class Map
 
             // Deplacer le joueur en fonction de la touche pressee
             int deltaX = 0, deltaY = 0;
+            bool moved = false;
 
             switch (keyInfo.Key)
             {
                 case ConsoleKey.UpArrow:
                     deltaY = -1;
+                    moved = true;
                     break;
                 case ConsoleKey.DownArrow:
                     deltaY = 1;
+                    moved = true;
                     break;
                 case ConsoleKey.LeftArrow:
                     deltaX = -1;
+                    moved = true;
                     break;
                 case ConsoleKey.RightArrow:
                     deltaX = 1;
+                    moved = true;
                     break;
                 case ConsoleKey.S:
                     Save.Saving(player, rival);
                     Console.WriteLine("Saved");
+                    Console.Clear();
+                    DrawMap();
+                    DrawEntity();
+                    DrawPlayer();
                     break;
             }
 
 
-            if (MovePlayer(deltaX, deltaY))
+            if (MovePlayer(deltaX, deltaY) && moved)
             { 
                 DrawPlayer();
 
@@ -139,6 +148,8 @@ internal class Map
             }
 
         } while (keyInfo.Key != ConsoleKey.Escape);
+
+        player.pokemonParty.Clear();
     }
 
 

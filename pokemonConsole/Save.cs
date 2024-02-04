@@ -146,6 +146,9 @@ namespace pokemonConsole
                     Pokemon pokemon = new Pokemon(pokemonId, pokemonName, idOT, nameOT, levelPokemon, expActuel, pvLeft_, dvHp, evHp, dvAtk, evAtk, dvDef, evDef, dvSpe, evSpe, dvSpd, evSpd, statusProblemPokemon, ko, echange, pokemonCapacity, player.id);
                     player.addPokemonToParty(pokemon);
                 }
+
+                sr.ReadLine();
+                rival.name = sr.ReadLine();
             }
         }
     }

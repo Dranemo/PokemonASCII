@@ -15,7 +15,7 @@ namespace pokemonConsole
             Random random = new Random();
             if (player.pokemonParty.Count == 0)
             {
-                Pokemon pokemonPlayerGenerate = new Pokemon(6, 15, player.id, 1, player.id, player.name);
+                Pokemon pokemonPlayerGenerate = new Pokemon(1, 15, player.id, 1, player.id, player.name);
                 player.addPokemonToParty(pokemonPlayerGenerate);
             }
 
