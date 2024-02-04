@@ -16,6 +16,7 @@ internal class Map
     private static Rival rival;
 
     private static List<Entity> entityList = new List<Entity>();
+    private static List<Entity> entityToRemove = new List<Entity>();
     
 
 
@@ -156,6 +157,11 @@ internal class Map
                         DrawMap();
                     }
                 }
+
+                if (entityToRemove.Count!= 0)
+                {
+                    RemoveEntity();
+                }
             }
 
         } while (keyInfo.Key != ConsoleKey.Escape);
@@ -220,6 +226,7 @@ internal class Map
                             Task.Delay(50).Wait();
                         }
                     }
+                    npc.Function(player);
                     Functions.ClearInputBuffer();
                     Console.ReadKey();
 
@@ -236,13 +243,16 @@ internal class Map
     private static void Open(Pokeball pokeball, ConsoleKeyInfo keyInfo)
     {
 
-        if (pokeball.PositionX != -1 && pokeball.PositionY != -1)
+        if (pokeball.PositionX != -1 && pokeball.PositionY != -1 && !pokeball.taken)
         {
             if ((player.PositionX + 1 == pokeball.PositionX && player.PositionY == pokeball.PositionY) || (player.PositionX - 1 == pokeball.PositionX && player.PositionY == pokeball.PositionY) || (player.PositionX == pokeball.PositionX && player.PositionY - 1 == pokeball.PositionY) || (player.PositionX == pokeball.PositionX && player.PositionY + 1 == pokeball.PositionY))
             {
                 if (keyInfo.Key == ConsoleKey.Enter)
                 {
                     Console.WriteLine(pokeball.name);
+                    pokeball.Function(player);
+                    entityToRemove.Add(pokeball);
+
                     Thread.Sleep(1000);
                     Functions.ClearInputBuffer();
                 }
@@ -300,7 +310,7 @@ internal class Map
         }
         else if (filename == "mom.txt")
         {
-            NPC maman = new NPC("Maman", "Bonjour mon fils ! Bien dormi ?", '8', filename, 7, 4, map[7, 4]);
+            Maman maman = new Maman();
             entityList.Add(maman);
         }
     }
@@ -428,5 +438,18 @@ internal class Map
         }
 
         return true;
+    }
+
+
+    private static void RemoveEntity()
+    {
+        foreach(Entity entity in entityToRemove) 
+        {
+            entityList.Remove(entity);
+        }
+        entityToRemove.Clear();
+
+        Console.Clear();
+        DrawMap();
     }
 }

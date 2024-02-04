@@ -1225,6 +1225,18 @@ namespace pokemonConsole
         }
 
 
+        static public void Heal(Player player)
+        {
+            foreach (Pokemon pokemon in player.pokemonParty)
+            {
+                pokemon.pvLeft = pokemon.pv;
+                foreach (Capacity cap in pokemon.listAttackActual)
+                {
+                    cap.ppLeft = cap.pp;
+                }
+            }
+        }
+
         // ------------------ Formules ------------------ //
         private int FormulaStatsPv(int level, List<int> listPv)
         {

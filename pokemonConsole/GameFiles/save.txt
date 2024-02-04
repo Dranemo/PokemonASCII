@@ -1,13 +1,5 @@
 Player :
-Player,4657,6,7,bourg_palette.txt, 
-1
-4
-33,35,35
-45,40,40
-73,10,10
-22,10,10
-2,HERBIZARRE,4657,Player,16,2673,22
-13,0,0,0,10,0,13,0,3,0
-OK,False,False
+AAAAAAA,41069,6,4,chen.txt, 
+0
 Rival :
-Rival
+AAAAAAA

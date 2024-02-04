@@ -10,19 +10,10 @@ namespace pokemonConsole
         public List<Pokemon> pokemonParty = new List<Pokemon>();
 
 
-        public Player()
+        public Player() : base("Player", 8, 8, 'P', "bedroom.txt", ' ')
         {
-            name = "Player";
             Random random = new Random();
             id = random.Next(1, 65536);
-
-            PositionX = 8;
-            PositionY = 8;
-
-            sprite = 'P';
-
-            map = "bedroom.txt";
-            actuallPositionChar = ' ';
         }
 
 
