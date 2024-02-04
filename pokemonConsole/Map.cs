@@ -38,9 +38,24 @@ internal class Map
 
         Console.Clear();
         DrawMap();
+        DateTime time = DateTime.Now;
 
         do
         {
+            foreach(Entity entity in entityList)
+            {
+                if(entity is NPC npc)
+                {
+                    npc.Update(time, player);
+                    if (npc.updated)
+                    {
+                        npc.updated = false;
+                        Console.Clear();
+                        DrawMap();
+                        time = DateTime.Now;
+                    }
+                }
+            }
             keyInfo = Console.ReadKey();
 
             // Deplacer le joueur en fonction de la touche pressee
@@ -140,6 +155,11 @@ internal class Map
                 else if (IsCurrentMap("route_1.txt"))
                 {
                     if(moved) ChangeMap(35, "bourg_palette.txt", player.PositionX + 3, 0, "Vous arrivez à Bourg Palette !");
+
+                    foreach (NPC npc in entityList)
+                    {
+                        CanTalk(npc, keyInfo);
+                    }
                 }
 
                 
@@ -312,6 +332,11 @@ internal class Map
         {
             Maman maman = new Maman();
             entityList.Add(maman);
+        }
+        else if (filename == "route_1.txt")
+        {
+            PotionMan potionMan = new PotionMan();
+            entityList.Add(potionMan);
         }
     }
 
