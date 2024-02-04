@@ -16,6 +16,12 @@ namespace pokemonConsole
             name = "Player";
             Random random = new Random();
             id = random.Next(1, 65536);
+
+            PositionX = 8;
+            PositionY = 8;
+
+            map = "bedroom.txt";
+            actuallPositionChar = ' ';
         }
 
         public void addPokemonToParty(Pokemon pokemon)

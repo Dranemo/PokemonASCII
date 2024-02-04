@@ -1,5 +1,6 @@
 ﻿using pokemonConsole;
 using System;
+using System.ComponentModel.Design;
 using System.Reflection;
 using Usefull;
 
@@ -9,23 +10,29 @@ internal class Map
     private static Random random = new Random();
     private static string currentMapFileName="";
 
+    private static Player player;
+
+    
 
 
 
 
 
 
-    public static void MapPlayer(Player player)
+
+    public static void MapPlayer(Player player_)
     {
-        LoadMap("chen.txt");
+        player = player_;
+
+        LoadMap(player.map);
         ConsoleKeyInfo keyInfo;
 
-        player.PositionX = 8;
-        player.PositionY = 8;
+
+        player.actuallPositionChar = map[player.PositionX, player.PositionY];
 
         Console.Clear();
         DrawMap();
-        DrawPlayer(player);
+        DrawPlayer();
 
         do
         {
@@ -51,7 +58,7 @@ internal class Map
             }
 
 
-            bool playerMoved = MovePlayer(deltaX, deltaY, player);
+            bool playerMoved = MovePlayer(deltaX, deltaY);
 
 
 
@@ -59,133 +66,54 @@ internal class Map
             { 
                 //Console.Clear();
                 //DrawMap();
-                DrawPlayer(player);
+                DrawPlayer();
 
 
 
 
             // NPC
-
-                if (IsCurrentMap("mom.txt"))
+                if (IsCurrentMap("bedroom.txt"))
                 {
-                    CanTalk("mom.txt", '8', 8, 4, "Bonjour mon fils ! Bien dormi ?", player, keyInfo);
+                    ChangeMap(15, 1, "mom.txt", 8, 1, "\nMaman...");
+                }
+
+                else if (IsCurrentMap("bourg_palette"))
+                {
+                    ChangeMap(0, "route_1.txt", player.PositionX - 3, 35, "\nVers la route 1 !");
+                    ChangeMap(13, 10, "chen.txt", 5, 8, "\nVers le labo du Pr.Chen...");
+                    ChangeMap(6, 5, "mom.txt", 3, 8, "\nMaman...");
                 }
 
                 else if (IsCurrentMap("chen.txt"))
                 {
-                    CanTalk("chen.txt", 'C', 2, 7, "Voici 3 Pokémon! Mais... Ils sont dans des Poké Balls. Plus jeune, j'étais un sacré Dresseur de Pokémon! Et oui! Mais avec l'âge, il ne m'en reste plus que 3! Choisis-en un!", player, keyInfo);
-                    CanTalk("chen.txt", 'R', 4, 4, "Yo minable !", player, keyInfo);
-                    Open("chen.txt", 'o', 3, 8, "Salamèche", player, keyInfo);
-                    Open("chen.txt", 'o', 3, 9, "Carapuce", player, keyInfo);
-                    Open("chen.txt", 'o', 3, 10, "Bulbizarre", player, keyInfo);
+                    ChangeMap(8, "bourg_palette.txt", 13, 11, "\nVers Bourg-Palette...");
+
+
+                    CanTalk(2, 7, "Voici 3 Pokémon! Mais... Ils sont dans des Poké Balls. Plus jeune, j'étais un sacré Dresseur de Pokémon! Et oui! Mais avec l'âge, il ne m'en reste plus que 3! Choisis-en un!", keyInfo);
+                    CanTalk(4, 4, "Yo minable !", keyInfo);
+                    Open(3, 8, "Salamèche", keyInfo);
+                    Open(3, 9, "Carapuce", keyInfo);
+                    Open(3, 10, "Bulbizarre", keyInfo);
                 }
+
+                else if (IsCurrentMap("mom.txt"))
+                {
+                    ChangeMap(8, "bourg_palette.txt", 6, 6, "\nVers Bourg-Palette...");
+                    ChangeMap(8, 1, "bedroom.txt", 15, 1, "\nChambre...");
+
+
+                    CanTalk(7, 4, "Bonjour mon fils ! Bien dormi ?", keyInfo);
+                }
+
+                else if (IsCurrentMap("route_1.txt"))
+                {
+                    ChangeMap(35, "bourg_palette.txt", player.PositionX + 3, 0, "Vous arrivez à Bourg Palette !");
+                }
+
 
                 // Transitions entre les maps
 
-                if (IsCurrentMap("route_1.txt") && player.PositionY == 35)
-                {
-                    Console.WriteLine("Vous arrivez à Bourg Palette !");
-                    Thread.Sleep(500);
-                    Functions.ClearInputBuffer();
-                    LoadMap("bourg_palette.txt");
-                    player.PositionX += 3;
-                    player.PositionY = 0;
-
-                    Console.Clear();
-                    DrawMap();
-                    DrawPlayer(player);
-                }
-                else if (IsCurrentMap("bourg_palette.txt") && player.PositionY == 0)
-                {
-                    Console.WriteLine("\nVers la route 1 !");
-                    Thread.Sleep(500);
-                    Functions.ClearInputBuffer();
-                    LoadMap("route_1.txt");
-                    player.PositionX -= 3;
-                    player.PositionY = 35;
-
-                    Console.Clear();
-                    DrawMap();
-                    DrawPlayer(player);
-                }
-                else if (IsCurrentMap("bourg_palette.txt") && player.PositionX == 13 && player.PositionY == 10)
-                {
-                    Console.WriteLine("\nVers le labo du Pr.Chen...");
-                    Thread.Sleep(500);
-                    Functions.ClearInputBuffer();
-                    LoadMap("chen.txt");
-                    player.PositionX = 5;
-                    player.PositionY = 8;
-
-                    Console.Clear();
-                    DrawMap();
-                    DrawPlayer(player);
-                }
-                else if (IsCurrentMap("bourg_palette.txt") && player.PositionX == 6 && player.PositionY == 5)
-                {
-                    Console.WriteLine("\nMaman");
-                    Thread.Sleep(500);
-                    Functions.ClearInputBuffer();
-                    LoadMap("mom.txt");
-                    player.PositionX = 3;
-                    player.PositionY = 8;
-
-                    Console.Clear();
-                    DrawMap();
-                    DrawPlayer(player);
-                }
-                else if (IsCurrentMap("chen.txt") && player.PositionY == 8)
-                {
-                    Console.WriteLine("\nVers Bourg-Palette...");
-                    Thread.Sleep(500);
-                    Functions.ClearInputBuffer();
-                    LoadMap("bourg_palette.txt");
-                    player.PositionX = 13;
-                    player.PositionY = 11;
-
-                    Console.Clear();
-                    DrawMap();
-                    DrawPlayer(player);
-                }
-                else if (IsCurrentMap("mom.txt") && player.PositionY == 8)
-                {
-                    Console.WriteLine("\nVers Bourg-Palette...");
-                    Thread.Sleep(500);
-                    Functions.ClearInputBuffer();
-                    LoadMap("bourg_palette.txt");
-                    player.PositionX = 6;
-                    player.PositionY = 6;
-
-                    Console.Clear();
-                    DrawMap();
-                    DrawPlayer(player);
-                }
-                else if (IsCurrentMap("mom.txt") && player.PositionX == 8 && player.PositionY == 1)
-                {
-                    Console.WriteLine("\nChambre");
-                    Thread.Sleep(500);
-                    Functions.ClearInputBuffer();
-                    LoadMap("bedroom.txt");
-                    player.PositionX = 15;
-                    player.PositionY = 1;
-
-                    Console.Clear();
-                    DrawMap();
-                    DrawPlayer(player);
-                }
-                else if (IsCurrentMap("bedroom.txt") && player.PositionX == 15 && player.PositionY == 1)
-                {
-                    Console.WriteLine("\nMaman");
-                    Thread.Sleep(500);
-                    Functions.ClearInputBuffer();
-                    LoadMap("mom.txt");
-                    player.PositionX = 8;
-                    player.PositionY = 1;
-
-                    Console.Clear();
-                    DrawMap();
-                    DrawPlayer(player);
-                }
+                
 
 
                 if (map[player.PositionX, player.PositionY] == '#')
@@ -205,24 +133,42 @@ internal class Map
 
 
 
-
-    private static void CanTalk(string currentMapFileName, char caractere, int npcX, int npcY, string dialogue, Player player, ConsoleKeyInfo keyInfo)
+    private static void ChangeMap(int x, int y, string nextMapFileName, int nextX, int nextY, string loadingText)
     {
 
-        string filePath = $"{AdresseFile.FileDirection}Assets\\Maps\\{currentMapFileName}";
-
-        string[] lines = File.ReadAllLines(filePath);
-
-        for (int i = 0; i < lines.Length; i++)
+        if (player.PositionX == x && player.PositionY == y)
         {
-            int charIndex = lines[i].IndexOf(caractere);
-            if (charIndex != -1)
-            {
-                npcX = charIndex;
-                npcY = i;
-                break;
-            }
+            Console.WriteLine($"\n{loadingText}");
+            Thread.Sleep(500);
+            Functions.ClearInputBuffer();
+            LoadMap(nextMapFileName);
+            player.PositionX = nextX;
+            player.PositionY = nextY;
+
+            Console.Clear();
+            DrawMap();
+            DrawPlayer();
         }
+    }
+    private static void ChangeMap(int y, string nextMapFileName, int nextX, int nextY, string loadingText)
+    {
+
+        if (player.PositionY == y)
+        {
+            Console.WriteLine($"\n{loadingText}");
+            Thread.Sleep(500);
+            Functions.ClearInputBuffer();
+            LoadMap(nextMapFileName);
+            player.PositionX = nextX;
+            player.PositionY = nextY;
+
+            Console.Clear();
+            DrawMap();
+            DrawPlayer();
+        }
+    }
+    private static void CanTalk(int npcX, int npcY, string dialogue, ConsoleKeyInfo keyInfo)
+    {
 
         if (npcX != -1 && npcY != -1)
         {
@@ -244,33 +190,16 @@ internal class Map
 
                     Console.Clear();
                     DrawMap();
-                    DrawPlayer(player);
+                    DrawPlayer();
                 }
                 
             }
         }
-        else
-        {
-            Console.WriteLine($"Le caractère '{caractere}' n'a pas été trouvé.");
-        }
 
 
     }
-    private static void Open(string currentMapFileName, char caractere, int chestX, int chestY, string dialogue, Player player, ConsoleKeyInfo keyInfo)
+    private static void Open(int chestX, int chestY, string dialogue, ConsoleKeyInfo keyInfo)
     {
-        string filePath = $"{AdresseFile.FileDirection}Assets\\Maps\\{currentMapFileName}";
-        string[] lines = File.ReadAllLines(filePath);
-
-        for (int i = 0; i < lines.Length; i++)
-        {
-            int charIndex = lines[i].IndexOf(caractere);
-            if (charIndex != -1)
-            {
-                chestX = charIndex;
-                chestY = i;
-                break;
-            }
-        }
 
         if (chestX != -1 && chestY != -1)
         {
@@ -285,12 +214,8 @@ internal class Map
 
                 Console.Clear();
                 DrawMap();
-                DrawPlayer(player);
+                DrawPlayer();
             }
-        }
-        else
-        {
-            Console.WriteLine($"Le caractère '{caractere}' n'a pas ete trouve.");
         }
 
     }
@@ -349,21 +274,39 @@ internal class Map
             Console.WriteLine();
         }
     }
-    private static bool MovePlayer(int deltaX, int deltaY, Player player)
+    private static bool MovePlayer(int deltaX, int deltaY)
     {
         // limites du deplacement pour eviter de sortir de la carte
+
         int newX = player.PositionX + deltaX;
         int newY = player.PositionY + deltaY;
 
         if (IsInsideMap(newX, newY) && IsWalkable(newX, newY))
         {
+            int x = player.PositionX;
+            int y = player.PositionY;
             // Effacer l'ancienne position du joueur
-            Console.SetCursorPosition(player.PositionX, player.PositionY);
-            Console.Write(" ");
+            Console.SetCursorPosition(x, y);
+            
+            if (map[x, y] == '~')
+            {
+                Console.ForegroundColor = ConsoleColor.Blue;
+            }
+            else if (map[x, y] == '#')
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+            }
+
+            Console.Write(player.actuallPositionChar);
+            Console.ForegroundColor = ConsoleColor.White;
+
+
 
             // Mettre à jour la position du joueur
             player.PositionX = newX;
             player.PositionY = newY;
+
+            player.actuallPositionChar = map[newX, newY];
 
             return true;
         }
@@ -372,11 +315,14 @@ internal class Map
             return false;
         }
     }
-    private static void DrawPlayer(Player player)
+    private static void DrawPlayer()
     {
         Console.SetCursorPosition(player.PositionX, player.PositionY);
         Console.Write("P");
     }
+
+
+
 
 
     private static bool IsCurrentMap(string mapToCheck)

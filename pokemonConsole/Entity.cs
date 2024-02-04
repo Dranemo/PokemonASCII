@@ -5,6 +5,9 @@ public class Entity
 {
     public int PositionX { get; set; }
     public int PositionY { get; set; }
+
+    public string map { get; set; }
+    public char actuallPositionChar;
 }
 
 public class NPC : Entity
