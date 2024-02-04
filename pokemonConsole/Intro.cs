@@ -201,7 +201,7 @@ namespace pokemonConsole
                 Console.WriteLine(middleTextZone);
                 Console.WriteLine(hautTextZone);
             }
-            else if (lineReading == 10 || lineReading == 14)
+            else if (lineReading == 10 || lineReading == 13)
             {
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Blue;

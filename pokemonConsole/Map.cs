@@ -86,15 +86,13 @@ internal class Map
                 {
                     ChangeMap(8, "bourg_palette.txt", 13, 11, "\nVers Bourg-Palette...");
 
-                    try
+                    foreach (Entity entity in entityList)
                     {
-                        foreach (NPC npc in entityList)
+                        if (entity is NPC npc)
                         {
                             CanTalk(npc, keyInfo);
                         }
-                    } catch (Exception ex)
-                    {
-                        foreach (Pokeball pokeball in entityList)
+                        else if (entity is Pokeball pokeball)
                         {
                             Open(pokeball, keyInfo);
                         }
@@ -220,6 +218,7 @@ internal class Map
 
                 Console.Clear();
                 DrawMap();
+                DrawEntity(); 
                 DrawPlayer();
             }
         }
@@ -293,10 +292,6 @@ internal class Map
                 {
                     Console.ForegroundColor = ConsoleColor.DarkGreen;
                 }
-                else if (map[x, y] == 'o')
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                }
                 else
                 {
                     Console.ForegroundColor = ConsoleColor.White;
@@ -357,7 +352,16 @@ internal class Map
         foreach (Entity entity in entityList)
         {
             Console.SetCursorPosition(entity.PositionX, entity.PositionY);
-            Console.Write(entity.sprite);
+            if (entity.sprite == 'o')
+            {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.Write(entity.sprite);
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+            else
+            {
+                Console.Write(entity.sprite);
+            }
         }
         
         

@@ -42,7 +42,7 @@ public class Pokeball : Entity
     {
         name = Pokemon.GetNom(id_);
         id_pokemon = id_;
-        sprite = '°';
+        sprite = 'o';
 
         map = map_;
 
