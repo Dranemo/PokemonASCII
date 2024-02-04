@@ -37,8 +37,6 @@ internal class Map
 
         Console.Clear();
         DrawMap();
-        DrawEntity();
-        DrawPlayer();
 
         do
         {
@@ -66,13 +64,14 @@ internal class Map
                     deltaX = 1;
                     moved = true;
                     break;
-                case ConsoleKey.S:
-                    Save.Saving(player, rival);
-                    Console.WriteLine("Saved");
+                case ConsoleKey.X:
                     Console.Clear();
                     DrawMap();
-                    DrawEntity();
-                    DrawPlayer();
+
+                    Menu_principal.Open(player, mapWidth, rival);
+
+                    Console.Clear();
+                    DrawMap();
                     break;
             }
 
@@ -141,8 +140,6 @@ internal class Map
 
                         Console.Clear();
                         DrawMap();
-                        DrawEntity();
-                        DrawPlayer();
                     }
                 }
             }
@@ -171,8 +168,6 @@ internal class Map
 
             Console.Clear();
             DrawMap();
-            DrawEntity();
-            DrawPlayer();
         }
     }
     private static void ChangeMap(int y, string nextMapFileName, int nextX, int nextY, string loadingText)
@@ -192,8 +187,6 @@ internal class Map
 
             Console.Clear();
             DrawMap();
-            DrawEntity();
-            DrawPlayer();
         }
     }
     private static void CanTalk(NPC npc, ConsoleKeyInfo keyInfo)
@@ -219,8 +212,6 @@ internal class Map
 
                     Console.Clear();
                     DrawMap();
-                    DrawEntity();
-                    DrawPlayer();
                 }
                 
             }
@@ -244,8 +235,6 @@ internal class Map
 
                 Console.Clear();
                 DrawMap();
-                DrawEntity(); 
-                DrawPlayer();
             }
         }
 
@@ -326,6 +315,9 @@ internal class Map
             }
             Console.WriteLine();
         }
+
+        DrawPlayer();
+        DrawEntity();
     }
     private static bool MovePlayer(int deltaX, int deltaY)
     {

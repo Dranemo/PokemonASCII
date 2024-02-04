@@ -15,9 +15,7 @@ class Program
 
     static void Main()
     {
-        Item.LoadAllItemsFromCsv($"{AdresseFile.FileDirection}CSV\\item.csv");
         MainMenu.Start();
-
     }
 }
 
@@ -40,11 +38,15 @@ namespace Usefull
         }
 
 
-        public static string ClavierName()
+        public static string ClavierName(int limit)
         {
             string name = "";
 
-            string nameEnter = "__________";
+            string nameEnter = "";
+            for (int i = 0; i < limit; i++)
+            {
+                nameEnter += "_";
+            }
 
             List<string> firstLine = new List<string>();
             List<string> secondline = new List<string>();
@@ -184,7 +186,7 @@ namespace Usefull
                         break;
 
                     case ConsoleKey.Enter:
-                        if (charNumber < 10 && (lines[y][x] != "[DEL]" && lines[y][x] != "[END]"))
+                        if (charNumber < limit && (lines[y][x] != "[DEL]" && lines[y][x] != "[END]"))
                         {
                             
                             char newChar = lines[y][x][1];
@@ -200,11 +202,11 @@ namespace Usefull
                             charNumber++;
 
 
-                            if (charNumber == 10)
+                            if (charNumber == limit)
                             {
                                 UpdateCell(lines, x, y, " ", " ");
-                                x = 3;
-                                y = 7;
+                                x = 7;
+                                y = 3;
                                 UpdateCell(lines, x, y, "[", "]");
                             }
                         }
@@ -213,7 +215,7 @@ namespace Usefull
                             if (name.Length > 0)
                             {
                                 nameEnter = nameEnter.Remove(charNumber - 1, 1);
-                                nameEnter = nameEnter.Insert(charNumber, "_");
+                                nameEnter = nameEnter.Insert(charNumber - 1, "_");
 
                                 name = name.Substring(0, name.Length - 1);
                                 charNumber--;
