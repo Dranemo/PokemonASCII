@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 
 using Usefull;
+using System.Buffers.Text;
 
 
 namespace pokemonConsole
@@ -17,8 +18,7 @@ namespace pokemonConsole
         // ------------------------------------- Infos Pokemon ------------------------------------- //
         public int id {  get; private set; }
         public string name { get; private set; }
-        private List<string> listType = new List<string>();
-        private string colorCSV;
+        public List<string> listType = new List<string>();
         public string asciiArt { get; private set; }
         private ConsoleColor color ;
 
@@ -48,11 +48,11 @@ namespace pokemonConsole
         // [0] = Base
         // [1] = DV
         // [2] = EV
-        private List<int> listPv = new List<int>();
-        private List<int> listAtk = new List<int>();
-        private List<int> listDef = new List<int>();
-        private List<int> listSpe = new List<int>();
-        private List<int> listSpd = new List<int>();
+        public List<int> listPv = new List<int>();
+        public List<int> listAtk = new List<int>();
+        public List<int> listDef = new List<int>();
+        public List<int> listSpe = new List<int>();
+        public List<int> listSpd = new List<int>();
 
 
         // ------------------ Capacites ------------------ //
@@ -81,16 +81,16 @@ namespace pokemonConsole
         public int tauxCapture {  get; private set; }
 
         private string filePokemonCSV = AdresseFile.FileDirection + "CSV\\pokemon.csv";
-
+        private string colorCSV;
 
         public int appartenant {  get; set; }
-        public int echange {  get; set; }
+        public bool echange {  get; set; }
 
 
 
 
         // ------------------------------------- Fonctions ------------------------------------- //
-        public Pokemon(int id_generate, int level_generate, int appartenant_ = 0, int idOT_ = 0, string nameOT_ = "OT") // appartenant -> 0 : sauvage, 1 : player, 2 : dresseur
+        public Pokemon(int id_generate, int level_generate, int playerId = 0, int appartenant_ = 0, int idOT_ = 0, string nameOT_ = "OT") // appartenant -> 0 : sauvage, 1 : player, 2 : dresseur
         {
 
             Random random = new Random();
@@ -251,10 +251,16 @@ namespace pokemonConsole
 
             statusProblem = "OK";
             appartenant = appartenant_;
+            echange = false;
             if (appartenant == 1)
             {
                 idOT = idOT_;
                 nameOT = nameOT_;
+
+                if (idOT != playerId)
+                {
+                    echange = true;
+                }
             }
 
             // Attaques 
@@ -393,14 +399,190 @@ namespace pokemonConsole
 
 
         }
+        public Pokemon(int id_, string name_, int idot_, string nameot_, int level_, int expActuel_, int pvLeft_, int dvPv, int evPv, int dvAtk, int evAtk, int dvDef, int evDef, int dvSpe, int evSpe, int dvSpd, int evSpd, string statusProblem_, bool ko_, bool echange_, List<Capacity> listCapacity, int playerId)
+        {
+            int basePv = 0;
+            int baseAtk = 0;
+            int baseDef = 0;
+            int baseSpe = 0; 
+            int baseSpd = 0;
 
-        public List<int> getListPv() {  return this.listPv; }
-        public List<int> getListAtk() {  return this.listAtk; }
-        public List<int> getListDef() {  return this.listDef; }
-        public List<int> getListSpe() {  return this.listSpe; }
-        public List<int> getListSpd() {  return this.listSpd; }
-        public List<string> getListType() {  return this.listType; }
-        public List<string> getListEvo() { return this.listEvo; }
+            // Récupère les données des pokemon
+            using (StreamReader sr = new StreamReader(filePokemonCSV))
+            {
+                sr.ReadLine();
+                sr.ReadLine();
+                bool pokemonFinishReading = false;
+                bool pokemonFound = false;
+
+                string line;
+
+                while ((line = sr.ReadLine()) != null && !pokemonFinishReading)
+                {
+                    if (!pokemonFound)
+                    {
+                        string[] colonnes = line.Split(',');
+
+                        int.TryParse(colonnes[0], out int id_search);
+
+                        if (id_search == id_)
+                        {
+                            name = name_;
+                            listType.Add(colonnes[2]);
+                            if (colonnes[3] != "NONE")
+                            {
+                                listType.Add(colonnes[3]);
+                            }
+                            basePv = int.Parse(colonnes[4]);
+                            baseAtk = int.Parse(colonnes[5]);
+                            baseDef = int.Parse(colonnes[6]);
+                            baseSpe = int.Parse(colonnes[7]);
+                            baseSpd = int.Parse(colonnes[8]);
+                            if (colonnes[9] == "FALSE")
+                            {
+                                peutEvoluer = false;
+                                pokemonFinishReading = true;
+                            }
+                            else
+                            {
+                                peutEvoluer = true;
+                            }
+                            if (peutEvoluer)
+                            {
+                                methodeEvolution = int.Parse(colonnes[10]);
+                                if (methodeEvolution == 0)
+                                {
+                                    evolutionLevel = int.Parse(colonnes[11]);
+                                }
+                                else if (methodeEvolution == 2)
+                                {
+                                    //evolutionItemId.Add(int.Parse(colonnes[11]));
+                                }
+                                else if ((methodeEvolution == 3))
+                                {
+                                    //string[] items = colonnes[11].Split('/');
+                                    //evolutionItemId = items.Select(int.Parse).ToList();
+                                }
+                            }
+
+                            expCourbe = colonnes[12];
+                            expDonne = int.Parse(colonnes[13]);
+
+                            tauxCapture = int.Parse(colonnes[14]);
+
+
+
+                            if (colonnes[16] != "")
+                            {
+                                string[] temp2 = colonnes[16].Split("/");
+                                listAttackId = temp2.Select(int.Parse).ToList();
+
+                                temp2 = colonnes[17].Split("/");
+                                listAttackLevel = temp2.Select(int.Parse).ToList();
+                            }
+                            colorCSV = colonnes[18];
+
+                            pokemonFound = true;
+                        }
+                    }
+
+                    else
+                    {
+                        listEvo.Add(line);
+
+                        string[] colonnes = line.Split(',');
+                        if (colonnes[9] == "FALSE")
+                        {
+                            pokemonFinishReading = true;
+                        }
+                    }
+                }
+            }
+            listPv.Add(basePv); listPv.Add(dvPv); listPv.Add(evPv);
+            listAtk.Add(baseAtk); listAtk.Add(dvAtk); listAtk.Add(evAtk);
+            listDef.Add(baseDef); listDef.Add(dvDef); listDef.Add(evDef);
+            listSpe.Add(baseSpe); listSpe.Add(dvSpe); listSpe.Add(evSpe);
+            listSpd.Add(baseSpd); listSpd.Add(dvSpd); listSpd.Add(evSpd);
+
+
+            id = id_;
+            level = level_;
+
+            pv = FormulaStatsPv(this.level, this.listPv);
+            atk = FormulaStatsNotPv(this.level, this.listAtk);
+            def = FormulaStatsNotPv(this.level, this.listDef);
+            spe = FormulaStatsNotPv(this.level, this.listSpe);
+            spd = FormulaStatsNotPv(this.level, this.listSpd);
+            pvLeft = pvLeft_;
+            ko = ko_;
+
+
+            expActuel = expActuel_;
+            int temp = 0;
+            if (expCourbe == "rapide")
+            {
+                expToLevelUp = FormulaCourbeRapide(level + 1);
+                temp = FormulaCourbeRapide(level);
+            }
+            else if (expCourbe == "moyenne")
+            {
+                expToLevelUp = FormulaCourbeMoyenne(level + 1);
+                temp = FormulaCourbeRapide(level);
+            }
+            else if (expCourbe == "parabolique")
+            {
+                expToLevelUp = FormulaCourbePara(level + 1);
+                temp = FormulaCourbePara(level);
+            }
+            else if (expCourbe == "lente")
+            {
+                expToLevelUp = FormulaCourbeLente(level + 1);
+                temp = FormulaCourbeLente(level);
+            }
+
+            expToLevelUpLevel = expToLevelUp - temp;
+            expActuelLevel = expActuel - temp;
+
+            expPervingt = expActuelLevel * 20 / expToLevelUpLevel;
+
+            statusProblem = statusProblem_;
+            appartenant = 1;
+            echange = echange_;
+            if (appartenant == 1)
+            {
+                idOT = idot_;
+                nameOT = nameot_;
+
+                if (idOT != playerId)
+                {
+                    echange = true;
+                }
+            }
+
+            listAttackActual = listCapacity;
+
+            // Sprite
+            string asciiArtFileName = $"ascii-art ({id}).txt";
+
+            string asciiArtFilePath = Path.Combine(AdresseFile.FileDirection, "Assets\\Sprites\\Pokemon\\", asciiArtFileName);
+
+            if (File.Exists(asciiArtFilePath))
+            {
+                asciiArt = File.ReadAllText(asciiArtFilePath);
+            }
+            else
+            {
+                Console.WriteLine($"Sprite ASCII non trouve pour le Pokemon avec l'ID {id}");
+            }
+
+
+            ColorForegroundCheck();
+        }
+
+
+
+
+
 
 
 

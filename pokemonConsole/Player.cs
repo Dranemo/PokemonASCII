@@ -5,7 +5,7 @@ namespace pokemonConsole
 {
     class Player : Entity
     {
-        public int id { get; private set; }
+        public int id { get; set; }
 
         public List<Pokemon> pokemonParty = new List<Pokemon>();
 
@@ -24,6 +24,8 @@ namespace pokemonConsole
             map = "bedroom.txt";
             actuallPositionChar = ' ';
         }
+
+
 
         public void addPokemonToParty(Pokemon pokemon)
         {

@@ -61,6 +61,10 @@ internal class Map
                 case ConsoleKey.RightArrow:
                     deltaX = 1;
                     break;
+                case ConsoleKey.S:
+                    Save.Saving(player, rival);
+                    Console.WriteLine("Saved");
+                    break;
             }
 
 
@@ -125,6 +129,11 @@ internal class Map
                         Thread.Sleep(500);
                         Functions.ClearInputBuffer();
                         Combat.LoopCombat(player);
+
+                        Console.Clear();
+                        DrawMap();
+                        DrawEntity();
+                        DrawPlayer();
                     }
                 }
             }
@@ -145,6 +154,7 @@ internal class Map
             LoadMap(nextMapFileName);
             player.PositionX = nextX;
             player.PositionY = nextY;
+            player.map = nextMapFileName;
 
             player.actuallPositionChar = map[nextX, nextY];
 
@@ -165,6 +175,7 @@ internal class Map
             LoadMap(nextMapFileName);
             player.PositionX = nextX;
             player.PositionY = nextY;
+            player.map = nextMapFileName;
 
             player.actuallPositionChar = map[nextX, nextY];
 

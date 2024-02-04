@@ -110,7 +110,8 @@ namespace pokemonConsole
                             }
                             else if (canLoadGame && loadGame[0] == '>')
                             {
-                                Console.WriteLine("haha");
+                                Save.Loading(player, rival);
+                                Map.MapPlayer(player, rival);
                             }
                             else
                             {

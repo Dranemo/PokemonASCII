@@ -15,7 +15,7 @@ namespace pokemonConsole
             Random random = new Random();
             if (player.pokemonParty.Count == 0)
             {
-                Pokemon pokemonPlayerGenerate = new Pokemon(6, 15);
+                Pokemon pokemonPlayerGenerate = new Pokemon(6, 15, player.id, 1, player.id, player.name);
                 player.addPokemonToParty(pokemonPlayerGenerate);
             }
 
@@ -164,7 +164,7 @@ namespace pokemonConsole
 
                         if (fuite > 255 || randomFuiteValue < fuite || fuiteEuclidienne == 0)
                         {
-                            fuiteReussit = false;
+                            fuiteReussit = true;
                             break;
                         }
                         else
@@ -207,7 +207,7 @@ namespace pokemonConsole
 
                     float expWon = (appartenant * echange * pokemonAdverse.expDonne * pokemonAdverse.level) / 7 * nombrePokemon;
                     pokemon.GainExp((int)Math.Round(expWon));
-                    pokemon.GainEV(pokemonAdverse.getListPv()[0], pokemonAdverse.getListAtk()[0], pokemonAdverse.getListDef()[0], pokemonAdverse.getListSpe()[0], pokemonAdverse.getListSpd()[0]);
+                    pokemon.GainEV(pokemonAdverse.listPv[0], pokemonAdverse.listAtk[0], pokemonAdverse.listDef[0], pokemonAdverse.listSpe[0], pokemonAdverse.listSpd[0]);
                 }
                 if (fuiteReussit)
                 {
@@ -228,12 +228,12 @@ namespace pokemonConsole
                     float randomMod = (random.Next(217, 256) * 100) / 255;
                     int stab = 1;
 
-                    float efficaciteType1 = TypeModifier.CalculerMultiplicateur(capacity.type, pokemonAdverse.getListType()[0]);
+                    float efficaciteType1 = TypeModifier.CalculerMultiplicateur(capacity.type, pokemonAdverse.listType[0]);
                     float efficaciteType2 = 1;
 
-                    if (pokemonAdverse.getListType().Count > 1)
+                    if (pokemonAdverse.listType.Count > 1)
                     {
-                        efficaciteType2 = TypeModifier.CalculerMultiplicateur(capacity.type, pokemonAdverse.getListType()[1]);
+                        efficaciteType2 = TypeModifier.CalculerMultiplicateur(capacity.type, pokemonAdverse.listType[1]);
                     }
 
 
@@ -265,7 +265,7 @@ namespace pokemonConsole
                     {
                         critDamage = 2;
                     }
-                    foreach (string typePokemon in pokemon.getListType())
+                    foreach (string typePokemon in pokemon.listType)
                     {
                         if (capacity.type == typePokemon)
                         {
