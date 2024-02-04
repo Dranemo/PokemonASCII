@@ -1,5 +1,6 @@
 
 ﻿using pokemonConsole;
+using Usefull;
 
 using System.Collections;
 using System.Data;
@@ -14,7 +15,7 @@ class Program
 
     static void Main()
     {
-        Item.LoadAllItemsFromCsv("C:\\Users\\GolfOcean33\\OneDrive\\Bureau\\Nouveau dossier\\pokemonConsole\\GameFiles\\CSV\\item.csv");
+        Item.LoadAllItemsFromCsv($"{AdresseFile.FileDirection}CSV\\item.csv");
         MainMenu.Start();
 
     }

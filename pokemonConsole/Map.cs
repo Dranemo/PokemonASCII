@@ -146,6 +146,8 @@ internal class Map
             player.PositionX = nextX;
             player.PositionY = nextY;
 
+            player.actuallPositionChar = map[nextX, nextY];
+
             Console.Clear();
             DrawMap();
             DrawEntity();
@@ -163,6 +165,8 @@ internal class Map
             LoadMap(nextMapFileName);
             player.PositionX = nextX;
             player.PositionY = nextY;
+
+            player.actuallPositionChar = map[nextX, nextY];
 
             Console.Clear();
             DrawMap();
