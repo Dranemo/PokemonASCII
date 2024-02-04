@@ -12,14 +12,21 @@ using System.Text;
 
 class Program
 {
-
     static void Main()
     {
-        Item.LoadAllItemsFromCsv($"{AdresseFile.FileDirection}CSV\\item.csv");
-        MainMenu.Start();
+        // Charger les objets depuis le fichier CSV et spécifier le chemin du fichier SaveItem.txt
+        Item.LoadAllItemsFromCsv($"{AdresseFile.FileDirection}CSV\\item.csv", $"{AdresseFile.FileDirection}\\SaveItem.txt");
 
+
+        // Sauvegarder les quantités dans le fichier SaveItem.txt
+        Item.SaveQuantitiesToFile($"{AdresseFile.FileDirection}\\SaveItem.txt", Item.AllItems);
+
+        // Démarrer le menu principal
+        MainMenu.Start();
     }
+
 }
+
 
 
 
@@ -255,6 +262,6 @@ namespace Usefull
 
     class AdresseFile
     {
-        public static string FileDirection = "C:\\Users\\yanae\\Desktop\\C-Pokemon\\pokemonConsole\\GameFiles\\";
+        public static string FileDirection = "C:\\Users\\GolfOcean33\\OneDrive\\Bureau\\Nouveau dossier\\pokemonConsole\\GameFiles\\";
     }
 }

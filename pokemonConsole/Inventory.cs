@@ -8,12 +8,14 @@ namespace inventory
     public interface IInventorable
     {
         string Name { get; }
+        int Quantity { get; set; }
     }
 
     // Classe de base pour les Pokémon
     public class PokemonInv : IInventorable
     {
         public string Name { get; set; }
+        public int Quantity { get; set; } // Ajoutez cette propriété
 
         public PokemonInv(string name)
         {
@@ -27,7 +29,7 @@ namespace inventory
         public string Name { get; set; }
         public string Effect1 { get; set; }
         public string Effect2 { get; set; }
-        public int Quantity { get; set; } 
+        public int Quantity { get; set; }
 
         public Item(string name, string effect1, string effect2, int quantity)
         {
@@ -38,9 +40,12 @@ namespace inventory
         }
 
         // Méthode statique pour lire les données depuis un fichier CSV
-        public static List<Item> LoadItemsFromCsv(string csvFilePath, int startId, int endId)
+        public static List<Item> LoadItemsFromCsv(string csvFilePath, int startId, int endId, string saveItemFilePath)
         {
             List<Item> items = new List<Item>();
+
+            // Charger les quantités depuis le fichier SaveItem.txt
+            Dictionary<string, int> quantities = LoadQuantitiesFromFile(saveItemFilePath);
 
             using (TextFieldParser parser = new TextFieldParser(csvFilePath))
             {
@@ -64,12 +69,12 @@ namespace inventory
                                 string effect1 = fields[2];
                                 string effect2 = fields[3];
 
-                                // Créer un nouvel objet Item avec une quantité aléatoire entre 0 et 20
-                                Random random = new Random();
-                                int quantity = random.Next(21);
-
-                                Item newItem = new Item(name, effect1, effect2, quantity);
-                                items.Add(newItem);
+                                // Utiliser la quantité depuis le fichier SaveItem.txt
+                                if (quantities.TryGetValue(name, out int quantity))
+                                {
+                                    Item newItem = new Item(name, effect1, effect2, quantity);
+                                    items.Add(newItem);
+                                }
                             }
                         }
                     }
@@ -79,13 +84,47 @@ namespace inventory
             return items;
         }
 
+        // Nouvelle méthode pour sauvegarder les quantités dans un fichier
+        public static void SaveQuantitiesToFile(string filePath, List<Item> items)
+        {
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                foreach (var item in items)
+                {
+                    writer.WriteLine($"{item.Name},{item.Quantity}");
+                }
+            }
+        }
+
+        // Ajoutez cette méthode pour charger les quantités depuis le fichier SaveItem.txt
+        private static Dictionary<string, int> LoadQuantitiesFromFile(string filePath)
+        {
+            Dictionary<string, int> quantities = new Dictionary<string, int>();
+
+            if (File.Exists(filePath))
+            {
+                foreach (string line in File.ReadLines(filePath))
+                {
+                    string[] parts = line.Split(',');
+                    if (parts.Length == 2 && int.TryParse(parts[1], out int quantity))
+                    {
+                        string itemName = parts[0];
+                        quantities[itemName] = quantity;
+                    }
+                }
+            }
+
+            return quantities;
+        }
+
         private static List<Item> allItems; // Ajoutez cette variable statique
 
         // Méthode statique pour charger les données depuis un fichier CSV et stocker dans la variable statique
-        public static void LoadAllItemsFromCsv(string csvFilePath)
+        public static void LoadAllItemsFromCsv(string csvFilePath, string saveItemFilePath)
         {
-            allItems = LoadItemsFromCsv(csvFilePath, 1, 43);
+            allItems = LoadItemsFromCsv(csvFilePath, 1, 43, saveItemFilePath);
         }
+
 
         // Propriété statique pour accéder à la liste d'objets
         public static List<Item> AllItems
@@ -106,13 +145,12 @@ namespace inventory
             if (itemQuantities.ContainsKey(item))
             {
                 itemQuantities[item]++;
+                Console.WriteLine($"{item.Name} (Quantité: {itemQuantities[item]}) a été ajouté à l'inventaire.");
             }
             else
             {
-                itemQuantities[item] = 1;
+                Console.WriteLine($"L'objet {item.Name} n'est pas présent dans l'inventaire.");
             }
-
-            Console.WriteLine($"{item.Name} (Quantité: {itemQuantities[item]}) a été ajouté à l'inventaire.");
         }
 
         public void DisplayInventory()
@@ -121,6 +159,39 @@ namespace inventory
             foreach (var kvp in itemQuantities)
             {
                 Console.WriteLine($"- {kvp.Key.Name} (Quantité: {kvp.Value})");
+            }
+        }
+
+        public void SaveQuantitiesToFile(string filePath)
+        {
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                foreach (var kvp in itemQuantities)
+                {
+                    writer.WriteLine($"{kvp.Key.Name},{kvp.Value}");
+                }
+            }
+        }
+
+        public void LoadQuantitiesFromFile(string filePath)
+        {
+            if (File.Exists(filePath))
+            {
+                itemQuantities.Clear();
+
+                foreach (string line in File.ReadLines(filePath))
+                {
+                    string[] parts = line.Split(',');
+                    if (parts.Length == 2 && int.TryParse(parts[1], out int quantity))
+                    {
+                        T item = Items.FirstOrDefault(i => i.Name == parts[0]);
+                        if (item != null)
+                        {
+                            item.Quantity = quantity;
+                            itemQuantities[item] = quantity;
+                        }
+                    }
+                }
             }
         }
     }

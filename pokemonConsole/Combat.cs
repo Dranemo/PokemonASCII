@@ -121,9 +121,6 @@ namespace pokemonConsole
                                     inventory.AddItem(item);
                                 }
 
-                                // Afficher l'inventaire
-                                inventory.DisplayInventory();
-
                                 // Demander à l'utilisateur de choisir un objet
                                 Console.WriteLine("Choisissez un objet de l'inventaire (numéro) ou 0 pour retourner : ");
                                 int choixObjet = int.Parse(Console.ReadLine());
