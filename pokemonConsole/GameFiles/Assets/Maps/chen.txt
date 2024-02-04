@@ -1,8 +1,8 @@
 ____________
 |HHHH  HHHH|
-|     C    |
+|          |
 |       ooo|
-|   R      |
+|          |
 |HHHH  HHHH|
 |HHHH  HHHH|
 |          |

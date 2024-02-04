@@ -1,69 +1,54 @@
-﻿using System;
+﻿using pokemonConsole;
+using System;
 using Usefull;
 
 public class Entity
 {
+    public string name { get; set; }
+
     public int PositionX { get; set; }
     public int PositionY { get; set; }
+    public char sprite { get; set; }
 
     public string map { get; set; }
-    public char actuallPositionChar;
+    public char actuallPositionChar { get; set;  }
 }
 
 public class NPC : Entity
 {
-    public string Name { get; set; }
-    public string Dialogue { get; set; }
-    public string Map { get; set; }
-    public char Sprite { get; set; }
+    public string dialogue { get; private set; }
 
 
-    public NPC(string name, string dialogue, string map, char sprite)
+    public NPC(string name_, string dialogue_, char sprite_, string map_, int x, int y, char actualPosition)
     {
-        Name = name;
-        Dialogue = dialogue;
-        Map = map;
-        Sprite = sprite;
-    }
+        name = name_;
+        dialogue = dialogue_;
+        sprite = sprite_;
 
+        map = map_;
 
-    public void DisplayMap()
-    {
+        PositionX = x;
+        PositionY = y;
 
-        string[] lines = File.ReadAllLines($"{AdresseFile.FileDirection}Assets\\Maps\\{Map}");
-        Console.WriteLine("test");
-        Thread.Sleep(1000);
-        Console.SetCursorPosition(0, 0); // Reinitialisez la position du curseur au debut
-
-        for (int i = 0; i < lines.Length; i++)
-        {
-            char[] chars = lines[i].ToCharArray();
-
-            if (i == PositionY)
-            {
-                Console.SetCursorPosition(PositionX, i);
-                Console.Write(Sprite);
-            }
-            else
-            {
-                Console.SetCursorPosition(0, i);
-                Console.Write(new string(chars));
-            }
-        }
-
-        Console.SetCursorPosition(0, lines.Length); // Deplacez le curseur après la fin de la carte
-
+        actuallPositionChar = actualPosition;
     }
 }
 
-
-
-
-
 public class Pokeball : Entity
 {
-    public Pokeball(int positionX, int positionY, int id_pokemon, string map)
+    public int id_pokemon;
+
+    public Pokeball(int id_, string map_, int x, int y, char actualPosition)
     {
-        Console.WriteLine(id_pokemon);
+        name = Pokemon.GetNom(id_);
+        id_pokemon = id_;
+        sprite = '°';
+
+        map = map_;
+
+        PositionX = x;
+        PositionY = y;
+
+        actuallPositionChar = actualPosition;
     }
 }

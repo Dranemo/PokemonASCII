@@ -491,6 +491,35 @@ namespace pokemonConsole
 
             Console.WriteLine(tempExpBar);
         }
+        public static string GetNom(int id)
+        {
+            string name = "";
+            using (StreamReader sr = new StreamReader(AdresseFile.FileDirection + "CSV\\pokemon.csv"))
+            {
+                string line;
+                bool pokemonFound = false;
+
+                line = sr.ReadLine();
+                line = sr.ReadLine();
+
+                while ((line = sr.ReadLine()) != null && !pokemonFound)
+                {
+                    string[] colonnes = line.Split(',');
+
+                    int.TryParse(colonnes[0], out int id_search);
+
+                    if (id_search == id)
+                    {
+                        name = colonnes[1];
+                        pokemonFound = true;
+                    }
+                }
+            }
+            return name;
+        }
+
+
+
 
         public void Evolution()
         {
@@ -864,6 +893,8 @@ namespace pokemonConsole
                 }
             }
         }
+
+
         private void ColorForegroundCheck()
         {
             if (colorCSV == "White")
@@ -1042,6 +1073,5 @@ namespace pokemonConsole
             double result = 1.25 * (level * level * level);
             return (int)Math.Round(result);
         }
-
     }
 }

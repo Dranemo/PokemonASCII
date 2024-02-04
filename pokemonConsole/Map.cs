@@ -9,9 +9,13 @@ internal class Map
     private static char[,] map;
     private static Random random = new Random();
     private static string currentMapFileName="";
+    private static int mapHeight;
+    private static int mapWidth;
 
     private static Player player;
+    private static Rival rival;
 
+    private static List<Entity> entityList = new List<Entity>();
     
 
 
@@ -20,9 +24,10 @@ internal class Map
 
 
 
-    public static void MapPlayer(Player player_)
+    public static void MapPlayer(Player player_, Rival rival_)
     {
         player = player_;
+        rival = rival_;
 
         LoadMap(player.map);
         ConsoleKeyInfo keyInfo;
@@ -32,6 +37,7 @@ internal class Map
 
         Console.Clear();
         DrawMap();
+        DrawEntity();
         DrawPlayer();
 
         do
@@ -58,26 +64,18 @@ internal class Map
             }
 
 
-            bool playerMoved = MovePlayer(deltaX, deltaY);
-
-
-
-            if (playerMoved)
+            if (MovePlayer(deltaX, deltaY))
             { 
-                //Console.Clear();
-                //DrawMap();
                 DrawPlayer();
 
 
-
-
-            // NPC
+                // Transition et npc
                 if (IsCurrentMap("bedroom.txt"))
                 {
                     ChangeMap(15, 1, "mom.txt", 8, 1, "\nMaman...");
                 }
 
-                else if (IsCurrentMap("bourg_palette"))
+                else if (IsCurrentMap("bourg_palette.txt"))
                 {
                     ChangeMap(0, "route_1.txt", player.PositionX - 3, 35, "\nVers la route 1 !");
                     ChangeMap(13, 10, "chen.txt", 5, 8, "\nVers le labo du Pr.Chen...");
@@ -86,14 +84,7 @@ internal class Map
 
                 else if (IsCurrentMap("chen.txt"))
                 {
-                    ChangeMap(8, "bourg_palette.txt", 13, 11, "\nVers Bourg-Palette...");
-
-
-                    CanTalk(2, 7, "Voici 3 Pokémon! Mais... Ils sont dans des Poké Balls. Plus jeune, j'étais un sacré Dresseur de Pokémon! Et oui! Mais avec l'âge, il ne m'en reste plus que 3! Choisis-en un!", keyInfo);
-                    CanTalk(4, 4, "Yo minable !", keyInfo);
-                    Open(3, 8, "Salamèche", keyInfo);
-                    Open(3, 9, "Carapuce", keyInfo);
-                    Open(3, 10, "Bulbizarre", keyInfo);
+                    ChangeMap(8, "bourg_palette.txt", 13, 11, "\nVers Bourg-Palette...");                  
                 }
 
                 else if (IsCurrentMap("mom.txt"))
@@ -101,8 +92,10 @@ internal class Map
                     ChangeMap(8, "bourg_palette.txt", 6, 6, "\nVers Bourg-Palette...");
                     ChangeMap(8, 1, "bedroom.txt", 15, 1, "\nChambre...");
 
-
-                    CanTalk(7, 4, "Bonjour mon fils ! Bien dormi ?", keyInfo);
+                    foreach (NPC npc in entityList)
+                    {
+                        CanTalk(npc, keyInfo);
+                    }
                 }
 
                 else if (IsCurrentMap("route_1.txt"))
@@ -110,12 +103,7 @@ internal class Map
                     ChangeMap(35, "bourg_palette.txt", player.PositionX + 3, 0, "Vous arrivez à Bourg Palette !");
                 }
 
-
-                // Transitions entre les maps
-
-                
-
-
+                // Hautes herbes
                 if (map[player.PositionX, player.PositionY] == '#')
                 {
                     if (random.Next(1, 101) <= 10) // chance de rencontrer un Pokemon dans les hautes herbes
@@ -124,6 +112,21 @@ internal class Map
                         Thread.Sleep(500);
                         Functions.ClearInputBuffer();
                         Combat.LoopCombat(player);
+                    }
+                }
+
+                try
+                {
+                    foreach (NPC npc in entityList)
+                    {
+                        CanTalk(npc, keyInfo);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    foreach (Pokeball pokeball in entityList)
+                    {
+                        Open(pokeball, keyInfo);
                     }
                 }
             }
@@ -147,6 +150,7 @@ internal class Map
 
             Console.Clear();
             DrawMap();
+            DrawEntity();
             DrawPlayer();
         }
     }
@@ -164,21 +168,22 @@ internal class Map
 
             Console.Clear();
             DrawMap();
+            DrawEntity();
             DrawPlayer();
         }
     }
-    private static void CanTalk(int npcX, int npcY, string dialogue, ConsoleKeyInfo keyInfo)
+    private static void CanTalk(NPC npc, ConsoleKeyInfo keyInfo)
     {
 
-        if (npcX != -1 && npcY != -1)
+        if (npc.PositionX != -1 && npc.PositionY != -1)
         {
-            if ((player.PositionX + 1 == npcX && player.PositionY == npcY) || (player.PositionX - 1 == npcX && player.PositionY == npcY) || (player.PositionX == npcX && player.PositionY - 1 == npcY) || (player.PositionX == npcX && player.PositionY + 1 == npcY))
+            if ((player.PositionX + 1 == npc.PositionX && player.PositionY == npc.PositionY) || (player.PositionX - 1 == npc.PositionX && player.PositionY == npc.PositionY) || (player.PositionX == npc.PositionX && player.PositionY - 1 == npc.PositionY) || (player.PositionX == npc.PositionX && player.PositionY + 1 == npc.PositionY))
             {
                 if (keyInfo.Key == ConsoleKey.Enter)
                 {
-                    if (!string.IsNullOrEmpty(dialogue))
+                    if (!string.IsNullOrEmpty(npc.dialogue))
                     {
-                        foreach (char c in dialogue)
+                        foreach (char c in npc.dialogue)
                         {
                             Console.Write(c);
                             Task.Delay(50).Wait();
@@ -190,6 +195,7 @@ internal class Map
 
                     Console.Clear();
                     DrawMap();
+                    DrawEntity();
                     DrawPlayer();
                 }
                 
@@ -198,16 +204,16 @@ internal class Map
 
 
     }
-    private static void Open(int chestX, int chestY, string dialogue, ConsoleKeyInfo keyInfo)
+    private static void Open(Pokeball pokeball, ConsoleKeyInfo keyInfo)
     {
 
-        if (chestX != -1 && chestY != -1)
+        if (pokeball.PositionX != -1 && pokeball.PositionY != -1)
         {
-            if ((player.PositionX + 1 == chestX && player.PositionY == chestY) || (player.PositionX - 1 == chestX && player.PositionY == chestY) || (player.PositionX == chestX && player.PositionY - 1 == chestY) || (player.PositionX == chestX && player.PositionY + 1 == chestY))
+            if ((player.PositionX + 1 == pokeball.PositionX && player.PositionY == pokeball.PositionY) || (player.PositionX - 1 == pokeball.PositionX && player.PositionY == pokeball.PositionY) || (player.PositionX == pokeball.PositionX && player.PositionY - 1 == pokeball.PositionY) || (player.PositionX == pokeball.PositionX && player.PositionY + 1 == pokeball.PositionY))
             {
                 if (keyInfo.Key == ConsoleKey.Enter)
                 {
-                    Console.WriteLine(dialogue);
+                    Console.WriteLine(pokeball.name);
                     Thread.Sleep(1000);
                     Functions.ClearInputBuffer();
                 }
@@ -231,21 +237,47 @@ internal class Map
 
         string[] lines = File.ReadAllLines(currentMapFileName);
 
-        int width = lines[0].Length;
-        int height = lines.Length;
+        mapWidth = lines[0].Length;
+        mapHeight = lines.Length;
 
-        map = new char[width, height];
+        map = new char[mapWidth, mapHeight];
 
-        for (int y = 0; y < height; y++)
+        for (int y = 0; y < mapHeight; y++)
         {
             string line = lines[y];
 
-            for (int x = 0; x < width; x++)
+            for (int x = 0; x < mapWidth; x++)
             {
                 map[x, y] = line[x];
             }
         }
+
+
+        entityList.Clear();
+        if (filename == "chen.txt")
+        {
+            NPC chen = new NPC("Prof.Chen", "Voici 3 Pokémon! Mais... Ils sont dans des Poké Balls. Plus jeune, j'étais un sacré Dresseur de Pokémon! Et oui! Mais avec l'âge, il ne m'en reste plus que 3! Choisis-en un!", 'C', filename, 6, 2, map[6, 2]);
+            NPC blue = new NPC(rival.name, "Yo minable !", 'R', filename, 4, 4, map[4, 4]);
+
+            entityList.Add(chen);
+            entityList.Add(blue);
+
+            Pokeball pokeball1 = new Pokeball(1, filename, 8, 3, map[8, 3]);
+            Pokeball pokeball2 = new Pokeball(4, filename, 9, 3, map[9, 3]);
+            Pokeball pokeball3 = new Pokeball(7, filename, 10, 3, map[10, 3]);
+
+            entityList.Add(pokeball1);
+            entityList.Add(pokeball2);
+            entityList.Add(pokeball3);
+        }
+        else if (filename == "mom.txt")
+        {
+            NPC maman = new NPC("Maman", "Bonjour mon fils ! Bien dormi ?", '8', filename, 7, 4, map[7, 4]);
+            entityList.Add(maman);
+        }
     }
+
+
     private static void DrawMap()
     {
         for (int y = 0; y < map.GetLength(1); y++)
@@ -318,7 +350,17 @@ internal class Map
     private static void DrawPlayer()
     {
         Console.SetCursorPosition(player.PositionX, player.PositionY);
-        Console.Write("P");
+        Console.Write(player.sprite);
+    }
+    private static void DrawEntity()
+    {
+        foreach (Entity entity in entityList)
+        {
+            Console.SetCursorPosition(entity.PositionX, entity.PositionY);
+            Console.Write(entity.sprite);
+        }
+        
+        
     }
 
 
@@ -336,6 +378,19 @@ internal class Map
     }
     private static bool IsWalkable(int x, int y)
     {
-        return map[x, y] == ' ' || map[x, y] == '#' || map[x, y] == 'D';
+        if (map[x, y] != ' ' && map[x, y] != '#' && map[x, y] != 'D')
+        {
+            return false;
+        }
+
+        foreach(Entity entity in entityList)
+        {
+            if (x == entity.PositionX && y == entity.PositionY)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

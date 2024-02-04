@@ -5,7 +5,6 @@ namespace pokemonConsole
 {
     class Player : Entity
     {
-        public string name { get; set; }
         public int id { get; private set; }
 
         public List<Pokemon> pokemonParty = new List<Pokemon>();
@@ -19,6 +18,8 @@ namespace pokemonConsole
 
             PositionX = 8;
             PositionY = 8;
+
+            sprite = 'P';
 
             map = "bedroom.txt";
             actuallPositionChar = ' ';

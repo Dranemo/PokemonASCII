@@ -105,7 +105,7 @@ namespace pokemonConsole
                             if (newGame[0] == '>')
                             {
                                 //Intro.LaunchIntro(player, rival);
-                                Map.MapPlayer(player);
+                                Map.MapPlayer(player, rival);
 
                             }
                             else if (canLoadGame && loadGame[0] == '>')
