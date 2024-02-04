@@ -73,10 +73,16 @@ internal class Map
                     Console.Clear();
                     DrawMap();
                     break;
+                case ConsoleKey.Enter:
+                    break;
+                default:
+                    Console.Clear();
+                    DrawMap();
+                    break;
             }
 
 
-            if (MovePlayer(deltaX, deltaY) && moved)
+            if (MovePlayer(deltaX, deltaY))
             { 
                 DrawPlayer();
 
@@ -89,14 +95,18 @@ internal class Map
 
                 else if (IsCurrentMap("bourg_palette.txt"))
                 {
-                    ChangeMap(0, "route_1.txt", player.PositionX - 3, 35, "\nVers la route 1 !");
-                    ChangeMap(13, 10, "chen.txt", 5, 8, "\nVers le labo du Pr.Chen...");
-                    ChangeMap(6, 5, "mom.txt", 3, 8, "\nMaman...");
+                    if (moved)
+                    {
+                        ChangeMap(0, "route_1.txt", player.PositionX - 3, 35, "\nVers la route 1 !");
+                        ChangeMap(13, 10, "chen.txt", 5, 8, "\nVers le labo du Pr.Chen...");
+                        ChangeMap(6, 5, "mom.txt", 3, 8, "\nMaman...");
+                    }
+                    
                 }
 
                 else if (IsCurrentMap("chen.txt"))
                 {
-                    ChangeMap(8, "bourg_palette.txt", 13, 11, "\nVers Bourg-Palette...");
+                    if(moved) ChangeMap(8, "bourg_palette.txt", 13, 11, "\nVers Bourg-Palette...");
 
                     foreach (Entity entity in entityList)
                     {
@@ -113,8 +123,12 @@ internal class Map
 
                 else if (IsCurrentMap("mom.txt"))
                 {
-                    ChangeMap(8, "bourg_palette.txt", 6, 6, "\nVers Bourg-Palette...");
-                    ChangeMap(8, 1, "bedroom.txt", 15, 1, "\nChambre...");
+                    if (moved)
+                    {
+                        ChangeMap(8, "bourg_palette.txt", 6, 6, "\nVers Bourg-Palette...");
+                        ChangeMap(8, 1, "bedroom.txt", 15, 1, "\nChambre...");
+                    }
+                    
 
                     foreach (NPC npc in entityList)
                     {
@@ -124,12 +138,12 @@ internal class Map
 
                 else if (IsCurrentMap("route_1.txt"))
                 {
-                    ChangeMap(35, "bourg_palette.txt", player.PositionX + 3, 0, "Vous arrivez à Bourg Palette !");
+                    if(moved) ChangeMap(35, "bourg_palette.txt", player.PositionX + 3, 0, "Vous arrivez à Bourg Palette !");
                 }
 
                 
                 // Hautes herbes
-                if (map[player.PositionX, player.PositionY] == '#')
+                if (map[player.PositionX, player.PositionY] == '#' && moved)
                 {
                     if (random.Next(1, 101) <= 10) // chance de rencontrer un Pokemon dans les hautes herbes
                     {

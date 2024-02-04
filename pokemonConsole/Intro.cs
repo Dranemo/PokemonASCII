@@ -249,7 +249,7 @@ namespace pokemonConsole
             asciiLittleRed = File.ReadAllText(asciiFileLittleRed);
             using (StreamReader sr = new StreamReader(asciiFileRed))
             {
-                for (int i = 0; i < 31; i++)
+                for (int i = 0; i < 30; i++)
                 {
                     asciiRedHalf += sr.ReadLine() + Environment.NewLine;
                 }
