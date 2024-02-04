@@ -14,6 +14,7 @@ class Program
 
     static void Main()
     {
+        Item.LoadAllItemsFromCsv("C:\\Users\\GolfOcean33\\OneDrive\\Bureau\\Nouveau dossier\\pokemonConsole\\GameFiles\\CSV\\item.csv");
         MainMenu.Start();
 
     }
