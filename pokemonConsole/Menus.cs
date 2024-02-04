@@ -25,6 +25,10 @@ namespace pokemonConsole
 
         private static int position;
 
+
+        private static int endPositionXText;
+        private static int endPositionYText;
+
         public static void Open(Player player, int mapWidth, Rival rival)
         {
             if (player.pokemonParty.Count != 0)
@@ -43,12 +47,12 @@ namespace pokemonConsole
             icons.Add(saveMenuIcon);
             icons.Add(retourMenuIcon);
 
-            alreadySelected = true;
+            alreadySelected = false;
             foreach(string icon in icons)
             {
                 if (icon[0] == '>')
                 {
-                    alreadySelected = false;
+                    alreadySelected = true;
                 }
             }
 
@@ -109,6 +113,11 @@ namespace pokemonConsole
                         }
 
                         break;
+                    default:
+                        Console.SetCursorPosition(endPositionXText, endPositionYText);
+                        Console.Write(" ");
+                        Console.SetCursorPosition(endPositionXText, endPositionYText);
+                        break;
                 }
             }
         }
@@ -136,6 +145,9 @@ namespace pokemonConsole
             }
             Console.SetCursorPosition(mapWidth - 3, size + 2);
             Console.Write(hautMenu);
+
+            endPositionXText = Console.CursorLeft;
+            endPositionYText = Console.CursorTop;
         }
     }
 }

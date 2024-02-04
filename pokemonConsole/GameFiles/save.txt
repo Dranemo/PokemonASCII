@@ -1,5 +1,5 @@
 Player :
-Player,4657,10,6,bourg_palette.txt, 
+Player,4657,6,7,bourg_palette.txt, 
 1
 4
 33,35,35
