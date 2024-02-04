@@ -84,7 +84,21 @@ internal class Map
 
                 else if (IsCurrentMap("chen.txt"))
                 {
-                    ChangeMap(8, "bourg_palette.txt", 13, 11, "\nVers Bourg-Palette...");                  
+                    ChangeMap(8, "bourg_palette.txt", 13, 11, "\nVers Bourg-Palette...");
+
+                    try
+                    {
+                        foreach (NPC npc in entityList)
+                        {
+                            CanTalk(npc, keyInfo);
+                        }
+                    } catch (Exception ex)
+                    {
+                        foreach (Pokeball pokeball in entityList)
+                        {
+                            Open(pokeball, keyInfo);
+                        }
+                    }
                 }
 
                 else if (IsCurrentMap("mom.txt"))
@@ -103,6 +117,7 @@ internal class Map
                     ChangeMap(35, "bourg_palette.txt", player.PositionX + 3, 0, "Vous arrivez à Bourg Palette !");
                 }
 
+                
                 // Hautes herbes
                 if (map[player.PositionX, player.PositionY] == '#')
                 {
@@ -112,21 +127,6 @@ internal class Map
                         Thread.Sleep(500);
                         Functions.ClearInputBuffer();
                         Combat.LoopCombat(player);
-                    }
-                }
-
-                try
-                {
-                    foreach (NPC npc in entityList)
-                    {
-                        CanTalk(npc, keyInfo);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    foreach (Pokeball pokeball in entityList)
-                    {
-                        Open(pokeball, keyInfo);
                     }
                 }
             }

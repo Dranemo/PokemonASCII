@@ -87,17 +87,13 @@ namespace pokemonConsole
 
                         if (lineVide == 1)
                         {
-                            do
-                            {
-                                player.name = Console.ReadLine();
-                            } while (string.IsNullOrEmpty(player.name));
+                            Console.ReadKey();
+                            player.name = Functions.ClavierName();
                         }
                         else if (lineVide == 2)
                         {
-                            do
-                            {
-                                rival.name = Console.ReadLine();
-                            } while (string.IsNullOrEmpty(rival.name));
+                            Console.ReadKey();
+                            rival.name = Functions.ClavierName();
                         }
                     }
                 }
@@ -105,7 +101,7 @@ namespace pokemonConsole
             }
         }
 
-        private static void Print(string line, int lineReading)
+/*        private static void Print(string line, int lineReading)
         {
             Console.Clear();
             if (lineReading <= 9)
@@ -189,6 +185,129 @@ namespace pokemonConsole
             
 
             Console.WriteLine();
+        }*/
+
+
+        private static void Print(string line, int lineReading)
+        {
+            if (lineReading == 1 || lineReading == 9)
+            {
+                Console.Clear();
+                Console.WriteLine(asciiOak);
+
+                Console.WriteLine(hautTextZone);
+                Console.WriteLine(middleTextZone);
+                Console.WriteLine(middleTextZone);
+                Console.WriteLine(middleTextZone);
+                Console.WriteLine(hautTextZone);
+            }
+            else if (lineReading == 10 || lineReading == 14)
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine(asciiBlue);
+                Console.ForegroundColor = ConsoleColor.White;
+
+                Console.WriteLine(hautTextZone);
+                Console.WriteLine(middleTextZone);
+                Console.WriteLine(middleTextZone);
+                Console.WriteLine(middleTextZone);
+                Console.WriteLine(hautTextZone);
+            }
+            else if (lineReading == 15) 
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine(asciiRedHalf);
+                Console.ForegroundColor = ConsoleColor.White;
+
+                Console.WriteLine(hautTextZone);
+                Console.WriteLine(middleTextZone);
+                Console.WriteLine(middleTextZone);
+                Console.WriteLine(middleTextZone);
+                Console.WriteLine(hautTextZone);
+            }
+
+
+            
+            int lineWriting = 1;
+            int charRestant = widthOak - 4;
+
+            Console.SetCursorPosition(2, 32);
+            for (int i  = 2; i <= charRestant+1; i++)
+            {
+                Console.Write(" ");
+            }
+            Console.SetCursorPosition(2, 33);
+            for (int i = 2; i <= charRestant +1; i++)
+            {
+                Console.Write(" ");
+            }
+            Console.SetCursorPosition(2, 34);
+            for (int i = 2; i <= charRestant + 1; i++)
+            {
+                Console.Write(" ");
+            }
+            Console.SetCursorPosition(2, 32);
+
+            string[] words = line.Split(" ");
+            int wordIndex = 0;
+
+            if (!string.IsNullOrEmpty(line))
+            {
+                for (int i = 0; i < line.Length; i++)
+                {
+
+                    if (charRestant > 0 && lineWriting == 1)
+                    {
+                        Console.Write(line[i]);
+                        charRestant--;
+
+                        // Si le caractère actuel est un espace, passe au mot suivant
+                        if (line[i] == ' ')
+                        {
+                            wordIndex++;
+
+                            // Vérifie si le mot suivant peut s'insérer dans la ligne actuelle
+                            if (wordIndex < words.Length && words[wordIndex].Length > charRestant)
+                            {
+                                charRestant = widthOak - 4;
+                                lineWriting++;
+                                Console.SetCursorPosition(2, 33);
+                            }
+                        }
+                    }
+                    else if (charRestant > 0 && lineWriting == 2)
+                    {
+                        Console.Write(line[i]);
+                        charRestant--;
+
+                        // Si le caractère actuel est un espace, passe au mot suivant
+                        if (line[i] == ' ')
+                        {
+                            wordIndex++;
+
+                            // Vérifie si le mot suivant peut s'insérer dans la ligne actuelle
+                            if (wordIndex < words.Length && words[wordIndex].Length > charRestant)
+                            {
+                                charRestant = widthOak - 4;
+                                lineWriting++;
+                                Console.SetCursorPosition(2, 34);
+                            }
+                        }
+                    }
+                    else if (charRestant > 0 && lineWriting == 3)
+                    {
+                        Console.Write(line[i]);
+                        charRestant--;
+                    }
+
+                    Task.Delay(50).Wait();
+                }
+
+
+            }
+
         }
 
         private static void ReplaceCharacterWithPlayerName(ref string line, char characterToReplace, string playerName)
@@ -247,6 +366,8 @@ namespace pokemonConsole
 
 
         }
+
+
 
     }
 }
