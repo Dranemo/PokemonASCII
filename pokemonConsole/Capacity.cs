@@ -29,7 +29,7 @@ namespace pokemonConsole
 
         private string fileCSV = AdresseFile.FileDirection + "CSV\\capacites.csv";
 
-
+        //lis le CSV
         public Capacity(int id_) 
         {
             using (StreamReader sr = new StreamReader(this.fileCSV))
@@ -67,6 +67,7 @@ namespace pokemonConsole
                 }
             }
         }
+        //lis la save
         public Capacity(int id_, int pp_, int ppLeft_)
         {
             using (StreamReader sr = new StreamReader(this.fileCSV))
@@ -103,6 +104,71 @@ namespace pokemonConsole
                     }
                 }
             }
+        }
+        public enum SecondaryEffect
+        {
+            None,
+            AtkUp,
+            DefUp,
+            SpeedUp,
+            SpeUp,
+            EsquiveUp,
+            CritUp,
+            CritBoost,
+            AtkDown,
+            ChanceAtkDown,
+            DefDown,
+            ChanceDefDown,
+            SpeedDown,
+            ChanceSpeedDown,
+            SpeDown,
+            PrecisionDown,
+            Para,
+            Burn,
+            Freeze,
+            Sleep,
+            SelfSleep,
+            Poison,
+            PoisonGrave,
+            Confusion,
+            randx,
+            Moneyx2,
+            OHKO,
+            Charge,
+            Damagex2,
+            EndFight,
+            Imun,
+            Stuck,
+            randt,
+            Flinch,
+            doublex,
+            doublet,
+            Fail,
+            StuckSelf,
+            Recoil,
+            ConstDamage,
+            BlockAttack,
+            BlockStatusMoves,
+            Pause,
+            Counter,
+            VarDamage,
+            VarDamageLevel,
+            StealHP,
+            ConstantStealHP,
+            StealHPIfSleep,
+            Heal,
+            AlwaysCrit,
+            Priority,
+            CopyLastAttack,
+            cinqt,
+            ResetStats,
+            CounterPatience,
+            RandomAttack,
+            CopyLastAttackTarget,
+            Death,
+            TransformIntoEnemy,
+            ChangeTypeToEnemy,
+            Clone,
         }
     }
 }

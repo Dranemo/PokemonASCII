@@ -8,7 +8,7 @@ namespace pokemonConsole.Tests
     public class CombatTests
     {
         [Test]
-        public void TestUneLoopDeCombatDeAxel_PokemonAdverseFaint()
+        public void TestLoopCombat_PokemonAdverseFaint()
         {
             // Arrange
             using (StringReader stringReader = new StringReader("1\n1\n"))
@@ -28,7 +28,7 @@ namespace pokemonConsole.Tests
         }
 
         [Test]
-        public void TestUneLoopDeCombatDeAxel_PlayerFaint()
+        public void TestLoopCombat_PlayerFaint()
         {
             // Arrange
             using (StringReader stringReader = new StringReader("1\n4\n"))
