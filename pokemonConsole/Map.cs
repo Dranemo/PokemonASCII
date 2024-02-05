@@ -36,7 +36,6 @@ internal class Map
 
         player.actuallPositionChar = map[player.PositionX, player.PositionY];
 
-        Console.Clear();
         DrawMap();
         DateTime time = DateTime.Now;
 
@@ -50,7 +49,6 @@ internal class Map
                     if (npc.updated)
                     {
                         npc.updated = false;
-                        Console.Clear();
                         DrawMap();
                         time = DateTime.Now;
                     }
@@ -81,19 +79,21 @@ internal class Map
                     moved = true;
                     break;
                 case ConsoleKey.X:
-                    Console.Clear();
-                    DrawMap();
+                    Console.SetCursorPosition(player.PositionX+1, player.PositionY);
+                    Console.Write(" ");
+                    Console.SetCursorPosition(player.PositionX + 1, player.PositionY);
 
                     Menu_principal.Open(player, mapWidth, rival);
 
-                    Console.Clear();
                     DrawMap();
+
                     break;
                 case ConsoleKey.Enter:
                     break;
                 default:
-                    Console.Clear();
-                    DrawMap();
+                    Console.SetCursorPosition(player.PositionX + 1, player.PositionY);
+                    Console.Write(" ");
+                    Console.SetCursorPosition(player.PositionX + 1, player.PositionY);
                     break;
             }
 
@@ -173,7 +173,6 @@ internal class Map
                         Functions.ClearInputBuffer();
                         Combat.LoopCombat(player);
 
-                        Console.Clear();
                         DrawMap();
                     }
                 }
@@ -206,7 +205,6 @@ internal class Map
 
             player.actuallPositionChar = map[nextX, nextY];
 
-            Console.Clear();
             DrawMap();
         }
     }
@@ -225,7 +223,6 @@ internal class Map
 
             player.actuallPositionChar = map[nextX, nextY];
 
-            Console.Clear();
             DrawMap();
         }
     }
@@ -251,7 +248,6 @@ internal class Map
                     Console.ReadKey();
 
 
-                    Console.Clear();
                     DrawMap();
                 }
                 
@@ -273,11 +269,41 @@ internal class Map
                     pokeball.Function(player);
                     entityToRemove.Add(pokeball);
 
+                    if (pokeball.position == 1)
+                    {
+                        foreach (Entity entity in entityList)
+                        {
+                            if (entity is Pokeball pokeball2 && pokeball2.position == 2)
+                            {
+                                entityToRemove.Add(pokeball2);
+                            }
+                        }
+                    }
+                    else if (pokeball.position == 2)
+                    {
+                        foreach (Entity entity in entityList)
+                        {
+                            if (entity is Pokeball pokeball2 && pokeball2.position == 3)
+                            {
+                                entityToRemove.Add(pokeball2);
+                            }
+                        }
+                    }
+                    else if (pokeball.position == 3)
+                    {
+                        foreach (Entity entity in entityList)
+                        {
+                            if (entity is Pokeball pokeball2 && pokeball2.position == 1)
+                            {
+                                entityToRemove.Add(pokeball2);
+                            }
+                        }
+                    }
+
                     Thread.Sleep(1000);
                     Functions.ClearInputBuffer();
                 }
 
-                Console.Clear();
                 DrawMap();
             }
         }
@@ -320,13 +346,41 @@ internal class Map
             entityList.Add(chen);
             entityList.Add(blue);
 
-            Pokeball pokeball1 = new Pokeball(1, filename, 8, 3, map[8, 3]);
-            Pokeball pokeball2 = new Pokeball(4, filename, 9, 3, map[9, 3]);
-            Pokeball pokeball3 = new Pokeball(7, filename, 10, 3, map[10, 3]);
+            Pokeball pokeball1;
+            Pokeball pokeball2;
+            Pokeball pokeball3;
 
-            entityList.Add(pokeball1);
-            entityList.Add(pokeball2);
-            entityList.Add(pokeball3);
+            if (player.starterId == null)
+            {
+                pokeball1 = new Pokeball(1, filename, 8, 3, map[8, 3], 1);
+                pokeball2 = new Pokeball(4, filename, 9, 3, map[9, 3], 2);
+                pokeball3 = new Pokeball(7, filename, 10, 3, map[10, 3], 3);
+
+                entityList.Add(pokeball1);
+                entityList.Add(pokeball2);
+                entityList.Add(pokeball3);
+            }
+            else if (player.starterId == 1)
+            {
+                pokeball3 = new Pokeball(7, filename, 10, 3, map[10, 3], 3);
+
+                entityList.Add(pokeball3);
+            }
+            else if (player.starterId == 4)
+            {
+                pokeball1 = new Pokeball(1, filename, 8, 3, map[8, 3], 1);
+
+                entityList.Add(pokeball1);
+            }
+            else if (player.starterId == 7)
+            {
+                pokeball2 = new Pokeball(4, filename, 9, 3, map[9, 3], 2);
+
+                entityList.Add(pokeball2);
+            }
+
+            
+
         }
         else if (filename == "mom.txt")
         {
@@ -341,8 +395,10 @@ internal class Map
     }
 
 
-    private static void DrawMap()
+    public static void DrawMap()
     {
+        Console.Clear();
+
         for (int y = 0; y < map.GetLength(1); y++)
         {
             for (int x = 0; x < map.GetLength(0); x++)
@@ -365,8 +421,8 @@ internal class Map
             Console.WriteLine();
         }
 
-        DrawPlayer();
         DrawEntity();
+        DrawPlayer();
     }
     private static bool MovePlayer(int deltaX, int deltaY)
     {
@@ -454,6 +510,11 @@ internal class Map
             return false;
         }
 
+        if (map[x, y] == '#' && player.pokemonParty.Count == 0)
+        {
+            return false;
+        }
+
         foreach(Entity entity in entityList)
         {
             if (x == entity.PositionX && y == entity.PositionY)
@@ -474,7 +535,6 @@ internal class Map
         }
         entityToRemove.Clear();
 
-        Console.Clear();
         DrawMap();
     }
 }

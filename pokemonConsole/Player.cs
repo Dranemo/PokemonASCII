@@ -9,11 +9,14 @@ namespace pokemonConsole
 
         public List<Pokemon> pokemonParty = new List<Pokemon>();
 
+        public int? starterId;
+
 
         public Player() : base("Player", 8, 8, 'P', "bedroom.txt", ' ')
         {
             Random random = new Random();
             id = random.Next(1, 65536);
+            starterId = null;
         }
 
 
