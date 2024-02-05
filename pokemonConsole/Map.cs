@@ -16,6 +16,7 @@ internal class Map
     private static Rival rival;
 
     private static List<Entity> entityList = new List<Entity>();
+    private static List<Entity> entityToRemove = new List<Entity>();
     
 
 
@@ -37,11 +38,24 @@ internal class Map
 
         Console.Clear();
         DrawMap();
-        DrawEntity();
-        DrawPlayer();
+        DateTime time = DateTime.Now;
 
         do
         {
+            foreach(Entity entity in entityList)
+            {
+                if(entity is NPC npc)
+                {
+                    npc.Update(time, player);
+                    if (npc.updated)
+                    {
+                        npc.updated = false;
+                        Console.Clear();
+                        DrawMap();
+                        time = DateTime.Now;
+                    }
+                }
+            }
             keyInfo = Console.ReadKey();
 
             // Deplacer le joueur en fonction de la touche pressee
@@ -66,18 +80,25 @@ internal class Map
                     deltaX = 1;
                     moved = true;
                     break;
-                case ConsoleKey.S:
-                    Save.Saving(player, rival);
-                    Console.WriteLine("Saved");
+                case ConsoleKey.X:
                     Console.Clear();
                     DrawMap();
-                    DrawEntity();
-                    DrawPlayer();
+
+                    Menu_principal.Open(player, mapWidth, rival);
+
+                    Console.Clear();
+                    DrawMap();
+                    break;
+                case ConsoleKey.Enter:
+                    break;
+                default:
+                    Console.Clear();
+                    DrawMap();
                     break;
             }
 
 
-            if (MovePlayer(deltaX, deltaY) && moved)
+            if (MovePlayer(deltaX, deltaY))
             { 
                 DrawPlayer();
 
@@ -90,14 +111,18 @@ internal class Map
 
                 else if (IsCurrentMap("bourg_palette.txt"))
                 {
-                    ChangeMap(0, "route_1.txt", player.PositionX - 3, 35, "\nVers la route 1 !");
-                    ChangeMap(13, 10, "chen.txt", 5, 8, "\nVers le labo du Pr.Chen...");
-                    ChangeMap(6, 5, "mom.txt", 3, 8, "\nMaman...");
+                    if (moved)
+                    {
+                        ChangeMap(0, "route_1.txt", player.PositionX - 3, 35, "\nVers la route 1 !");
+                        ChangeMap(13, 10, "chen.txt", 5, 8, "\nVers le labo du Pr.Chen...");
+                        ChangeMap(6, 5, "mom.txt", 3, 8, "\nMaman...");
+                    }
+                    
                 }
 
                 else if (IsCurrentMap("chen.txt"))
                 {
-                    ChangeMap(8, "bourg_palette.txt", 13, 11, "\nVers Bourg-Palette...");
+                    if(moved) ChangeMap(8, "bourg_palette.txt", 13, 11, "\nVers Bourg-Palette...");
 
                     foreach (Entity entity in entityList)
                     {
@@ -114,8 +139,12 @@ internal class Map
 
                 else if (IsCurrentMap("mom.txt"))
                 {
-                    ChangeMap(8, "bourg_palette.txt", 6, 6, "\nVers Bourg-Palette...");
-                    ChangeMap(8, 1, "bedroom.txt", 15, 1, "\nChambre...");
+                    if (moved)
+                    {
+                        ChangeMap(8, "bourg_palette.txt", 6, 6, "\nVers Bourg-Palette...");
+                        ChangeMap(8, 1, "bedroom.txt", 15, 1, "\nChambre...");
+                    }
+                    
 
                     foreach (NPC npc in entityList)
                     {
@@ -125,12 +154,17 @@ internal class Map
 
                 else if (IsCurrentMap("route_1.txt"))
                 {
-                    ChangeMap(35, "bourg_palette.txt", player.PositionX + 3, 0, "Vous arrivez à Bourg Palette !");
+                    if(moved) ChangeMap(35, "bourg_palette.txt", player.PositionX + 3, 0, "Vous arrivez à Bourg Palette !");
+
+                    foreach (NPC npc in entityList)
+                    {
+                        CanTalk(npc, keyInfo);
+                    }
                 }
 
                 
                 // Hautes herbes
-                if (map[player.PositionX, player.PositionY] == '#')
+                if (map[player.PositionX, player.PositionY] == '#' && moved)
                 {
                     if (random.Next(1, 101) <= 10) // chance de rencontrer un Pokemon dans les hautes herbes
                     {
@@ -138,12 +172,20 @@ internal class Map
                         Thread.Sleep(500);
                         Functions.ClearInputBuffer();
                         Combat.LoopCombat(player);
-
+                        if (player.IsKO())
+                        {
+                            Console.WriteLine("Tous vos Pokemon sont KO !");
+                            ChangeMap("mom.txt", 7, 5, "Retour chez maman...");
+                            Pokemon.Heal(player);
+                        }
                         Console.Clear();
                         DrawMap();
-                        DrawEntity();
-                        DrawPlayer();
                     }
+                }
+
+                if (entityToRemove.Count!= 0)
+                {
+                    RemoveEntity();
                 }
             }
 
@@ -153,7 +195,21 @@ internal class Map
     }
 
 
+    private static void ChangeMap(string nextMapFileName, int nextX, int nextY, string loadingText)
+    {
+            Console.WriteLine($"\n{loadingText}");
+            Thread.Sleep(500);
+            Functions.ClearInputBuffer();
+            LoadMap(nextMapFileName);
+            player.PositionX = nextX;
+            player.PositionY = nextY;
+            player.map = nextMapFileName;
 
+            player.actuallPositionChar = map[nextX, nextY];
+
+            Console.Clear();
+            DrawMap();
+    }
     private static void ChangeMap(int x, int y, string nextMapFileName, int nextX, int nextY, string loadingText)
     {
 
@@ -171,8 +227,6 @@ internal class Map
 
             Console.Clear();
             DrawMap();
-            DrawEntity();
-            DrawPlayer();
         }
     }
     private static void ChangeMap(int y, string nextMapFileName, int nextX, int nextY, string loadingText)
@@ -192,8 +246,6 @@ internal class Map
 
             Console.Clear();
             DrawMap();
-            DrawEntity();
-            DrawPlayer();
         }
     }
     private static void CanTalk(NPC npc, ConsoleKeyInfo keyInfo)
@@ -213,14 +265,13 @@ internal class Map
                             Task.Delay(50).Wait();
                         }
                     }
+                    npc.Function(player);
                     Functions.ClearInputBuffer();
                     Console.ReadKey();
 
 
                     Console.Clear();
                     DrawMap();
-                    DrawEntity();
-                    DrawPlayer();
                 }
                 
             }
@@ -231,21 +282,22 @@ internal class Map
     private static void Open(Pokeball pokeball, ConsoleKeyInfo keyInfo)
     {
 
-        if (pokeball.PositionX != -1 && pokeball.PositionY != -1)
+        if (pokeball.PositionX != -1 && pokeball.PositionY != -1 && !pokeball.taken)
         {
             if ((player.PositionX + 1 == pokeball.PositionX && player.PositionY == pokeball.PositionY) || (player.PositionX - 1 == pokeball.PositionX && player.PositionY == pokeball.PositionY) || (player.PositionX == pokeball.PositionX && player.PositionY - 1 == pokeball.PositionY) || (player.PositionX == pokeball.PositionX && player.PositionY + 1 == pokeball.PositionY))
             {
                 if (keyInfo.Key == ConsoleKey.Enter)
                 {
                     Console.WriteLine(pokeball.name);
+                    pokeball.Function(player);
+                    entityToRemove.Add(pokeball);
+
                     Thread.Sleep(1000);
                     Functions.ClearInputBuffer();
                 }
 
                 Console.Clear();
                 DrawMap();
-                DrawEntity(); 
-                DrawPlayer();
             }
         }
 
@@ -297,8 +349,13 @@ internal class Map
         }
         else if (filename == "mom.txt")
         {
-            NPC maman = new NPC("Maman", "Bonjour mon fils ! Bien dormi ?", '8', filename, 7, 4, map[7, 4]);
+            Maman maman = new Maman();
             entityList.Add(maman);
+        }
+        else if (filename == "route_1.txt")
+        {
+            PotionMan potionMan = new PotionMan();
+            entityList.Add(potionMan);
         }
     }
 
@@ -326,6 +383,9 @@ internal class Map
             }
             Console.WriteLine();
         }
+
+        DrawPlayer();
+        DrawEntity();
     }
     private static bool MovePlayer(int deltaX, int deltaY)
     {
@@ -422,5 +482,18 @@ internal class Map
         }
 
         return true;
+    }
+
+
+    private static void RemoveEntity()
+    {
+        foreach(Entity entity in entityToRemove) 
+        {
+            entityList.Remove(entity);
+        }
+        entityToRemove.Clear();
+
+        Console.Clear();
+        DrawMap();
     }
 }

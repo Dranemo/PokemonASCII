@@ -38,7 +38,7 @@ namespace pokemonConsole
             int nbFuite = 0;
             bool fuiteReussit = false;
             Capacity capacityUsed = null;
-            while (pokemon.pvLeft > 0 && pokemonAdverse.pvLeft > 0 && !fuiteReussit)
+            while (!player.IsKO() && pokemonAdverse.pvLeft > 0 && !fuiteReussit)
             {
                 // Demander à l'utilisateur d'entrer son action
                 Console.WriteLine("Attaque");
@@ -56,25 +56,30 @@ namespace pokemonConsole
                         {
                             Console.WriteLine(attaque.name);
                         }
-
+                        pokemonAdverse.AfficherDetailsPokemon();
                         int choixAttaque = int.Parse(Console.ReadLine());
                         switch (choixAttaque)
                         {
                             case 1:
                                 capacityUsed = listAttackActual[0];
+                                capacityUsed.Use(pokemon, pokemonAdverse);
                                 break;
                             case 2:
                                 capacityUsed = listAttackActual[1];
+                                capacityUsed.Use(pokemon, pokemonAdverse);
                                 break;
                             case 3:
                                 capacityUsed = listAttackActual[2];
+                                capacityUsed.Use(pokemon, pokemonAdverse);
                                 break;
                             case 4:
                                 capacityUsed = listAttackActual[3];
+                                capacityUsed.Use(pokemon, pokemonAdverse);
                                 break;
                         }
 
                         int PvRestantPokemonAdverse = pokemonAdverse.pvLeft;
+                        pokemonAdverse.AfficherDetailsPokemon();
                         if (capacityUsed != null && capacityUsed.categorie == 1)
                         {
                             PvRestantPokemonAdverse -= (int)Math.Round(CalculerDegatSubitPokemon(pokemon, pokemonAdverse, capacityUsed));
@@ -195,11 +200,6 @@ namespace pokemonConsole
                         }
                         break;
                 }
-
-                if (pokemon.pvLeft <= 0)
-                {
-                    Console.WriteLine("Le Pokemon du joueur a perdu !");
-                }
                 if (pokemonAdverse.pvLeft <= 0)
                 {
                     Console.WriteLine("Le Pokemon de l'adversaire a perdu !");
@@ -304,7 +304,6 @@ namespace pokemonConsole
                 }
             }
         }
-
 
 
         public class TypeModifier

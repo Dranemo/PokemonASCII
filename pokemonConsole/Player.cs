@@ -10,22 +10,24 @@ namespace pokemonConsole
         public List<Pokemon> pokemonParty = new List<Pokemon>();
 
 
-        public Player()
+        public Player() : base("Player", 8, 8, 'P', "bedroom.txt", ' ')
         {
-            name = "Player";
             Random random = new Random();
             id = random.Next(1, 65536);
-
-            PositionX = 8;
-            PositionY = 8;
-
-            sprite = 'P';
-
-            map = "bedroom.txt";
-            actuallPositionChar = ' ';
         }
 
-
+        public bool IsKO()
+        {
+            foreach (var p in pokemonParty)
+            {
+                if (p.pvLeft <= 0)
+                {
+                    Thread.Sleep(1000);
+                    return true;
+                }
+            }
+            return false;
+        }
 
         public void addPokemonToParty(Pokemon pokemon)
         {

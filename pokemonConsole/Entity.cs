@@ -1,8 +1,10 @@
 ﻿using pokemonConsole;
 using System;
+using System.Net.Http.Headers;
+using System.Runtime.CompilerServices;
 using Usefull;
 
-public class Entity
+class Entity
 {
     public string name { get; set; }
 
@@ -12,43 +14,36 @@ public class Entity
 
     public string map { get; set; }
     public char actuallPositionChar { get; set;  }
-}
-
-public class NPC : Entity
-{
-    public string dialogue { get; private set; }
 
 
-    public NPC(string name_, string dialogue_, char sprite_, string map_, int x, int y, char actualPosition)
+
+    public virtual void Function(Player player) { }
+
+    protected Entity(string name, int positionX, int positionY, char sprite, string map, char actuallPositionChar)
     {
-        name = name_;
-        dialogue = dialogue_;
-        sprite = sprite_;
-
-        map = map_;
-
-        PositionX = x;
-        PositionY = y;
-
-        actuallPositionChar = actualPosition;
+        this.name = name;
+        PositionX = positionX;
+        PositionY = positionY;
+        this.sprite = sprite;
+        this.map = map;
+        this.actuallPositionChar = actuallPositionChar;
     }
 }
 
-public class Pokeball : Entity
+class Pokeball : Entity
 {
     public int id_pokemon;
+    public bool taken;
 
-    public Pokeball(int id_, string map_, int x, int y, char actualPosition)
+    public Pokeball(int id_, string map_, int x, int y, char actualPosition) : base(Pokemon.GetNom(id_), x, y, 'o', map_, actualPosition)
     {
-        name = Pokemon.GetNom(id_);
         id_pokemon = id_;
-        sprite = 'o';
+        taken = false;
+    }
 
-        map = map_;
-
-        PositionX = x;
-        PositionY = y;
-
-        actuallPositionChar = actualPosition;
+    public override void Function(Player player) 
+    {
+        player.addPokemonToParty(new Pokemon(id_pokemon, 5, player.id, 1, player.id, player.name));
+        taken = true;
     }
 }

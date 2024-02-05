@@ -32,7 +32,7 @@ namespace pokemonConsole
 
         private static int widthOak = 45;
 
-        private static string hautTextZone = "_____________________________________________";
+        private static string hautTextZone = "0-------------------------------------------0";
         private static string middleTextZone = "|                                           |";
 
 
@@ -88,104 +88,18 @@ namespace pokemonConsole
                         if (lineVide == 1)
                         {
                             Console.ReadKey();
-                            player.name = Functions.ClavierName();
+                            player.name = Functions.ClavierName(7);
                         }
                         else if (lineVide == 2)
                         {
                             Console.ReadKey();
-                            rival.name = Functions.ClavierName();
+                            rival.name = Functions.ClavierName(7);
                         }
                     }
                 }
                 AnimationRedShrink();
             }
         }
-
-/*        private static void Print(string line, int lineReading)
-        {
-            Console.Clear();
-            if (lineReading <= 9)
-            {
-                Console.WriteLine(asciiOak);
-            }
-            else if ( lineReading <= 14) 
-            {
-                Console.ForegroundColor = ConsoleColor.Blue;
-                Console.WriteLine(asciiBlue);
-                Console.ForegroundColor = ConsoleColor.White;
-            }
-            else 
-            {
-                Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.WriteLine(asciiRedHalf);
-                Console.ForegroundColor = ConsoleColor.White;
-            }
-            
-
-            Console.WriteLine(hautTextZone);
-            int lineWriting = 1;
-            int charRestant = widthOak - 4;
-
-
-            if (!string.IsNullOrEmpty(line))
-            {
-                Console.Write("| ");
-
-                for (int i = 0; i < line.Length; i++)
-                {
-                    if (i < widthOak - 4)
-                    {
-                        Console.Write(line[i]);
-                        charRestant--;
-                    }
-                    else if (i >= widthOak - 4 && i < (widthOak - 4) * 2)
-                    {
-                        if (i == (widthOak - 4))
-                        {
-                            lineWriting++;
-                            Console.WriteLine(" |");
-                            Console.Write("| ");
-                            charRestant = widthOak - 4;
-                        }
-                        Console.Write(line[i]);
-                        charRestant--;
-                    }
-                    else if (i >= (widthOak - 4) * 2)
-                    {
-                        if (i == (widthOak - 4) * 2)
-                        {
-                            lineWriting++;
-                            Console.WriteLine(" |");
-                            Console.Write("| ");
-                            charRestant = widthOak - 4;
-                        }
-                        Console.Write(line[i]);
-                        charRestant--;
-                    }
-
-                    Task.Delay(50).Wait();
-                }
-
-            }
-
-            for (int i = charRestant; i > 0; i--)
-            {
-                Console.Write(" ");
-            }
-
-            Console.WriteLine(" |");
-
-            while (lineWriting < 3)
-            {
-                Console.WriteLine(middleTextZone);
-                lineWriting++;
-            }
-
-            Console.WriteLine(hautTextZone);
-            
-
-            Console.WriteLine();
-        }*/
 
 
         private static void Print(string line, int lineReading)
@@ -335,7 +249,7 @@ namespace pokemonConsole
             asciiLittleRed = File.ReadAllText(asciiFileLittleRed);
             using (StreamReader sr = new StreamReader(asciiFileRed))
             {
-                for (int i = 0; i < 31; i++)
+                for (int i = 0; i < 30; i++)
                 {
                     asciiRedHalf += sr.ReadLine() + Environment.NewLine;
                 }

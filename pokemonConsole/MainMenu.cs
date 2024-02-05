@@ -19,6 +19,7 @@ namespace pokemonConsole
 
 
 
+
         static public void Start()
         {
             Player player = new Player();
@@ -33,6 +34,8 @@ namespace pokemonConsole
 
                 // Lire les lignes restantes dans un autre string
                 logoMainMenuAscii = reader.ReadToEnd();
+
+
 
 
                 Console.ForegroundColor = ConsoleColor.Blue;
