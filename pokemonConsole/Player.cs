@@ -19,7 +19,18 @@ namespace pokemonConsole
             starterId = null;
         }
 
-
+        public bool IsKO()
+        {
+            foreach (var p in pokemonParty)
+            {
+                if (p.pvLeft <= 0)
+                {
+                    Thread.Sleep(1000);
+                    return true;
+                }
+            }
+            return false;
+        }
 
         public void addPokemonToParty(Pokemon pokemon)
         {

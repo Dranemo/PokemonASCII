@@ -38,7 +38,7 @@ namespace pokemonConsole
         // ------------------ Statistiques ------------------ //
         public int pv { get; private set; }
         public int pvLeft {  get; set; }
-        public int atk { get; private set; }
+        public int atk { get; set; }
         public int def { get; private set; }
         public int spe { get; private set; }
         public int spd { get; private set; }
