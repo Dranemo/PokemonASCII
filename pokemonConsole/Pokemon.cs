@@ -7,8 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-using Usefull;
 using System.Buffers.Text;
+
 
 
 namespace pokemonConsole
@@ -18,6 +18,7 @@ namespace pokemonConsole
         // ------------------------------------- Infos Pokemon ------------------------------------- //
         public int id { get; private set; }
         public string name { get; private set; }
+        private string actual_name;
         public List<string> listType = new List<string>();
         public string asciiArt { get; private set; }
         private ConsoleColor color ;
@@ -86,6 +87,8 @@ namespace pokemonConsole
         public int appartenant {  get; set; }
         public bool echange {  get; set; }
 
+        public int width { get; private set; }
+
 
 
 
@@ -131,6 +134,7 @@ namespace pokemonConsole
                         if (id_search == id_generate)
                         {
                             name = colonnes[1];
+                            actual_name = name;
                             listType.Add(colonnes[2]);
                             if (colonnes[3] != "NONE")
                             {
@@ -392,6 +396,8 @@ namespace pokemonConsole
             if (File.Exists(asciiArtFilePath))
             {
                 asciiArt = File.ReadAllText(asciiArtFilePath);
+                string[] temp = asciiArt.Split('\n');
+                width = temp[0].Length;
             }
             else
             {
@@ -573,6 +579,8 @@ namespace pokemonConsole
             if (File.Exists(asciiArtFilePath))
             {
                 asciiArt = File.ReadAllText(asciiArtFilePath);
+                string[] temp2 = asciiArt.Split('\n');
+                width = temp2[0].Length;
             }
             else
             {
@@ -589,9 +597,266 @@ namespace pokemonConsole
 
         public void AfficherDetailsMenu()
         {
+
+            string hautBoxPage1 = "0--------0";
+            string middleBoxPage1 = "|        |";
+
+            string hautBoxPage2 =   "0------------------0";
+            string middleBoxPage2 = "|                  |";
+
+            int spaceStartInt = width / 2 - 10;
+            int pokemonOffset = 10;
+
+            int cursorXTop;
+            int cursorYTop;
+
+            int cursorXBox;
+            int cursorYBox;
+
             Console.Clear();
+
+            // Sprite
+            Console.WriteLine();
+            Console.ForegroundColor = color;
             Console.WriteLine(asciiArt);
-            Console.WriteLine("No. ");
+            Console.ForegroundColor = ConsoleColor.White;
+
+
+            Console.WriteLine();
+
+            cursorXTop = Console.CursorLeft;
+            cursorYTop = Console.CursorTop;
+
+            Console.SetCursorPosition(Console.CursorLeft + spaceStartInt + pokemonOffset, Console.CursorTop); // Afficher nom
+            Console.WriteLine(name);
+
+
+            // ---------------- Premiere fenetre ---------------- //
+            //Premiere partie
+            Console.SetCursorPosition(Console.CursorLeft + spaceStartInt + pokemonOffset + 5, Console.CursorTop); // Afficher Level
+            if (level >= 100)
+            {
+                Console.WriteLine(level);
+            }
+            else
+            {
+                Console.WriteLine("N" + level);
+            }
+
+            Console.SetCursorPosition(Console.CursorLeft + spaceStartInt + pokemonOffset + 2, Console.CursorTop); // Afficher Bar PV
+            int pvPerSix = pvLeft * 6 / pv;
+            string barPv = "PV";
+            for (int j = 0; j < pvPerSix; j++)
+            {
+                barPv += "=";
+            }
+            for (int j = barPv.Length; j < 8; j++)
+            {
+                barPv += "*";
+            }
+            foreach (char c in barPv)
+            {
+                if (c == '=')
+                {
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.Write(c);
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                else if (c == '*')
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    Console.Write('=');
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                else
+                {
+                    Console.Write(c);
+                }
+            }
+            Console.WriteLine();
+
+            Console.SetCursorPosition(Console.CursorLeft + spaceStartInt + pokemonOffset + 3, Console.CursorTop); // Afficher pv/pv
+            for (int j = 3; j > pvLeft.ToString().Length; j--)
+            {
+                Console.Write( " ");
+            }
+            Console.Write(pvLeft + "/");
+            for (int j = 3; j > pv.ToString().Length; j--)
+            {
+                Console.Write(" ");
+            }
+            Console.WriteLine(pv);
+            Console.WriteLine();
+
+            Console.SetCursorPosition(Console.CursorLeft + spaceStartInt + pokemonOffset, Console.CursorTop); //Afficher Statut
+            Console.WriteLine("STATUT/" + statusProblem);
+
+            Console.SetCursorPosition(Console.CursorLeft + spaceStartInt + 1, Console.CursorTop); // Afficher No pokedex
+            Console.Write("No"); 
+            for (int i = id.ToString().Length; i < 3; i++)
+            {
+                Console.Write("0");
+            }
+            Console.Write(id);
+
+            Console.SetCursorPosition(Console.CursorLeft + 2, Console.CursorTop); // Afficher Séparation
+            Console.WriteLine("____________");
+
+
+
+            //Deuxieme partie
+            int offsetStats = 0;
+            int offsetBox = 1;
+            int offsetAfterBox = 10;
+
+            Console.SetCursorPosition(Console.CursorLeft + spaceStartInt, Console.CursorTop); // Aficher la box
+            Console.WriteLine(hautBoxPage1);
+            cursorXBox = Console.CursorLeft;
+            cursorYBox = Console.CursorTop;
+
+            for (int i = 0; i < 8; i++)
+            {
+                Console.SetCursorPosition(Console.CursorLeft + spaceStartInt, Console.CursorTop);
+                Console.WriteLine(middleBoxPage1);
+            }
+            Console.SetCursorPosition(Console.CursorLeft + spaceStartInt, Console.CursorTop); // Aficher la box
+            Console.WriteLine(hautBoxPage1);
+
+            Console.SetCursorPosition(cursorXBox + spaceStartInt + offsetBox, cursorYBox); // Afficher les noms des stats
+            Console.Write("FOR");
+            Console.SetCursorPosition(cursorXBox + spaceStartInt + offsetBox, cursorYBox + 2);
+            Console.Write("DEF");
+            Console.SetCursorPosition(cursorXBox + spaceStartInt + offsetBox, cursorYBox + 4);
+            Console.Write("VIT");
+            Console.SetCursorPosition(cursorXBox + spaceStartInt + offsetBox, cursorYBox + 6);
+            Console.Write("SPE");
+
+            
+            if (atk.ToString().Length == 1) offsetStats = 2;
+            else if (atk.ToString().Length == 2) offsetStats = 1;
+            else if (atk.ToString().Length == 3) offsetStats = 0;
+            Console.SetCursorPosition(cursorXBox + spaceStartInt + offsetBox + 5 + offsetStats, cursorYBox + 1); // Afficher ATK
+            Console.Write(atk);
+
+            if (def.ToString().Length == 1) offsetStats = 2;
+            else if (def.ToString().Length == 2) offsetStats = 1;
+            else if (def.ToString().Length == 3) offsetStats = 0;
+            Console.SetCursorPosition(cursorXBox + spaceStartInt + offsetBox + 5 + offsetStats, cursorYBox + 3); // Afficher Def
+            Console.Write(def);
+
+            if (spd.ToString().Length == 1) offsetStats = 2;
+            else if (spd.ToString().Length == 2) offsetStats = 1;
+            else if (spd.ToString().Length == 3) offsetStats = 0;
+            Console.SetCursorPosition(cursorXBox + spaceStartInt + offsetBox + 5 + offsetStats, cursorYBox + 5); // Afficher Spd
+            Console.Write(spd);
+
+            if (spe.ToString().Length == 1) offsetStats = 2;
+            else if (spe.ToString().Length == 2) offsetStats = 1;
+            else if (spe.ToString().Length == 3) offsetStats = 0;
+            Console.SetCursorPosition(cursorXBox + spaceStartInt + offsetBox + 5 + offsetStats, cursorYBox + 7); // Afficher Dpe
+            Console.Write(spe);
+
+            Console.SetCursorPosition(cursorXBox + spaceStartInt + offsetAfterBox, cursorYBox); // Afficher Type1
+            Console.Write("TYPE1/");
+
+            Console.SetCursorPosition(cursorXBox + spaceStartInt +1  + offsetAfterBox, cursorYBox + 1);// Afficher Type1
+            Console.Write(listType[0]);
+
+            if (listType.Count == 2)
+            {
+                Console.SetCursorPosition(cursorXBox + spaceStartInt + offsetAfterBox, cursorYBox + 2);// Afficher Type2
+                Console.Write("TYPE2/");
+
+                Console.SetCursorPosition(cursorXBox + spaceStartInt + 1 + offsetAfterBox, cursorYBox + 3);// Afficher Type2
+                Console.Write(listType[1]);
+            }
+
+            Console.SetCursorPosition(cursorXBox + spaceStartInt + offsetAfterBox, cursorYBox + 4);// Afficher Id Player
+            Console.Write("NoID/");
+
+            Console.SetCursorPosition(cursorXBox + spaceStartInt + 2 + offsetAfterBox, cursorYBox + 5);// Afficher Id Player
+            Console.Write(idOT);
+
+            Console.SetCursorPosition(cursorXBox + spaceStartInt + offsetAfterBox, cursorYBox + 6);// Afficher name Player
+            Console.Write("OT/");
+
+            Console.SetCursorPosition(cursorXBox + spaceStartInt + 2 + offsetAfterBox, cursorYBox + 7);// Afficher name Player
+            Console.Write(nameOT);
+
+            Console.SetCursorPosition(cursorXBox + spaceStartInt + 2 + offsetAfterBox, cursorYBox + 8);// Afficher Separation
+            Console.WriteLine("_______");
+
+
+
+            Console.ReadKey(true);
+
+            // ---------------- Deuxieme fenetre ---------------- //
+            //Premiere partie
+            Console.SetCursorPosition(cursorXTop + spaceStartInt + pokemonOffset, cursorYTop + 1);
+            Console.WriteLine("          ");
+            Console.SetCursorPosition(cursorXTop + spaceStartInt + pokemonOffset, cursorYTop + 2);
+            Console.WriteLine("          ");
+            Console.SetCursorPosition(cursorXTop + spaceStartInt + pokemonOffset, cursorYTop + 3);
+            Console.WriteLine("          ");
+            Console.SetCursorPosition(cursorXTop + spaceStartInt + pokemonOffset, cursorYTop + 4);
+            Console.WriteLine("          ");
+            Console.SetCursorPosition(cursorXTop + spaceStartInt + pokemonOffset, cursorYTop + 5);
+            Console.WriteLine("          ");
+
+
+            Console.SetCursorPosition(cursorXTop + spaceStartInt + pokemonOffset + 2, cursorYTop+2);
+            Console.WriteLine("PTS EXP.");
+
+            int offSetxp = 10 - expActuel.ToString().Length;
+            Console.SetCursorPosition(Console.CursorLeft + spaceStartInt + pokemonOffset + offSetxp, Console.CursorTop);
+            Console.WriteLine(expActuel);
+
+            Console.SetCursorPosition(Console.CursorLeft + spaceStartInt + pokemonOffset + 2, Console.CursorTop);
+            Console.WriteLine("PTS EXP.");
+
+            offSetxp = 5 - (expToLevelUp - expActuel).ToString().Length;
+            string exp = "";
+            if (level >= 100)
+            {
+                exp += level;
+            }
+            else
+            {
+                exp += "N" + level;
+            }
+            Console.SetCursorPosition(Console.CursorLeft + spaceStartInt + pokemonOffset + offSetxp, Console.CursorTop);
+            Console.WriteLine((expToLevelUp - expActuel) + "> " + exp);
+
+
+            offsetBox = 2;
+
+            Console.SetCursorPosition(cursorXBox + spaceStartInt, cursorYBox - 1);
+            Console.WriteLine(hautBoxPage2);
+            for (int i = 0; i < 8; i++)
+            {
+                Console.SetCursorPosition(Console.CursorLeft + spaceStartInt, Console.CursorTop);
+                Console.WriteLine(middleBoxPage2);
+            }
+            Console.SetCursorPosition(Console.CursorLeft + spaceStartInt, Console.CursorTop);
+            Console.WriteLine(hautBoxPage2);
+
+            for (int i = 0; i < listAttackActual.Count; i++)
+            {
+                Console.SetCursorPosition(cursorXBox + spaceStartInt + offsetBox, cursorYBox + i *2);
+                Console.Write(listAttackActual[i].name);
+
+                Console.SetCursorPosition(cursorXBox + spaceStartInt + offsetBox + 9, cursorYBox + i*2 + 1);
+                Console.Write("PP ");
+                if (listAttackActual[i].ppLeft.ToString().Length == 1)
+                {
+                    Console.Write(" ");
+                }
+                Console.WriteLine(listAttackActual[i].ppLeft + "/" + listAttackActual[i].pp);
+            }
+
+
+            Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop+5);
+            Console.ReadKey(true);
         }
 
 
@@ -727,6 +992,11 @@ namespace pokemonConsole
                 this.id = int.Parse(colonnes[0]);
                 this.name = colonnes[1];
 
+                if (name == old_name)
+                {
+                    actual_name = name;
+                }
+
                 // Sprite
                 string asciiArtFileName = $"ascii-art ({id}).txt";
 
@@ -736,6 +1006,8 @@ namespace pokemonConsole
                 if (File.Exists(asciiArtFilePath))
                 {
                     asciiArt = File.ReadAllText(asciiArtFilePath);
+                    string[] temp2 = asciiArt.Split('\n');
+                    width = temp2[0].Length;
                 }
                 else
                 {
@@ -755,10 +1027,11 @@ namespace pokemonConsole
                     }
                 }
 
+                colorCSV = colonnes[18];
                 ColorForegroundCheck();
 
 
-                EvolutionAnimation(old_sprite, asciiArt, old_name, name, old_color, color);
+                EvolutionAnimation(old_sprite, asciiArt, old_name, actual_name, old_color, color);
 
                 this.listPv[0] = int.Parse(colonnes[4]);
                 this.listAtk[0] = int.Parse(colonnes[5]);

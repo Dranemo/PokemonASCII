@@ -259,7 +259,7 @@ internal class Map
     private static void Open(Pokeball pokeball, ConsoleKeyInfo keyInfo)
     {
 
-        if (pokeball.PositionX != -1 && pokeball.PositionY != -1 && !pokeball.taken)
+        if (pokeball.PositionX != -1 && pokeball.PositionY != -1 && !pokeball.taken && player.starterId == null)
         {
             if ((player.PositionX + 1 == pokeball.PositionX && player.PositionY == pokeball.PositionY) || (player.PositionX - 1 == pokeball.PositionX && player.PositionY == pokeball.PositionY) || (player.PositionX == pokeball.PositionX && player.PositionY - 1 == pokeball.PositionY) || (player.PositionX == pokeball.PositionX && player.PositionY + 1 == pokeball.PositionY))
             {

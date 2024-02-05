@@ -168,6 +168,8 @@ namespace pokemonConsole
         private static string littleMenuOrdre = "  ORDRE";
         private static string littleMenuRetour = "  RETOUR";
 
+        private static bool isChangingOnTop;
+
         
 
         private static List<string> pokemonLines1 = new List<string>();
@@ -186,12 +188,7 @@ namespace pokemonConsole
 
         public static void Open(Player player)
         {
-            player.addPokemonToParty(new Pokemon(4, 8));
-            player.addPokemonToParty(new Pokemon(4, 8));
-            player.addPokemonToParty(new Pokemon(4, 8));
-            player.addPokemonToParty(new Pokemon(4, 8));
-            player.addPokemonToParty(new Pokemon(4, 8));
-
+            player.addPokemonToParty(new Pokemon(9, 45));
 
             for (int i = 0; i < player.pokemonParty.Count; i++)
             {
@@ -205,21 +202,20 @@ namespace pokemonConsole
                 {
                     pokemonLines1[i] += " ";
                 }
-                pokemonLines1[i] += "L:" + pokemon.level;
+                pokemonLines1[i] += "N" + pokemon.level;
 
 
                 pokemonLines2.Add(pokemonLine2);
-                int pvPerSix = pokemon.pv * 6 / pokemon.pvLeft;
-                string barPv = "[";
+                int pvPerSix = pokemon.pvLeft * 6 / pokemon.pv;
+                string barPv = "PV";
                 for (int j = 0; j < pvPerSix; j++)
                 {
                     barPv += "=";
                 }
-                for (int j = barPv.Length; j < pvPerSix + 1; j++)
+                for (int j = barPv.Length; j < 8; j++)
                 {
-                    barPv += " ";
+                    barPv += "*";
                 }
-                barPv += "]";
                 pokemonLines2[i] += barPv;
 
                 pokemonLines2[i] += "  ";
@@ -262,7 +258,7 @@ namespace pokemonConsole
 
             while (!retour)
             {
-                keyInfo = Console.ReadKey();
+                keyInfo = Console.ReadKey(true);
 
                 switch (keyInfo.Key)
                 {
@@ -283,7 +279,7 @@ namespace pokemonConsole
                         }
                         break;
                     case ConsoleKey.Enter:
-                        if (!isSwitching) OpenLittleMenu(ref isSwitching);
+                        if (!isSwitching) OpenLittleMenu(ref isSwitching, player);
                         else
                         {
                             if (PositionChangement != position)
@@ -301,6 +297,7 @@ namespace pokemonConsole
 
                                 ChangeSelected(PositionChangement, position, pokemonLines1);
                             }
+                            isChangingOnTop = false;
                             isSwitching = false;
                         }
 
@@ -309,17 +306,12 @@ namespace pokemonConsole
                     case ConsoleKey.Escape:
                         retour = true;
                         break;
-                    default:
-                        Console.SetCursorPosition(endPositionXText, endPositionYText);
-                        Console.Write(" ");
-                        Console.SetCursorPosition(endPositionXText, endPositionYText);
-                        break;
                 }
             }
             pokemonLines1.Clear();
             pokemonLines2.Clear();
         }
-        private static void OpenLittleMenu(ref bool isSwitching)
+        private static void OpenLittleMenu(ref bool isSwitching, Player player)
         {
 
             littleMenuLines.Add(littleMenuStats);
@@ -372,11 +364,13 @@ namespace pokemonConsole
                     case ConsoleKey.Enter:
                         if (positionLittle == 0)
                         {
-                            //Afficher pokemon
+                            player.pokemonParty[position].AfficherDetailsMenu();
+                            retour = true;
                         }   
                         else if (positionLittle == 1)
                         {
                             PositionChangement = position;
+                            isChangingOnTop = true;
                             isSwitching = true;
                             retour = true;
                         }
@@ -399,9 +393,19 @@ namespace pokemonConsole
 
         private static void ChangeSelected(int position, int nextPosition, List<string> list)
         {
-            list[position] = list[position].Remove(0, 1);
-            list[position] = list[position].Insert(0, " ");
+            if (list[position][0] != '}')
+            {
+                list[position] = list[position].Remove(0, 1);
+                list[position] = list[position].Insert(0, " ");
+            }
+            if (isChangingOnTop)
+            {
+                list[position] = list[position].Remove(0, 1);
+                list[position] = list[position].Insert(0, "}");
+            }
 
+            if (list[nextPosition][0] == '}') isChangingOnTop = true;
+            else isChangingOnTop = false;
             list[nextPosition] = list[nextPosition].Remove(0, 1);
             list[nextPosition] = list[nextPosition].Insert(0, ">");
         }
@@ -415,8 +419,14 @@ namespace pokemonConsole
                 {
                     if (c == '=')
                     {
-                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                        Console.ForegroundColor = ConsoleColor.Gray;
                         Console.Write(c);
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    else if (c == '*')
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                        Console.Write('=');
                         Console.ForegroundColor = ConsoleColor.White;
                     }
                     else

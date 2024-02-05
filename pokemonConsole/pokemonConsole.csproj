@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="NUnit" Version="3.13.2" />
+    <PackageReference Include="System.Windows.Extensions" Version="8.0.0" />
   </ItemGroup>
 
 </Project>
