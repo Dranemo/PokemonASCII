@@ -55,25 +55,30 @@ namespace pokemonConsole
                         {
                             Console.WriteLine(attaque.name);
                         }
-
+                        pokemonAdverse.AfficherDetailsPokemon();
                         int choixAttaque = int.Parse(Console.ReadLine());
                         switch (choixAttaque)
                         {
                             case 1:
                                 capacityUsed = listAttackActual[0];
+                                capacityUsed.Use(pokemon, pokemonAdverse);
                                 break;
                             case 2:
                                 capacityUsed = listAttackActual[1];
+                                capacityUsed.Use(pokemon, pokemonAdverse);
                                 break;
                             case 3:
                                 capacityUsed = listAttackActual[2];
+                                capacityUsed.Use(pokemon, pokemonAdverse);
                                 break;
                             case 4:
                                 capacityUsed = listAttackActual[3];
+                                capacityUsed.Use(pokemon, pokemonAdverse);
                                 break;
                         }
 
                         int PvRestantPokemonAdverse = pokemonAdverse.pvLeft;
+                        pokemonAdverse.AfficherDetailsPokemon();
                         if (capacityUsed != null && capacityUsed.categorie == 1)
                         {
                             PvRestantPokemonAdverse -= (int)Math.Round(CalculerDegatSubitPokemon(pokemon, pokemonAdverse, capacityUsed));
