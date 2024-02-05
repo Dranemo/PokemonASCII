@@ -12,12 +12,13 @@ using System.Text;
 
 class Program
 {
-
     static void Main()
     {
         MainMenu.Start();
     }
+
 }
+
 
 
 
@@ -257,6 +258,6 @@ namespace Usefull
 
     class AdresseFile
     {
-        public static string FileDirection = "C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\GameFiles\\";
+        public static string FileDirection = "C:\\Users\\agathelier\\Desktop\\Nouveau dossier\\pokemonConsole\\GameFiles\\";
     }
 }
