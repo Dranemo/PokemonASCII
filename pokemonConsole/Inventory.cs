@@ -38,13 +38,12 @@ namespace inventory
             Effect2 = effect2;
             Quantity = quantity;
         }
+        private static List<Item> allItems = new List<Item>();
 
         public static List<Item> AllItems
         {
             get { return allItems; }
         }
-
-        private static List<Item> allItems;
 
         public static List<Item> LoadItemsFromSaveFile(string saveFilePath)
         {
