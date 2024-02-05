@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Usefull;
 
 namespace pokemonConsole
 {
@@ -101,40 +102,66 @@ namespace pokemonConsole
                         ;
                         break;
                     case 3:
-                        Console.WriteLine("1. Utiliser un objet");
+                        Item.LoadItemsFromSaveFile($"{AdresseFile.FileDirection}\\SaveItem.txt");
+
+                        Console.WriteLine("\n1. Utiliser un objet");
                         Console.WriteLine("2. Retour");
 
                         int choixInventaire = int.Parse(Console.ReadLine());
+                       
 
                         switch (choixInventaire)
                         {
                             case 1:
-                                // Accédez à la liste d'objets déjà chargée
                                 List<Item> items = Item.AllItems;
+                                Console.WriteLine("\nListe des objets dans votre inventaire :\n");
 
-                                // Créer un inventaire
-                                Inventory<Item> inventory = new Inventory<Item>();
-
-                                // Ajouter les objets à l'inventaire
-                                foreach (var item in items)
+                                // Affichez uniquement les objets avec une quantité supérieure à 0
+                                foreach (var item in Item.AllItems.Where(i => i.Quantity > 0)
+                                    .Select((value, index) => new { Index = index, Value = value }))
                                 {
-                                    inventory.AddItem(item);
+                                    Console.WriteLine($"({item.Index + 1}) Name: {item.Value.Name}, Quantity: {item.Value.Quantity}");
                                 }
 
-                                // Demander à l'utilisateur de choisir un objet
                                 Console.WriteLine("Choisissez un objet de l'inventaire (numéro) ou 0 pour retourner : ");
                                 int choixObjet = int.Parse(Console.ReadLine());
 
-                                if (choixObjet > 0 && choixObjet <= inventory.Items.Count)
+                                if (choixObjet > 0 && choixObjet <= items.Count)
                                 {
                                     // Utiliser l'objet sélectionné
-                                    Item itemToUse = inventory.Items[choixObjet - 1];
-                                    // Ajoutez votre logique pour utiliser l'objet ici
-                                    Console.WriteLine($"Vous avez utilisé l'objet : {itemToUse.Name}");
+                                    Item itemToUse = items[choixObjet - 1];
+
+                                    if (itemToUse.Quantity > 0)
+                                    {
+                                        Console.WriteLine($"Vous avez utilisé l'objet : {itemToUse.Name}");
+
+                                        itemToUse.Quantity--;
+                                        Console.WriteLine($"Nouvelle quantité de {itemToUse.Name} : {itemToUse.Quantity}\n");
+
+                                        // Sauvegarder les quantités dans le fichier
+                                        Item.SaveQuantitiesToFile($"{AdresseFile.FileDirection}\\SaveItem.txt", Item.AllItems);
+
+                                        capacityUsed = pokemonAdverse.listAttackActual[random.Next(0, pokemonAdverse.listAttackActual.Count)];
+
+                                        if (capacityUsed.categorie > 0)
+                                        {
+                                            pokemon.pvLeft -= (int)Math.Round(CalculerDegatSubitPokemon(pokemonAdverse, pokemon, capacityUsed));
+                                            Console.WriteLine(capacityUsed.name);
+                                        }
+
+                                        Console.WriteLine("Le Pokemon adverse vous inflige des dégâts !\n");
+                                        Console.WriteLine($"Les nouveaux PV du Pokemon du joueur sont = {pokemon.pvLeft}");
+                                        Console.WriteLine($"Les nouveaux PV du Pokemon de l'adversaire sont = {pokemonAdverse.pvLeft}\n");
+                                    }
+                                    else if (choixObjet <= 0)
+                                    {
+                                        Console.WriteLine($"Vous n'avez plus d'exemplaires de l'objet : {itemToUse.Name}");
+                                        break;
+                                    }
                                 }
                                 else if (choixObjet == 0)
                                 {
-                                    // Retourner au menu précédent
+                                    break;
                                 }
                                 else
                                 {
@@ -144,14 +171,10 @@ namespace pokemonConsole
 
 
                             case 2:
-                                // Retourner au menu précédent
-                                break;
-
-                            default:
-                                Console.WriteLine("Choix invalide.");
                                 break;
                         }
                         break;
+
                     case 4:
                         nbFuite++;
                         int spdQuart = (int)Math.Floor(pokemonAdverse.spd / 4.0);

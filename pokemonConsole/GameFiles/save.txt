@@ -1,5 +1,13 @@
 Player :
-Player,4657,7,32,route_1.txt,#
-0
+Player,52506,5,26,route_1.txt, 
+1
+4
+33,35,35
+45,40,40
+73,10,10
+22,10,10
+1,BULBIZARRE,52506,Player,15,2035,-14
+13,0,11,0,10,0,11,0,9,0
+OK,False,False
 Rival :
 Rival
