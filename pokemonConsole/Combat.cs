@@ -37,7 +37,7 @@ namespace pokemonConsole
             int nbFuite = 0;
             bool fuiteReussit = false;
             Capacity capacityUsed = null;
-            while (pokemon.pvLeft > 0 && pokemonAdverse.pvLeft > 0 && !fuiteReussit)
+            while (!player.IsKO(pokemon) && pokemonAdverse.pvLeft > 0 && !fuiteReussit)
             {
                 // Demander à l'utilisateur d'entrer son action
                 Console.WriteLine("Attaque");
@@ -183,11 +183,6 @@ namespace pokemonConsole
                         }
                         break;
                 }
-
-                if (pokemon.pvLeft <= 0)
-                {
-                    Console.WriteLine("Le Pokemon du joueur a perdu !");
-                }
                 if (pokemonAdverse.pvLeft <= 0)
                 {
                     Console.WriteLine("Le Pokemon de l'adversaire a perdu !");
@@ -292,7 +287,6 @@ namespace pokemonConsole
                 }
             }
         }
-
 
 
         public class TypeModifier

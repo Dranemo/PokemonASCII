@@ -1,11 +1,11 @@
 Player :
-AAAAAAA,41069,11,2,bourg_palette.txt, 
+Player,22758,8,4,chen.txt, 
 1
 2
 33,35,35
 45,40,40
-1,BULBIZARRE,41069,AAAAAAA,5,135,20
-8,0,12,0,12,0,15,0,5,0
+1,BULBIZARRE,22758,Player,5,135,19
+0,0,15,0,7,0,3,0,12,0
 OK,False,False
 Rival :
-AAAAAAA
+Rival
