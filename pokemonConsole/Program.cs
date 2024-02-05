@@ -19,13 +19,6 @@ class Program
 
 }
 
-
-
-
-
-
-
-
 namespace Usefull
 {
     class Functions

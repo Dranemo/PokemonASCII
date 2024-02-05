@@ -1,4 +1,5 @@
-﻿using NUnit.Framework.Constraints;
+﻿using inventory;
+using NUnit.Framework.Constraints;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -88,6 +89,33 @@ namespace pokemonConsole
                     }
                 }
                 updated = true;
+            }
+        }
+
+        public override void Function(Player player)
+        {
+            Item.LoadItemsFromSaveFile($"{AdresseFile.FileDirection}\\SaveItem.txt");
+
+            // Ensuite, vous pouvez utiliser la fonction Function
+            //player.Function();
+
+            Item itemToGive = Item.AllItems.FirstOrDefault(i => i.ID == 5);
+
+            // Vérifiez si l'objet a été trouvé
+            if (itemToGive != null)
+            {
+                // Augmentez la quantité de l'objet dans l'inventaire du joueur
+                itemToGive.Quantity++;
+
+                // Affichez la nouvelle quantité
+                Console.WriteLine($"Vous avez maintenant {itemToGive.Quantity} {itemToGive.Name}(s) dans votre inventaire.");
+
+                // Vous pouvez également sauvegarder l'inventaire mis à jour dans un fichier si nécessaire
+                Item.SaveQuantitiesToFile($"{AdresseFile.FileDirection}\\SaveItem.txt", Item.AllItems);
+            }
+            else
+            {
+                Console.WriteLine("Erreur : Objet introuvable.");
             }
         }
     }

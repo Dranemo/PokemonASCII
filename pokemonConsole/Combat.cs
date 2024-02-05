@@ -125,7 +125,7 @@ namespace pokemonConsole
                                 foreach (var item in Item.AllItems.Where(i => i.Quantity > 0)
                                     .Select((value, index) => new { Index = index, Value = value }))
                                 {
-                                    Console.WriteLine($"({item.Index + 1}) Name: {item.Value.Name}, Quantity: {item.Value.Quantity}");
+                                    Console.WriteLine($"Name: {item.Value.Name}, Quantity: {item.Value.Quantity}");
                                 }
 
                                 Console.WriteLine("Choisissez un objet de l'inventaire (numéro) ou 0 pour retourner : ");
@@ -158,7 +158,6 @@ namespace pokemonConsole
                                 }
                                 else if (choixNomObjet == "0")
                                 {
-                                    // Retourner ou terminer votre boucle ici
                                 }
                                 else
                                 {
