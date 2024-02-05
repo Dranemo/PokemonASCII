@@ -54,7 +54,7 @@ internal class Map
                     }
                 }
             }
-            keyInfo = Console.ReadKey();
+            keyInfo = Console.ReadKey(true);
 
             // Deplacer le joueur en fonction de la touche pressee
             int deltaX = 0, deltaY = 0;
@@ -79,21 +79,10 @@ internal class Map
                     moved = true;
                     break;
                 case ConsoleKey.X:
-                    Console.SetCursorPosition(player.PositionX+1, player.PositionY);
-                    Console.Write(" ");
-                    Console.SetCursorPosition(player.PositionX + 1, player.PositionY);
-
                     Menu_principal.Open(player, mapWidth, rival);
 
                     DrawMap();
 
-                    break;
-                case ConsoleKey.Enter:
-                    break;
-                default:
-                    Console.SetCursorPosition(player.PositionX + 1, player.PositionY);
-                    Console.Write(" ");
-                    Console.SetCursorPosition(player.PositionX + 1, player.PositionY);
                     break;
             }
 
@@ -320,11 +309,12 @@ internal class Map
                         }
                     }
 
-                    Thread.Sleep(1000);
                     Functions.ClearInputBuffer();
+
+
+                    DrawMap();
                 }
 
-                DrawMap();
             }
         }
 

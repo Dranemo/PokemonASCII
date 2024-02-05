@@ -54,7 +54,7 @@ namespace pokemonConsole
                 bool choiceDone = false;
                 while (!choiceDone)
                 {
-                    keyInfo = Console.ReadKey();
+                    keyInfo = Console.ReadKey(true);
 
                     switch (keyInfo.Key)
                     {
@@ -107,6 +107,8 @@ namespace pokemonConsole
                         case ConsoleKey.Enter:
                             if (newGame[0] == '>')
                             {
+                                player = new Player();
+
                                 Intro.LaunchIntro(player, rival);
                                 Map.MapPlayer(player, rival);
 
