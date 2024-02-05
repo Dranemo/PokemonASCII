@@ -16,7 +16,7 @@ namespace pokemonConsole
     internal class Pokemon
     {
         // ------------------------------------- Infos Pokemon ------------------------------------- //
-        public int id {  get; private set; }
+        public int id { get; private set; }
         public string name { get; private set; }
         public List<string> listType = new List<string>();
         public string asciiArt { get; private set; }
@@ -90,7 +90,7 @@ namespace pokemonConsole
 
 
         // ------------------------------------- Fonctions ------------------------------------- //
-        public Pokemon(int id_generate, int level_generate, int playerId = 0, int appartenant_ = 0, int idOT_ = 0, string nameOT_ = "OT") // appartenant -> 0 : sauvage, 1 : player, 2 : dresseur
+        public Pokemon(int id_generate, int level_generate, int appartenant_ = 0, int playerId = 0, int idOT_ = 0, string nameOT_ = "OT") // appartenant -> 0 : sauvage, 1 : player, 2 : dresseur
         {
 
             Random random = new Random();
@@ -260,6 +260,10 @@ namespace pokemonConsole
                 if (idOT != playerId)
                 {
                     echange = true;
+                }
+                else
+                {
+                    name = Functions.ClavierName(10);
                 }
             }
 
@@ -583,7 +587,12 @@ namespace pokemonConsole
 
 
 
-
+        public void AfficherDetailsMenu()
+        {
+            Console.Clear();
+            Console.WriteLine(asciiArt);
+            Console.WriteLine("No. ");
+        }
 
 
         public void AfficherDetailsPokemon()
@@ -651,7 +660,7 @@ namespace pokemonConsole
             Console.ForegroundColor = color_;
             Console.WriteLine(asciiArt_);
             Console.ForegroundColor = ConsoleColor.White;
-        }
+        } // Utilisé dans l'évo
         public void AfficherCombat()
         {
             AfficherSprite();

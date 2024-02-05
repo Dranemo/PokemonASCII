@@ -34,16 +34,19 @@ class Pokeball : Entity
 {
     public int id_pokemon;
     public bool taken;
+    public int position;
 
-    public Pokeball(int id_, string map_, int x, int y, char actualPosition) : base(Pokemon.GetNom(id_), x, y, 'o', map_, actualPosition)
+    public Pokeball(int id_, string map_, int x, int y, char actualPosition, int position) : base(Pokemon.GetNom(id_), x, y, 'o', map_, actualPosition)
     {
         id_pokemon = id_;
         taken = false;
+        this.position = position;
     }
 
     public override void Function(Player player) 
     {
-        player.addPokemonToParty(new Pokemon(id_pokemon, 5, player.id, 1, player.id, player.name));
+        player.addPokemonToParty(new Pokemon(id_pokemon, 5, 1, player.id, player.id, player.name));
+        player.starterId = id_pokemon;
         taken = true;
     }
 }
