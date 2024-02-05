@@ -124,44 +124,36 @@ namespace pokemonConsole
                                 }
 
                                 Console.WriteLine("Choisissez un objet de l'inventaire (numéro) ou 0 pour retourner : ");
-                                int choixObjet = int.Parse(Console.ReadLine());
+                                string choixNomObjet = Console.ReadLine();
 
-                                if (choixObjet > 0 && choixObjet <= items.Count)
+                                Item itemToUse = items.FirstOrDefault(i => i.Name.Equals(choixNomObjet, StringComparison.OrdinalIgnoreCase));
+
+                                if (itemToUse != null && itemToUse.Quantity > 0)
                                 {
                                     // Utiliser l'objet sélectionné
-                                    Item itemToUse = items[choixObjet - 1];
+                                    Console.WriteLine($"Vous avez utilisé l'objet : {itemToUse.Name}");
 
-                                    if (itemToUse.Quantity > 0)
+                                    itemToUse.Quantity--;
+                                    Console.WriteLine($"Nouvelle quantité de {itemToUse.Name} : {itemToUse.Quantity}\n");
+
+                                    // Sauvegarder les quantités dans le fichier
+                                    Item.SaveQuantitiesToFile($"{AdresseFile.FileDirection}\\SaveItem.txt", Item.AllItems);
+
+                                    capacityUsed = pokemonAdverse.listAttackActual[random.Next(0, pokemonAdverse.listAttackActual.Count)];
+
+                                    if (capacityUsed.categorie > 0)
                                     {
-                                        Console.WriteLine($"Vous avez utilisé l'objet : {itemToUse.Name}");
-
-                                        itemToUse.Quantity--;
-                                        Console.WriteLine($"Nouvelle quantité de {itemToUse.Name} : {itemToUse.Quantity}\n");
-
-                                        // Sauvegarder les quantités dans le fichier
-                                        Item.SaveQuantitiesToFile($"{AdresseFile.FileDirection}\\SaveItem.txt", Item.AllItems);
-
-                                        capacityUsed = pokemonAdverse.listAttackActual[random.Next(0, pokemonAdverse.listAttackActual.Count)];
-
-                                        if (capacityUsed.categorie > 0)
-                                        {
-                                            pokemon.pvLeft -= (int)Math.Round(CalculerDegatSubitPokemon(pokemonAdverse, pokemon, capacityUsed));
-                                            Console.WriteLine(capacityUsed.name);
-                                        }
-
-                                        Console.WriteLine("Le Pokemon adverse vous inflige des dégâts !\n");
-                                        Console.WriteLine($"Les nouveaux PV du Pokemon du joueur sont = {pokemon.pvLeft}");
-                                        Console.WriteLine($"Les nouveaux PV du Pokemon de l'adversaire sont = {pokemonAdverse.pvLeft}\n");
+                                        pokemon.pvLeft -= (int)Math.Round(CalculerDegatSubitPokemon(pokemonAdverse, pokemon, capacityUsed));
+                                        Console.WriteLine(capacityUsed.name);
                                     }
-                                    else if (choixObjet <= 0)
-                                    {
-                                        Console.WriteLine($"Vous n'avez plus d'exemplaires de l'objet : {itemToUse.Name}");
-                                        break;
-                                    }
+
+                                    Console.WriteLine("Le Pokemon adverse vous inflige des dégâts !\n");
+                                    Console.WriteLine($"Les nouveaux PV du Pokemon du joueur sont = {pokemon.pvLeft}");
+                                    Console.WriteLine($"Les nouveaux PV du Pokemon de l'adversaire sont = {pokemonAdverse.pvLeft}\n");
                                 }
-                                else if (choixObjet == 0)
+                                else if (choixNomObjet == "0")
                                 {
-                                    break;
+                                    // Retourner ou terminer votre boucle ici
                                 }
                                 else
                                 {
