@@ -258,6 +258,6 @@ namespace Usefull
 
     class AdresseFile
     {
-        public static string FileDirection = "C:\\Users\\agathelier\\Desktop\\Nouveau dossier\\pokemonConsole\\GameFiles\\";
+        public static string FileDirection = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\GameFiles\\";
     }
 }

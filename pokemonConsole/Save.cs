@@ -30,7 +30,7 @@ namespace pokemonConsole
             {
                 // Écrit du contenu dans le fichier
                 writer.WriteLine("Player :");
-                writer.WriteLine($"{player.name},{player.id},{player.PositionX},{player.PositionY},{player.map},{player.actuallPositionChar}");
+                writer.WriteLine($"{player.name},{player.id},{player.PositionX},{player.PositionY},{player.map},{player.actuallPositionChar},{player.starterId}");
                 writer.WriteLine(player.pokemonParty.Count);
                 foreach (Pokemon pokemon in player.pokemonParty)
                 {
@@ -92,7 +92,8 @@ namespace pokemonConsole
                 player.PositionX = int.Parse(colonnes[2]);
                 player.PositionY = int.Parse(colonnes[3]);
                 player.map = colonnes[4];
-                player.actuallPositionChar = colonnes[4][0];
+                player.actuallPositionChar = colonnes[5][0];
+                player.starterId = int.Parse(colonnes[6]);
 
                 line = sr.ReadLine();
 
