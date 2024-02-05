@@ -172,7 +172,12 @@ internal class Map
                         Thread.Sleep(500);
                         Functions.ClearInputBuffer();
                         Combat.LoopCombat(player);
-
+                        if (player.IsKO())
+                        {
+                            Console.WriteLine("Tous vos Pokemon sont KO !");
+                            ChangeMap("mom.txt", 7, 5, "Retour chez maman...");
+                            Pokemon.Heal(player);
+                        }
                         Console.Clear();
                         DrawMap();
                     }
@@ -190,7 +195,21 @@ internal class Map
     }
 
 
+    private static void ChangeMap(string nextMapFileName, int nextX, int nextY, string loadingText)
+    {
+            Console.WriteLine($"\n{loadingText}");
+            Thread.Sleep(500);
+            Functions.ClearInputBuffer();
+            LoadMap(nextMapFileName);
+            player.PositionX = nextX;
+            player.PositionY = nextY;
+            player.map = nextMapFileName;
 
+            player.actuallPositionChar = map[nextX, nextY];
+
+            Console.Clear();
+            DrawMap();
+    }
     private static void ChangeMap(int x, int y, string nextMapFileName, int nextX, int nextY, string loadingText)
     {
 

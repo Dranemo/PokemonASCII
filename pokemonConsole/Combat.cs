@@ -37,7 +37,7 @@ namespace pokemonConsole
             int nbFuite = 0;
             bool fuiteReussit = false;
             Capacity capacityUsed = null;
-            while (!player.IsKO(pokemon) && pokemonAdverse.pvLeft > 0 && !fuiteReussit)
+            while (!player.IsKO() && pokemonAdverse.pvLeft > 0 && !fuiteReussit)
             {
                 // Demander à l'utilisateur d'entrer son action
                 Console.WriteLine("Attaque");

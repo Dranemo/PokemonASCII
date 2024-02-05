@@ -16,13 +16,12 @@ namespace pokemonConsole
             id = random.Next(1, 65536);
         }
 
-        public bool IsKO(Pokemon pokemon)
+        public bool IsKO()
         {
             foreach (var p in pokemonParty)
             {
                 if (p.pvLeft <= 0)
                 {
-                    Console.WriteLine("Tous vos Pokemon sont KO !");
                     Thread.Sleep(1000);
                     return true;
                 }
