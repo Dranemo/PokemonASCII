@@ -116,6 +116,7 @@ namespace pokemonConsole
                             else if (canLoadGame && loadGame[0] == '>')
                             {
                                 Save.Loading(player, rival);
+                                Save.LoadingItem();
                                 Map.MapPlayer(player, rival);
                             }
                             else
