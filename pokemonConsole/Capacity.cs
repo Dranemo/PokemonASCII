@@ -177,255 +177,324 @@ namespace pokemonConsole
         }
         public SecondaryEffect ApplyEffect(string sideEffect, Pokemon pokemon, Pokemon pokemonAdverse)
         {
+
+            Random random = new Random();
+            int randomNumber = random.Next(100);
             // Ajoutez des cas pour chaque effet possible
             switch (sideEffect.ToLower())
             {
                 case "atkup":
-                    Console.Write("atkup");
+                    Console.Write($"L'attaque de {pokemon.name} a augmenté !");
+                    pokemon.atkCombat = (int)(pokemon.atkCombat * 1.5);
                     return SecondaryEffect.AtkUp;
 
                 case "defup":
-                    Console.Write("defup");
+                    Console.Write($"La défense de {pokemon.name} a augmenté !");
+                    pokemon.defCombat = (int)(pokemon.defCombat * 1.5);
                     return SecondaryEffect.DefUp;
 
                 case "speedup":
-                    Console.Write("speedup");
+                    Console.Write($"La vitesse de {pokemon.name} a augmenté !");
+                    pokemon.spdCombat = (int)(pokemon.spdCombat * 1.5);
                     return SecondaryEffect.SpeedUp;
 
                 case "speup":
-                    Console.Write("speup");
+                    Console.Write($"Le special de {pokemon.name} a augmenté !");
+                    pokemon.speCombat = (int)(pokemon.speCombat * 1.5);
                     return SecondaryEffect.SpeUp;
 
                 case "esquiveup":
                     Console.Write("esquiveup");
+                    //==============================//
                     return SecondaryEffect.EsquiveUp;
 
                 case "critup":
                     Console.Write("critup");
+                    //==============================//
                     return SecondaryEffect.CritUp;
 
                 case "critboost":
                     Console.Write("critboost");
+                    //==============================//
                     return SecondaryEffect.CritBoost;
 
                 case "atkdown":
-                    Console.Write($"L'attaque du {pokemonAdverse.name} a baissé !");
+                    Console.Write($"L'attaque de {pokemonAdverse.name} a baissé !");
                     pokemonAdverse.atkCombat = (int)(pokemonAdverse.atkCombat * 0.88);
                     return SecondaryEffect.AtkDown;
 
                 case "chanceatkdown":
                     Console.Write("chanceatkdown");
-                    return SecondaryEffect.ChanceAtkDown;
+                    if (randomNumber <= 10)
+                    {
+                        pokemonAdverse.atkCombat = (int)(pokemonAdverse.atkCombat * 0.88);
+                    }
+                        return SecondaryEffect.ChanceAtkDown;
 
                 case "defdown":
-                    Console.Write($"La défense du {pokemonAdverse.name} a baissé !");
+                    Console.Write($"La défense de {pokemonAdverse.name} a baissé !");
                     pokemonAdverse.defCombat = (int)(pokemonAdverse.defCombat * 0.88);
                     return SecondaryEffect.DefDown;
 
                 case "chancedefdown":
                     Console.Write("chancedefdown");
+                    if (randomNumber <= 10)
+                    {
+                        pokemonAdverse.defCombat = (int)(pokemonAdverse.defCombat * 0.88); // Baisse de 12%
+                    }
                     return SecondaryEffect.ChanceDefDown;
 
                 case "speeddown":
-                    Console.Write($"La vitesse du {pokemonAdverse.name} a baissé !");
+                    Console.Write($"La vitesse de {pokemonAdverse.name} a baissé !");
                     pokemonAdverse.spdCombat = (int)(pokemonAdverse.spdCombat * 0.88);
                     return SecondaryEffect.SpeedDown;
 
                 case "chancespeeddown":
                     Console.Write("chancespeeddown");
-                    return SecondaryEffect.ChanceSpeedDown;
+                    if (randomNumber <= 10)
+                    {
+                        pokemonAdverse.spdCombat = (int)(pokemonAdverse.spdCombat * 0.88);
+                    }
+                        return SecondaryEffect.ChanceSpeedDown;
 
                 case "spedown":
-                    Console.Write($"Le special du {pokemonAdverse.name} a baissé !");
+                    Console.Write($"Le special de {pokemonAdverse.name} a baissé !");
                     pokemonAdverse.speCombat = (int)(pokemonAdverse.speCombat * 0.88);
                     return SecondaryEffect.SpeDown;
 
                 case "precisiondown":
                     Console.Write("precisiondown");
+                    //==============================//
                     return SecondaryEffect.PrecisionDown;
 
                 case "para":
                     Console.Write("para");
+                    //==============================//
                     return SecondaryEffect.Para;
 
                 case "burn":
                     Console.Write("burn");
+                    //==============================//
                     return SecondaryEffect.Burn;
 
                 case "freeze":
                     Console.Write("freeze");
+                    //==============================//
                     return SecondaryEffect.Freeze;
 
                 case "sleep":
                     Console.Write("sleep");
+                    //==============================//
                     return SecondaryEffect.Sleep;
 
                 case "selfSleep":
                     Console.Write("selfsleep");
+                    //==============================//
                     return SecondaryEffect.SelfSleep;
 
                 case "poison":
                     Console.Write("Poison");
+                    //==============================//
                     return SecondaryEffect.Poison;
 
                 case "poisongrave":
                     Console.Write("PoisonGrave");
+                    //==============================//
                     return SecondaryEffect.PoisonGrave;
 
                 case "confusion":
                     Console.Write("Confusion");
+                    //==============================//
                     return SecondaryEffect.Confusion;
 
                 case "randx":
                     Console.Write("randx");
+                    //==============================//
                     return SecondaryEffect.randx;
 
                 case "moneyx2":
                     Console.Write("Moneyx2");
+                    //==============================//
                     return SecondaryEffect.Moneyx2;
 
                 case "ohko":
                     Console.Write("OHKO");
+                    //==============================//
                     return SecondaryEffect.OHKO;
 
                 case "charge":
                     Console.Write("Charge");
+                    //==============================//
                     return SecondaryEffect.Charge;
 
                 case "damagex2":
                     Console.Write("Damagex2");
+                    //==============================//
                     return SecondaryEffect.Damagex2;
 
                 case "endfight":
                     Console.Write("EndFight");
+                    //==============================//
                     return SecondaryEffect.EndFight;
 
                 case "imun":
                     Console.Write("Imun");
+                    //==============================//
                     return SecondaryEffect.Imun;
 
                 case "stuck":
                     Console.Write("Stuck");
+                    //==============================//
                     return SecondaryEffect.Stuck;
 
                 case "randt":
                     Console.Write("randt");
+                    //==============================//
                     return SecondaryEffect.randt;
 
                 case "flinch":
                     Console.Write("Flinch");
+                    //==============================//
                     return SecondaryEffect.Flinch;
 
                 case "doublex":
                     Console.Write("doublex");
+                    //==============================//
                     return SecondaryEffect.doublex;
 
                 case "doublet":
                     Console.Write("doublet");
+                    //==============================//
                     return SecondaryEffect.doublet;
 
                 case "fail":
                     Console.Write("Fail");
+                    //==============================//
                     return SecondaryEffect.Fail;
 
                 case "stuckself":
                     Console.Write("StuckSelf");
+                    //==============================//
                     return SecondaryEffect.StuckSelf;
 
                 case "recoil":
                     Console.Write("Recoil");
+                    //==============================//
                     return SecondaryEffect.Recoil;
 
                 case "constdamage":
                     Console.Write("ConstDamage");
+                    //==============================//
                     return SecondaryEffect.ConstDamage;
 
                 case "blockAttack":
                     Console.Write("BlockAttack");
+                    //==============================//
                     return SecondaryEffect.BlockAttack;
 
                 case "blockstatusmoves":
                     Console.WriteLine("Effect: BlockStatusMoves");
+                    //==============================//
                     return SecondaryEffect.BlockStatusMoves;
 
                 case "pause":
                     Console.WriteLine("Effect: Pause");
+                    //==============================//
                     return SecondaryEffect.Pause;
 
                 case "counter":
                     Console.WriteLine("Effect: Counter");
+                    //==============================//
                     return SecondaryEffect.Counter;
 
                 case "vardamage":
                     Console.WriteLine("Effect: VarDamage");
+                    //==============================//
                     return SecondaryEffect.VarDamage;
 
                 case "vardamagelevel":
                     Console.WriteLine("Effect: VarDamageLevel");
+                    //==============================//
                     return SecondaryEffect.VarDamageLevel;
 
                 case "stealhp":
                     Console.WriteLine("Effect: StealHP");
+                    //==============================//
                     return SecondaryEffect.StealHP;
 
                 case "constantstealhp":
                     Console.WriteLine("Effect: ConstantStealHP");
+                    //==============================//
                     return SecondaryEffect.ConstantStealHP;
 
                 case "stealhpifsleep":
                     Console.WriteLine("Effect: StealHPIfSleep");
+                    //==============================//
                     return SecondaryEffect.StealHPIfSleep;
 
                 case "heal":
                     Console.WriteLine("Effect: Heal");
+                    //==============================//
                     return SecondaryEffect.Heal;
 
                 case "alwayscrit":
                     Console.WriteLine("Effect: AlwaysCrit");
+                    //==============================//
                     return SecondaryEffect.AlwaysCrit;
 
                 case "priority":
                     Console.WriteLine("Effect: Priority");
+                    //==============================//
                     return SecondaryEffect.Priority;
 
                 case "copylastattack":
                     Console.WriteLine("Effect: CopyLastAttack");
+                    //==============================//
                     return SecondaryEffect.CopyLastAttack;
 
                 case "cinqt":
                     Console.WriteLine("Effect: Cinqt");
+                    //==============================//
                     return SecondaryEffect.cinqt;
 
                 case "resetstats":
                     Console.WriteLine("Effect: ResetStats");
+                    //==============================//
                     return SecondaryEffect.ResetStats;
 
                 case "counterpatience":
                     Console.WriteLine("Effect: CounterPatience");
+                    //==============================//
                     return SecondaryEffect.CounterPatience;
 
                 case "randomattack":
                     Console.WriteLine("Effect: RandomAttack");
+                    //==============================//
                     return SecondaryEffect.RandomAttack;
 
                 case "copylastattacktarget":
                     Console.WriteLine("Effect: CopyLastAttackTarget");
+                    //==============================//
                     return SecondaryEffect.CopyLastAttackTarget;
 
                 case "death":
                     Console.WriteLine("Effect: Death");
+                    //==============================//
                     return SecondaryEffect.Death;
 
                 case "transformintoenemy":
                     Console.WriteLine("Effect: TransformIntoEnemy");
+                    //==============================//
                     return SecondaryEffect.TransformIntoEnemy;
 
                 case "changetypetoenemy":
                     Console.WriteLine("Effect: ChangeTypeToEnemy");
+                    //==============================//
                     return SecondaryEffect.ChangeTypeToEnemy;
 
                 case "clone":
                     Console.WriteLine("Effect: Clone");
+                    //==============================//
                     return SecondaryEffect.Clone;
 
                 default:

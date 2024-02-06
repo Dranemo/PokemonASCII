@@ -93,6 +93,7 @@ namespace pokemonConsole
                         else
                         {
                             Console.WriteLine(capacityUsed.name);
+                            capacityUsed.Use(pokemonAdverse, pokemon);
                         }
 
                         pokemon.pvLeft = (int)PvRestantPokemon;
