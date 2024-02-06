@@ -56,7 +56,6 @@ namespace pokemonConsole
                         {
                             Console.WriteLine(attaque.name);
                         }
-                        pokemonAdverse.AfficherDetailsPokemon();
                         int choixAttaque = int.Parse(Console.ReadLine());
                         switch (choixAttaque)
                         {
@@ -79,7 +78,6 @@ namespace pokemonConsole
                         }
 
                         int PvRestantPokemonAdverse = pokemonAdverse.pvLeft;
-                        pokemonAdverse.AfficherDetailsPokemon();
                         if (capacityUsed != null && capacityUsed.categorie == 1)
                         {
                             PvRestantPokemonAdverse -= (int)Math.Round(CalculerDegatSubitPokemon(pokemon, pokemonAdverse, capacityUsed));
@@ -173,7 +171,7 @@ namespace pokemonConsole
 
                     case 4:
                         nbFuite++;
-                        int spdQuart = (int)Math.Floor(pokemonAdverse.spd / 4.0);
+                        int spdQuart = (int)Math.Floor(pokemonAdverse.spdCombat / 4.0);
                         int fuiteEuclidienne = (spdQuart % 255 == 0) ? 0 : 1;
                         int randomFuiteValue = randomFuite.Next(0, 256);
                         int fuite = (pokemon.spd * 32 / (spdQuart % 255)) + (30 * nbFuite);
@@ -251,23 +249,23 @@ namespace pokemonConsole
                     // Determine si la capacite est physique ou special selon le type
                     if (capacity.type == "DRAGON" || capacity.type == "EAU" || capacity.type == "ELECTRIK" || capacity.type == "FEU" || capacity.type == "GLACE" || capacity.type == "PLANTE" || capacity.type == "PSY")
                     {
-                        atkSpeOrNot = pokemon.spe;
-                        defSpeOrNot = pokemonAdverse.spe;
+                        atkSpeOrNot = pokemon.speCombat;
+                        defSpeOrNot = pokemonAdverse.speCombat;
                     }
                     else
                     {
-                        atkSpeOrNot = pokemon.atk;
-                        defSpeOrNot = pokemonAdverse.def;
+                        atkSpeOrNot = pokemon.atkCombat;
+                        defSpeOrNot = pokemonAdverse.defCombat;
                     }
 
                     // Si le Pokemon est burn, l'attaque est divisee par deux
                     if (pokemon.statusProblem == "BRN")
                     {
-                        isBurn = 0.5f;
+                        isBurn = isBurn*0.5f;
                     }
 
                     // Critique
-                    critChance = ((int)Math.Round(pokemon.spd / 2.0) * 2) / 256;
+                    critChance = ((int)Math.Round(pokemon.spdCombat / 2.0) * 2) / 256;
                     if (critChance == 0)
                     {
                         critDamage = 1;

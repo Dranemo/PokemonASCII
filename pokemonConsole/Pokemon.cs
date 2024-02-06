@@ -39,10 +39,14 @@ namespace pokemonConsole
         // ------------------ Statistiques ------------------ //
         public int pv { get; private set; }
         public int pvLeft {  get; set; }
-        public int atk { get; set; }
+        public int atk { get; private set; }
         public int def { get; private set; }
         public int spe { get; private set; }
         public int spd { get; private set; }
+        public int atkCombat { get; set; }
+        public int defCombat { get; set; }
+        public int speCombat { get; set; }
+        public int spdCombat { get; set; }
 
 
         // Max EV = 65535 
@@ -145,6 +149,10 @@ namespace pokemonConsole
                             baseDef = int.Parse(colonnes[6]);
                             baseSpe = int.Parse(colonnes[7]);
                             baseSpd = int.Parse(colonnes[8]);
+                            atkCombat = baseAtk;
+                            defCombat = baseDef;
+                            speCombat = baseSpe;
+                            spdCombat = baseSpd;
                             if (colonnes[9] == "FALSE")
                             {
                                 peutEvoluer = false;
@@ -448,6 +456,10 @@ namespace pokemonConsole
                             baseDef = int.Parse(colonnes[6]);
                             baseSpe = int.Parse(colonnes[7]);
                             baseSpd = int.Parse(colonnes[8]);
+                            atkCombat = baseAtk;
+                            defCombat = baseDef;
+                            speCombat = baseSpe;
+                            spdCombat = baseSpd;
                             if (colonnes[9] == "FALSE")
                             {
                                 peutEvoluer = false;
@@ -887,6 +899,10 @@ namespace pokemonConsole
             Console.WriteLine($"Def = {this.def}");
             Console.WriteLine($"Spe = {this.spe}");
             Console.WriteLine($"Spd = {this.spd}");
+            Console.WriteLine($"AtkCombat = {this.atkCombat}");
+            Console.WriteLine($"DefCombat = {this.defCombat}");
+            Console.WriteLine($"SpeCombat = {this.speCombat}");
+            Console.WriteLine($"SpdCombat = {this.spdCombat}");
             Console.WriteLine();
 
             Console.WriteLine($"Exp Point : {expActuel}");
@@ -1498,7 +1514,7 @@ namespace pokemonConsole
 
                     timesSwitch++;
                 }
-                Console.WriteLine($"Felicitation ! Votre {name_oldPokemon} a evolue en {name_newPokemon} ! ");
+                Console.WriteLine($"Felicitations ! Votre {name_oldPokemon} a evolue en {name_newPokemon} ! ");
                 Console.ReadLine();
                 Console.Clear();
                 evolved = true;

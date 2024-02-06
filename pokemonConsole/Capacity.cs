@@ -182,271 +182,254 @@ namespace pokemonConsole
             {
                 case "atkup":
                     Console.Write("atkup");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.AtkUp;
+
                 case "defup":
                     Console.Write("defup");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.DefUp;
+
                 case "speedup":
                     Console.Write("speedup");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.SpeedUp;
+
                 case "speup":
                     Console.Write("speup");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.SpeUp;
+
                 case "esquiveup":
                     Console.Write("esquiveup");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.EsquiveUp;
+
                 case "critup":
                     Console.Write("critup");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.CritUp;
+
                 case "critboost":
                     Console.Write("critboost");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.CritBoost;
+
                 case "atkdown":
-                    Console.Write("atkdown");
-                    Thread.Sleep(1000); 
-                    pokemonAdverse.atk = (int)(pokemonAdverse.atk * 0.88);
+                    Console.Write($"L'attaque du {pokemonAdverse.name} a baissé !");
+                    pokemonAdverse.atkCombat = (int)(pokemonAdverse.atkCombat * 0.88);
                     return SecondaryEffect.AtkDown;
+
                 case "chanceatkdown":
                     Console.Write("chanceatkdown");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.ChanceAtkDown;
+
                 case "defdown":
-                    Console.Write("defdown");
-                    Thread.Sleep(1000);
+                    Console.Write($"La défense du {pokemonAdverse.name} a baissé !");
+                    pokemonAdverse.defCombat = (int)(pokemonAdverse.defCombat * 0.88);
                     return SecondaryEffect.DefDown;
+
                 case "chancedefdown":
                     Console.Write("chancedefdown");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.ChanceDefDown;
+
                 case "speeddown":
-                    Console.Write("speeddown");
-                    Thread.Sleep(1000);
+                    Console.Write($"La vitesse du {pokemonAdverse.name} a baissé !");
+                    pokemonAdverse.spdCombat = (int)(pokemonAdverse.spdCombat * 0.88);
                     return SecondaryEffect.SpeedDown;
+
                 case "chancespeeddown":
                     Console.Write("chancespeeddown");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.ChanceSpeedDown;
+
                 case "spedown":
-                    Console.Write("spedown");
-                    Thread.Sleep(1000);
+                    Console.Write($"Le special du {pokemonAdverse.name} a baissé !");
+                    pokemonAdverse.speCombat = (int)(pokemonAdverse.speCombat * 0.88);
                     return SecondaryEffect.SpeDown;
+
                 case "precisiondown":
                     Console.Write("precisiondown");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.PrecisionDown;
+
                 case "para":
                     Console.Write("para");
-                Thread.Sleep(1000);
                     return SecondaryEffect.Para;
+
                 case "burn":
                     Console.Write("burn");
-                Thread.Sleep(1000);
                     return SecondaryEffect.Burn;
+
                 case "freeze":
                     Console.Write("freeze");
-                Thread.Sleep(1000); 
                     return SecondaryEffect.Freeze;
+
                 case "sleep":
                     Console.Write("sleep");
-                Thread.Sleep(1000);
                     return SecondaryEffect.Sleep;
+
                 case "selfSleep":
                     Console.Write("selfsleep");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.SelfSleep;
+
                 case "poison":
                     Console.Write("Poison");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.Poison;
+
                 case "poisongrave":
                     Console.Write("PoisonGrave");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.PoisonGrave;
+
                 case "confusion":
                     Console.Write("Confusion");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.Confusion;
+
                 case "randx":
                     Console.Write("randx");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.randx;
+
                 case "moneyx2":
                     Console.Write("Moneyx2");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.Moneyx2;
+
                 case "ohko":
                     Console.Write("OHKO");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.OHKO;
+
                 case "charge":
                     Console.Write("Charge");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.Charge;
+
                 case "damagex2":
                     Console.Write("Damagex2");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.Damagex2;
+
                 case "endfight":
                     Console.Write("EndFight");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.EndFight;
+
                 case "imun":
                     Console.Write("Imun");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.Imun;
+
                 case "stuck":
                     Console.Write("Stuck");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.Stuck;
+
                 case "randt":
                     Console.Write("randt");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.randt;
+
                 case "flinch":
                     Console.Write("Flinch");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.Flinch;
+
                 case "doublex":
                     Console.Write("doublex");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.doublex;
+
                 case "doublet":
                     Console.Write("doublet");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.doublet;
+
                 case "fail":
                     Console.Write("Fail");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.Fail;
+
                 case "stuckself":
                     Console.Write("StuckSelf");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.StuckSelf;
+
                 case "recoil":
                     Console.Write("Recoil");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.Recoil;
+
                 case "constdamage":
                     Console.Write("ConstDamage");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.ConstDamage;
+
                 case "blockAttack":
                     Console.Write("BlockAttack");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.BlockAttack;
+
                 case "blockstatusmoves":
                     Console.WriteLine("Effect: BlockStatusMoves");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.BlockStatusMoves;
 
                 case "pause":
                     Console.WriteLine("Effect: Pause");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.Pause;
+
                 case "counter":
                     Console.WriteLine("Effect: Counter");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.Counter;
 
                 case "vardamage":
                     Console.WriteLine("Effect: VarDamage");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.VarDamage;
 
                 case "vardamagelevel":
                     Console.WriteLine("Effect: VarDamageLevel");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.VarDamageLevel;
 
                 case "stealhp":
                     Console.WriteLine("Effect: StealHP");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.StealHP;
 
                 case "constantstealhp":
                     Console.WriteLine("Effect: ConstantStealHP");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.ConstantStealHP;
 
                 case "stealhpifsleep":
                     Console.WriteLine("Effect: StealHPIfSleep");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.StealHPIfSleep;
 
                 case "heal":
                     Console.WriteLine("Effect: Heal");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.Heal;
 
                 case "alwayscrit":
                     Console.WriteLine("Effect: AlwaysCrit");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.AlwaysCrit;
 
                 case "priority":
                     Console.WriteLine("Effect: Priority");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.Priority;
 
                 case "copylastattack":
                     Console.WriteLine("Effect: CopyLastAttack");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.CopyLastAttack;
 
                 case "cinqt":
                     Console.WriteLine("Effect: Cinqt");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.cinqt;
 
                 case "resetstats":
                     Console.WriteLine("Effect: ResetStats");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.ResetStats;
 
                 case "counterpatience":
                     Console.WriteLine("Effect: CounterPatience");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.CounterPatience;
 
                 case "randomattack":
                     Console.WriteLine("Effect: RandomAttack");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.RandomAttack;
 
                 case "copylastattacktarget":
                     Console.WriteLine("Effect: CopyLastAttackTarget");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.CopyLastAttackTarget;
 
                 case "death":
                     Console.WriteLine("Effect: Death");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.Death;
 
                 case "transformintoenemy":
                     Console.WriteLine("Effect: TransformIntoEnemy");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.TransformIntoEnemy;
 
                 case "changetypetoenemy":
                     Console.WriteLine("Effect: ChangeTypeToEnemy");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.ChangeTypeToEnemy;
 
                 case "clone":
                     Console.WriteLine("Effect: Clone");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.Clone;
+
                 default:
                     Console.WriteLine($"Effect: {sideEffect} (Default)");
-                    Thread.Sleep(1000);
                     return SecondaryEffect.None;
             }
         }
