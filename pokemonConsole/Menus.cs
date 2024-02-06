@@ -109,6 +109,7 @@ namespace pokemonConsole
                         else if (icons[position] == "> SAUVER")
                         {
                             Save.Saving(player, rival);
+                            Save.SavingItem();
                             choiceDone = true;
                         }
                         else if (icons[position] == "> RETOUR")

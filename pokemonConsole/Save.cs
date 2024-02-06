@@ -49,6 +49,49 @@ namespace pokemonConsole
             }
         }
 
+        public static void SavingItem()
+        {
+            string sourceFilePath = $"{AdresseFile.FileDirection}\\SaveItemInGame.txt";
+            string destinationFilePath = $"{AdresseFile.FileDirection}\\SaveItem.txt";
+
+            try
+            {
+                // Lire toutes les lignes du fichier source
+                string[] lines = File.ReadAllLines(sourceFilePath);
+
+                // Remplacer le contenu du fichier destination par les nouvelles lignes
+                File.WriteAllText(destinationFilePath, string.Join(Environment.NewLine, lines));
+
+                Console.WriteLine("Les données ont été sauvegardées avec succès.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Une erreur s'est produite : {ex.Message}");
+            }
+        }
+
+        public static void LoadingItem()
+        {
+            string destinationFilePath = $"{AdresseFile.FileDirection}\\SaveItemInGame.txt";
+            string sourceFilePath = $"{AdresseFile.FileDirection}\\SaveItem.txt";
+
+            try
+            {
+                // Lire toutes les lignes du fichier source
+                string[] lines = File.ReadAllLines(sourceFilePath);
+
+                // Remplacer le contenu du fichier destination par les nouvelles lignes
+                File.WriteAllText(destinationFilePath, string.Join(Environment.NewLine, lines));
+
+                Console.WriteLine("Les données ont bien été téléchargées.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Une erreur s'est produite : {ex.Message}");
+            }
+        }
+
+
         public static void Loading(Player player, Rival rival)
         {
             int pokemonListCount;
