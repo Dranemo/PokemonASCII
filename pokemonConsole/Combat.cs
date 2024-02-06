@@ -105,7 +105,7 @@ namespace pokemonConsole
                         ;
                         break;
                     case 3:
-                        Item.LoadItemsFromSaveFile($"{AdresseFile.FileDirection}\\SaveItem.txt");
+                        Item.LoadItemsFromSaveFile($"{AdresseFile.FileDirection}\\SaveItemInGame.txt");
 
                         Console.WriteLine("\n1. Utiliser un objet");
                         Console.WriteLine("2. Retour");
@@ -140,7 +140,7 @@ namespace pokemonConsole
                                     Console.WriteLine($"Nouvelle quantité de {itemToUse.Name} : {itemToUse.Quantity}\n");
 
                                     // Sauvegarder les quantités dans le fichier
-                                    Item.SaveQuantitiesToFile($"{AdresseFile.FileDirection}\\SaveItem.txt", Item.AllItems);
+                                    Item.SaveQuantitiesToFile($"{AdresseFile.FileDirection}\\SaveItemInGame.txt", Item.AllItems);
 
                                     capacityUsed = pokemonAdverse.listAttackActual[random.Next(0, pokemonAdverse.listAttackActual.Count)];
 

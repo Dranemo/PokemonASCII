@@ -94,7 +94,7 @@ namespace pokemonConsole
 
         public override void Function(Player player)
         {
-            Item.LoadItemsFromSaveFile($"{AdresseFile.FileDirection}\\SaveItem.txt");
+            Item.LoadItemsFromSaveFile($"{AdresseFile.FileDirection}\\SaveItemInGame.txt");
 
             // Ensuite, vous pouvez utiliser la fonction Function
             //player.Function();
@@ -111,7 +111,7 @@ namespace pokemonConsole
                 Console.WriteLine($"Vous avez maintenant {itemToGive.Quantity} {itemToGive.Name}(s) dans votre inventaire.");
 
                 // Vous pouvez également sauvegarder l'inventaire mis à jour dans un fichier si nécessaire
-                Item.SaveQuantitiesToFile($"{AdresseFile.FileDirection}\\SaveItem.txt", Item.AllItems);
+                Item.SaveQuantitiesToFile($"{AdresseFile.FileDirection}\\SaveItemInGame.txt", Item.AllItems);
             }
             else
             {
