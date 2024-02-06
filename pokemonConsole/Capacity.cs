@@ -224,9 +224,9 @@ namespace pokemonConsole
                     return SecondaryEffect.AtkDown;
 
                 case "chanceatkdown":
-                    Console.Write("chanceatkdown");
                     if (randomNumber <= 10)
                     {
+                        Console.Write($"L'attaque de {pokemonAdverse.name} a baissé !");
                         pokemonAdverse.atkCombat = (int)(pokemonAdverse.atkCombat * 0.88);
                     }
                         return SecondaryEffect.ChanceAtkDown;
@@ -250,9 +250,9 @@ namespace pokemonConsole
                     return SecondaryEffect.SpeedDown;
 
                 case "chancespeeddown":
-                    Console.Write("chancespeeddown");
                     if (randomNumber <= 10)
                     {
+                        Console.Write($"La vitesse de {pokemonAdverse.name} a baissé !");
                         pokemonAdverse.spdCombat = (int)(pokemonAdverse.spdCombat * 0.88);
                     }
                         return SecondaryEffect.ChanceSpeedDown;
@@ -269,37 +269,37 @@ namespace pokemonConsole
 
                 case "para":
                     Console.Write("para");
-                    //==============================//
+                    pokemonAdverse.statusProblem = "PARA";
                     return SecondaryEffect.Para;
 
                 case "burn":
                     Console.Write("burn");
-                    //==============================//
+                    pokemonAdverse.statusProblem = "BURN";
                     return SecondaryEffect.Burn;
 
                 case "freeze":
                     Console.Write("freeze");
-                    //==============================//
+                    pokemonAdverse.statusProblem = "FREEZE";
                     return SecondaryEffect.Freeze;
 
                 case "sleep":
                     Console.Write("sleep");
-                    //==============================//
+                    pokemonAdverse.statusProblem = "SLEEP";
                     return SecondaryEffect.Sleep;
 
                 case "selfSleep":
                     Console.Write("selfsleep");
-                    //==============================//
+                    pokemon.statusProblem = "SLEEP";
                     return SecondaryEffect.SelfSleep;
 
                 case "poison":
                     Console.Write("Poison");
-                    //==============================//
+                    pokemonAdverse.statusProblem = "POISON";
                     return SecondaryEffect.Poison;
 
                 case "poisongrave":
                     Console.Write("PoisonGrave");
-                    //==============================//
+                    pokemonAdverse.statusProblem = "POISONGRAVE";
                     return SecondaryEffect.PoisonGrave;
 
                 case "confusion":
@@ -319,7 +319,7 @@ namespace pokemonConsole
 
                 case "ohko":
                     Console.Write("OHKO");
-                    //==============================//
+                    pokemonAdverse.pvLeft = 0;
                     return SecondaryEffect.OHKO;
 
                 case "charge":
@@ -434,7 +434,11 @@ namespace pokemonConsole
 
                 case "heal":
                     Console.WriteLine("Effect: Heal");
-                    //==============================//
+                    pokemon.pvLeft = pokemon.pv / 2 + pokemon.pvLeft;
+                    if (pokemon.pvLeft > pokemon.pv)
+                    {
+                        pokemon.pvLeft = pokemon.pv;
+                    }
                     return SecondaryEffect.Heal;
 
                 case "alwayscrit":
@@ -489,7 +493,7 @@ namespace pokemonConsole
 
                 case "changetypetoenemy":
                     Console.WriteLine("Effect: ChangeTypeToEnemy");
-                    //==============================//
+                    pokemon.listType = pokemonAdverse.listType;
                     return SecondaryEffect.ChangeTypeToEnemy;
 
                 case "clone":
@@ -500,6 +504,44 @@ namespace pokemonConsole
                 default:
                     Console.WriteLine($"Effect: {sideEffect} (Default)");
                     return SecondaryEffect.None;
+            }
+        }
+        public static void ApplyStatusEffects(Pokemon pokemon)
+        {
+            switch (pokemon.statusProblem)
+            {
+                case "PARA":
+                    Console.WriteLine($"{pokemon.name} est paralysé !");
+                    // Appliquer l'effet de statut de la paralysie
+                    break;
+
+                case "BURN":
+                    Console.WriteLine($"{pokemon.name} est brûlé !");
+                    // Appliquer l'effet de statut de la brûlure
+                    break;
+
+                case "FREEZE":
+                    Console.WriteLine($"{pokemon.name} est gelé !");
+                    // Appliquer l'effet de statut du gel
+                    break;
+
+                case "SLEEP":
+                    Console.WriteLine($"{pokemon.name} est endormi !");
+                    // Appliquer l'effet de statut du sommeil
+                    break;
+
+                case "POISON":
+                    Console.WriteLine($"{pokemon.name} est empoisonné !");
+                    pokemon.pvLeft -= pokemon.pv / 16;
+                    break;
+
+                case "POISONGRAVE":
+                    Console.WriteLine($"{pokemon.name} est gravement empoisonné !");
+                    // Appliquer l'effet de statut de l'empoisonnement grave
+                    break;
+
+                default:
+                    break;
             }
         }
     }

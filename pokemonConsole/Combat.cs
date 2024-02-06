@@ -49,6 +49,9 @@ namespace pokemonConsole
                 Random randomFuite = new Random();
                 int PvRestantPokemon = pokemon.pvLeft;
                 List<Capacity> listAttackActual = pokemon.listAttackActual;
+                
+                Capacity.ApplyStatusEffects(pokemon);
+                Capacity.ApplyStatusEffects(pokemonAdverse);
                 switch (choix)
                 {
                     case 1:
@@ -98,7 +101,6 @@ namespace pokemonConsole
 
                         pokemon.pvLeft = (int)PvRestantPokemon;
                         pokemonAdverse.pvLeft = PvRestantPokemonAdverse;
-
                         Console.WriteLine($"Les nouveaux PV du Pokemon du joueur sont = {pokemon.pvLeft}");
                         Console.WriteLine($"Les nouveaux PV du Pokemon de l'adversaire sont = {pokemonAdverse.pvLeft}\n");
                         break;
