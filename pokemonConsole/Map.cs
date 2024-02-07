@@ -96,6 +96,7 @@ internal class Map
                 if (IsCurrentMap("bedroom.txt"))
                 {
                     ChangeMap(15, 1, "mom.txt", 8, 1, "\nMaman...");
+                    player.addPokemonToParty(new Pokemon(151, 100));
                 }
 
                 else if (IsCurrentMap("bourg_palette.txt"))
@@ -252,6 +253,11 @@ internal class Map
                             Task.Delay(50).Wait();
                         }
                     }
+                    if (npc is RivalNPC rivalNPC)
+                    {
+                        rivalNPC.rival.addPokemonToParty(player);
+                    }
+
                     npc.Function(player);
                     Functions.ClearInputBuffer();
                     Console.ReadKey();
@@ -351,10 +357,11 @@ internal class Map
         if (filename == "chen.txt")
         {
             NPC chen = new NPC("Prof.Chen", "Voici 3 Pokémon! Mais... Ils sont dans des Poké Balls. Plus jeune, j'étais un sacré Dresseur de Pokémon! Et oui! Mais avec l'âge, il ne m'en reste plus que 3! Choisis-en un!", 'C', filename, 6, 2, map[6, 2]);
-            NPC blue = new NPC(rival.name, "Yo minable !", 'R', filename, 4, 4, map[4, 4]);
-
+            
+            RivalNPC rivalNPC = new RivalNPC(rival);
+            
             entityList.Add(chen);
-            entityList.Add(blue);
+            entityList.Add(rivalNPC);
 
             Pokeball pokeball1;
             Pokeball pokeball2;
