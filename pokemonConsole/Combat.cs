@@ -50,7 +50,7 @@ namespace pokemonConsole
             Console.WriteLine(pokemonAdverseId);
             Console.WriteLine(pokemonAdverseLevel);
             Pokemon pokemonAdverse = new Pokemon(pokemonAdverseId, pokemonAdverseLevel);
-            Pokemon pokemonAdverse;
+
             if (pokemonPartyAdverse == null)
             { 
                 pokemonPartyAdverse=new List<Pokemon>();
@@ -69,6 +69,7 @@ namespace pokemonConsole
 
             int nbFuite = 0;
             bool fuiteReussit = false;
+            Capacity capacityUsed = null;
 
 
             // Boutons Main
@@ -160,6 +161,7 @@ namespace pokemonConsole
                         break;
                     case ConsoleKey.Enter:
                         capacityUsed = LoopChoiceCap(pokemon);
+                        listAttack.Clear();
                         endChoice = true;
                         break;
                 }
@@ -169,7 +171,8 @@ namespace pokemonConsole
 
 
 
-
+            int tour = 0;
+            int pokemonEquipeAdverse = 0;
             while (!player.IsKO() && pokemonAdverse.pvLeft > 0 && !fuiteReussit)
 
             {
