@@ -10,7 +10,7 @@ namespace pokemonConsole
 {
     internal class Combat
     {
-        public static void LoopCombat(Player player)
+        public static void LoopCombat(Player player, List<Pokemon> pokemonPartyAdverse = null)
         {
 
             Random random = new Random();
@@ -27,8 +27,18 @@ namespace pokemonConsole
 
             Console.WriteLine(pokemonAdverseId);
             Console.WriteLine(pokemonAdverseLevel);
-            Pokemon pokemonAdverse = new Pokemon(pokemonAdverseId, pokemonAdverseLevel);
-            List<Pokemon> pokemonPartyAdverse = new List<Pokemon>();
+
+            Pokemon pokemonAdverse;
+            if (pokemonPartyAdverse == null)
+            { 
+                pokemonPartyAdverse=new List<Pokemon>();
+                pokemonAdverse = new Pokemon(pokemonAdverseId, pokemonAdverseLevel);
+                pokemonPartyAdverse.Add(pokemonAdverse);
+            }
+            else
+            {
+                pokemonAdverse = pokemonPartyAdverse[0];
+            }
             pokemonPartyAdverse.Add(pokemonAdverse);
             pokemon.AfficherCombat();
             Console.WriteLine();
@@ -206,6 +216,7 @@ namespace pokemonConsole
                     if (pokemonEquipeAdverse + 1 < pokemonPartyAdverse.Count)
                     {
                         pokemonAdverse = pokemonPartyAdverse[pokemonEquipeAdverse + 1];
+                        pokemonEquipeAdverse++;
                     }
                     float appartenant;
                     float echange = 1;
@@ -355,7 +366,6 @@ namespace pokemonConsole
 
             }
         }
-
         public static bool VerifAdverse(List<Pokemon>pokemonPartyAdverse) 
         {
             if (pokemonPartyAdverse.Count == 0)

@@ -16,6 +16,8 @@ namespace pokemonConsole
 
         public void addPokemonToParty(Player player)
         {
+            pokemonParty.Clear();
+
             if (pokemonParty.Count <= 6)
             {
                 pokemonParty.Add(new Pokemon(18,61,2));

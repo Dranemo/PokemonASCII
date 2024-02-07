@@ -40,6 +40,18 @@ namespace pokemonConsole
         }
     }
 
+    class RivalNPC :NPC
+    {
+        public Rival rival { get; private set; } = new Rival();
+        public RivalNPC (Rival rival) : base(rival.name, "Yo minable !", 'R', "chen.txt", 4, 4, ' ')
+        {
+            rival = this.rival;
+        }
+        public override void Function(Player player)
+        {
+            Combat.LoopCombat(player, rival.pokemonParty);
+        }
+    }
     class PotionMan : NPC
     {
         public PotionMan() : base("PotionMan", "Tiens ! Une Potion", 'E', "route_1.txt", 3, 24, ' ') { }
