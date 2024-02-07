@@ -108,7 +108,7 @@ namespace pokemonConsole
                         ;
                         break;
                     case 3:
-                        Item.LoadItemsFromSaveFile($"{AdresseFile.FileDirection}\\SaveItemInGame.txt");
+                        inventory.Item.LoadItemsFromSaveFile($"{AdresseFile.FileDirection}\\SaveItemInGame.txt");
 
                         Console.WriteLine("\n1. Utiliser un objet");
                         Console.WriteLine("2. Retour");
@@ -119,7 +119,7 @@ namespace pokemonConsole
                         switch (choixInventaire)
                         {
                             case 1:
-                                List<Item> items = Item.AllItems;
+                                List<inventory.Item> items = inventory.Item.AllItems;
                                 Console.WriteLine("\nListe des objets dans votre inventaire :\n");
 
                                 // Affichez uniquement les objets avec une quantité supérieure à 0
@@ -132,7 +132,7 @@ namespace pokemonConsole
                                 Console.WriteLine("Choisissez un objet de l'inventaire (numéro) ou 0 pour retourner : ");
                                 string choixNomObjet = Console.ReadLine();
 
-                                Item itemToUse = items.FirstOrDefault(i => i.Name.Equals(choixNomObjet, StringComparison.OrdinalIgnoreCase));
+                                inventory.Item itemToUse = items.FirstOrDefault(i => i.Name.Equals(choixNomObjet, StringComparison.OrdinalIgnoreCase));
 
                                 if (itemToUse != null && itemToUse.Quantity > 0)
                                 {
@@ -143,7 +143,7 @@ namespace pokemonConsole
                                     Console.WriteLine($"Nouvelle quantité de {itemToUse.Name} : {itemToUse.Quantity}\n");
 
                                     // Sauvegarder les quantités dans le fichier
-                                    Item.SaveQuantitiesToFile($"{AdresseFile.FileDirection}\\SaveItemInGame.txt", Item.AllItems);
+                                    inventory.Item.SaveQuantitiesToFile($"{AdresseFile.FileDirection}\\SaveItemInGame.txt", inventory.Item.AllItems);
 
                                     capacityUsed = pokemonAdverse.listAttackActual[random.Next(0, pokemonAdverse.listAttackActual.Count)];
 
