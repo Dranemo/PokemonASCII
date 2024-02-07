@@ -216,7 +216,7 @@ namespace pokemonConsole
                         charRestant--;
                     }
 
-                    Task.Delay(50).Wait();
+                    Task.Delay(0).Wait();
                 }
 
 
