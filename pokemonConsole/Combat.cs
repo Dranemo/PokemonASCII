@@ -18,10 +18,12 @@ namespace pokemonConsole
         private static int positionX;
         private static int positionY;
 
+        private static int positionAttack;
+
         private static List<string> firstLine = new List<string>();
         private static List<string> secondLine = new List<string>();
 
-        private static List<string> 
+        private static List<string> listAttack = new List<string>();
 
 
 
@@ -518,8 +520,6 @@ namespace pokemonConsole
 
 
             // Variables
-            string topBoxPP = "0---------0";
-            string middlePP = "|         |";
             string topBox = "0---------------0";
             string middleBox = "|               |";
 
@@ -550,32 +550,40 @@ namespace pokemonConsole
             string button = " ";
             foreach (Capacity atk in pokemon.listAttackActual)
             {
-
+                listAttack.Add(button + atk.ToString());
             }
-
-            firstLine.Add(FightButton);
-            firstLine.Add(PokemonButton);
-            secondLine.Add(ItemButton);
-            secondLine.Add(RunButton);
-
 
             bool Selected = false;
-            foreach (string button in firstLine)
-            {
-                if (button[0] == '>') Selected = true;
-            }
-            foreach (string button in secondLine)
+            foreach (string attack in listAttack)
             {
                 if (button[0] == '>') Selected = true;
             }
 
             if (!Selected)
             {
-                firstLine[0] = firstLine[0].Remove(0, 1);
-                firstLine[0] = firstLine[0].Insert(0, ">");
-                positionX = 0;
-                positionY = 0;
+                listAttack[0] = listAttack[0].Remove(0, 1);
+                listAttack[0] = listAttack[0].Insert(0, ">");
+                positionAttack = 0;
             }
+
+            // Print 2
+            Console.SetCursorPosition(cursorLeft + offset + 2, cursorTop + 1);
+            Console.Write(listAttack[0]);
+            Console.SetCursorPosition(Console.CursorLeft + offset + 2, Console.CursorTop);
+            Console.WriteLine(listAttack[1]);
+
+            Console.SetCursorPosition(Console.CursorLeft + offset + 2, Console.CursorTop);
+            Console.Write(listAttack[2]);
+            Console.SetCursorPosition(Console.CursorLeft + offset + 2, Console.CursorTop);
+            Console.WriteLine(listAttack[3]);
+        }
+
+        static private void PrintPPAttack(Pokemon pokemon)
+        {
+            string topBox = "0---------0";
+            string MiddleBox = "|         |";
+
+
         }
 
 
