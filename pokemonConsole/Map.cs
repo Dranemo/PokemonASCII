@@ -21,6 +21,7 @@ internal class Map
 
     public static void MapPlayer(Player player_, Rival rival_)
     {
+        Functions.playSound("bourg_palette.wav");
         player = player_;
         rival = rival_;
 
@@ -143,10 +144,6 @@ internal class Map
                     {
                         CanTalk(npc, keyInfo);
                     }
-                }
-                if (IsCurrentMap("route_1.txt")&&player.PositionY==35)
-                {
-                    Functions.playSound("bourg_palette.wav");
                 }
 
 
@@ -408,7 +405,7 @@ internal class Map
             PotionMan potionMan = new PotionMan();
             entityList.Add(potionMan);
         }
-        else if (filename == "bedroom.txt")
+        else if (filename == "bourg_palette.txt")
         {
             Functions.playSound("bourg_palette.wav");
         }
