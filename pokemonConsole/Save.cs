@@ -91,6 +91,37 @@ namespace pokemonConsole
             }
         }
 
+        public static void DestroyData()
+        {
+            string itemInGameFilePath = $"{AdresseFile.FileDirection}\\SaveItemInGame.txt";
+
+            try
+            {
+                // Lire toutes les lignes du fichier
+                string[] lines = File.ReadAllLines(itemInGameFilePath);
+
+                // Parcourir chaque ligne
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    string[] columns = lines[i].Split(',');
+
+                    // Vérifier s'il y a au moins 5 colonnes dans la ligne
+                    if (columns.Length >= 5)
+                    {
+                        columns[4] = "0";
+                        lines[i] = string.Join(",", columns);
+                    }
+                }
+
+                // Réécrire le fichier avec les lignes modifiées
+                File.WriteAllLines(itemInGameFilePath, lines);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Une erreur s'est produite : {ex.Message}");
+            }
+        }
+
 
         public static void Loading(Player player, Rival rival)
         {

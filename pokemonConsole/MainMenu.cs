@@ -132,14 +132,14 @@ namespace pokemonConsole
 
             }
         }
-
+        
 
         private static void PrintMainMenu()
         {
             Console.Clear();
 
             Console.WriteLine(newGame);
-
+            Save.DestroyData();
             if (File.Exists(AdresseFile.FileDirection + "save.txt"))
             {
                 FileInfo fileInfo = new FileInfo(AdresseFile.FileDirection + "save.txt");
@@ -150,6 +150,7 @@ namespace pokemonConsole
                     canLoadGame = true;
                 }
             }
+            
             Console.WriteLine(quitGame);
         }
     }
