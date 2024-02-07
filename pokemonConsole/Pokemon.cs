@@ -21,7 +21,7 @@ namespace pokemonConsole
         private string actual_name;
         public List<string> listType = new List<string>();
         public string asciiArt { get; private set; }
-        private ConsoleColor color ;
+        public ConsoleColor color { get; private set; }
 
         public int idOT { get; private set; }
         public string nameOT { get; private set; }

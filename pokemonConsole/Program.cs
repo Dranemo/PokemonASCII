@@ -139,24 +139,36 @@ namespace Usefull
             bool EndName = false;
             while (!EndName)
             {
-                keyInfo = Console.ReadKey();
+                keyInfo = Console.ReadKey(true);
 
                 switch (keyInfo.Key)
                 {
                     case ConsoleKey.DownArrow:
-                        if (y != lines.Count - 1)
+                        if (y != lines.Count - 1 && lines[y][x] != "[DEL]")
                         {
                             UpdateCell(lines, x, y, " ", " ");
                             y += 1;
                             UpdateCell(lines, x, y, "[", "]");
                         }
+                        else if (lines[y][x] == "[DEL]")
+                        {
+                            UpdateCell(lines, x, y, " ", " ");
+                            y += 3;
+                            UpdateCell(lines, x, y, "[", "]");
+                        }
                         break;
 
                     case ConsoleKey.UpArrow:
-                        if (y != 0)
+                        if (y != 0 && lines[y][x] != "[END]")
                         {
                             UpdateCell(lines, x, y, " ", " ");
                             y -= 1;
+                            UpdateCell(lines, x, y, "[", "]");
+                        }
+                        else if (lines[y][x] == "[END]")
+                        {
+                            UpdateCell(lines, x, y, " ", " ");
+                            y -= 3;
                             UpdateCell(lines, x, y, "[", "]");
                         }
                         break;
@@ -203,6 +215,9 @@ namespace Usefull
                                 y = 3;
                                 UpdateCell(lines, x, y, "[", "]");
                             }
+
+                            Console.SetCursorPosition(0, 0);
+                            Console.Write(nameEnter);
                         }
                         else if (lines[y][x] == "[DEL]")
                         {
@@ -213,6 +228,10 @@ namespace Usefull
 
                                 name = name.Substring(0, name.Length - 1);
                                 charNumber--;
+
+                                Console.SetCursorPosition(0, 0);
+                                Console.Write(nameEnter);
+
                             }
                             
                         }
@@ -223,18 +242,6 @@ namespace Usefull
 
                         break;
                 }
-
-                Console.Clear();
-                Console.WriteLine(nameEnter);
-                foreach (List<string> line in lines)
-                {
-                    Console.WriteLine();
-                    foreach (string str in line)
-                    {
-                        Console.Write(str);
-                    }
-                }
-
             }
             return name;
         }
@@ -246,11 +253,18 @@ namespace Usefull
 
             lines[y][x] = lines[y][x].Substring(0, lines[y][x].Length - 1);
             lines[y][x] = lines[y][x] + suffix;
+
+            int cursorTop = Console.CursorTop;
+            int cursorLeft = Console.CursorLeft;
+
+            Console.SetCursorPosition(x*3, y + 2);
+            Console.Write(lines[y][x]);
+            Console.SetCursorPosition(cursorLeft, cursorTop);
         }
     }
 
     class AdresseFile
     {
-        public static string FileDirection = "C:\\Users\\mguellaff\\Desktop\\C-Pokemon\\pokemonConsole\\GameFiles\\";
+        public static string FileDirection = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\GameFiles\\";
     }
 }
