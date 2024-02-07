@@ -152,8 +152,9 @@ internal class Map
                 {
                     if (random.Next(1, 101) <= 10) // chance de rencontrer un Pokemon dans les hautes herbes
                     {
+                        Functions.playSound("combat_sauvage.wav");
                         Console.WriteLine($"\nCombat lancé !");
-                        Thread.Sleep(500);
+                        Thread.Sleep(1000);
                         Functions.ClearInputBuffer();
                         Combat.LoopCombat(player);
                         if (player.IsKO())
