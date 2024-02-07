@@ -42,7 +42,7 @@ namespace pokemonConsole
 
     class PotionMan : NPC
     {
-        public PotionMan() : base("PotionMan", "Tiens ! Une Potion", 'E', "route_1.txt", 3, 24, ' ') { }
+        public PotionMan() : base("PotionMan", "Tiens ! Une nouvelle Potion !", 'E', "route_1.txt", 3, 24, ' ') { }
 
         public override void Update(DateTime deltatime, Player player)
         {
@@ -94,12 +94,12 @@ namespace pokemonConsole
 
         public override void Function(Player player)
         {
-            Item.LoadItemsFromSaveFile($"{AdresseFile.FileDirection}\\SaveItemInGame.txt");
+            inventory.Item.LoadItemsFromSaveFile($"{AdresseFile.FileDirection}\\SaveItemInGame.txt");
 
             // Ensuite, vous pouvez utiliser la fonction Function
             //player.Function();
 
-            Item itemToGive = Item.AllItems.FirstOrDefault(i => i.ID == 5);
+            inventory.Item itemToGive = inventory.Item.AllItems.FirstOrDefault(i => i.ID == 5);
 
             // Vérifiez si l'objet a été trouvé
             if (itemToGive != null)
@@ -107,11 +107,8 @@ namespace pokemonConsole
                 // Augmentez la quantité de l'objet dans l'inventaire du joueur
                 itemToGive.Quantity++;
 
-                // Affichez la nouvelle quantité
-                Console.WriteLine($"Vous avez maintenant {itemToGive.Quantity} {itemToGive.Name}(s) dans votre inventaire.");
-
                 // Vous pouvez également sauvegarder l'inventaire mis à jour dans un fichier si nécessaire
-                Item.SaveQuantitiesToFile($"{AdresseFile.FileDirection}\\SaveItemInGame.txt", Item.AllItems);
+                inventory.Item.SaveQuantitiesToFile($"{AdresseFile.FileDirection}\\SaveItemInGame.txt", inventory.Item.AllItems);
             }
             else
             {
