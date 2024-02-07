@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Usefull;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace pokemonConsole
 {
@@ -22,10 +23,12 @@ namespace pokemonConsole
 
         private static List<string> firstLine = new List<string>();
         private static List<string> secondLine = new List<string>();
+        private static List<List<string>> bothLines = new List<List<string>>();
 
         private static List<string> listAttack = new List<string>();
 
-
+        private static int cursorLeft;
+        private static int cursorTop;
 
         private static int pokemonWidth;
 
@@ -36,6 +39,7 @@ namespace pokemonConsole
             Random random = new Random();
             Pokemon pokemon = player.pokemonParty[0];
 
+            // Generer un pokemon sauvage
             int pokemonAdverseId = random.Next(1, 152);
             int pokemonAdverseLevel = 0;
             while (!(pokemonAdverseLevel > 0 && pokemonAdverseLevel <= 100))
@@ -50,13 +54,100 @@ namespace pokemonConsole
             bool fuiteReussit = false;
             Capacity capacityUsed = null;
 
-            // --------------------- Affichage ---------------------//
 
+            // Boutons Main
+            firstLine.Add(FightButton);
+            firstLine.Add(PokemonButton);
+            secondLine.Add(ItemButton);
+            secondLine.Add(RunButton);
+
+
+            bool Selected = false;
+            foreach (string item in firstLine)
+            {
+                if (item[0] == '>') Selected = true;
+            }
+            foreach (string item in secondLine)
+            {
+                if (item[0] == '>') Selected = true;
+            }
+            if (!Selected)
+            {
+                firstLine[0] = firstLine[0].Remove(0, 1);
+                firstLine[0] = firstLine[0].Insert(0, ">");
+                positionX = 0;
+                positionY = 0;
+            }
+
+            bothLines.Add(firstLine);
+            bothLines.Add(secondLine);
+
+            // Boutons Atk
+            string button = " ";
+            foreach (Capacity atk in pokemon.listAttackActual)
+            {
+                listAttack.Add(button + atk.name);
+            }
+
+            Selected = false;
+            foreach (string attack in listAttack)
+            {
+                if (button[0] == '>') Selected = true;
+            }
+
+            if (!Selected)
+            {
+                listAttack[0] = listAttack[0].Remove(0, 1);
+                listAttack[0] = listAttack[0].Insert(0, ">");
+                positionAttack = 0;
+            }
+
+            // Affichage 
             PrintPokemon(pokemon, pokemonAdverse);
+            cursorLeft = Console.CursorLeft; cursorTop = Console.CursorTop;
             PrintMenuChoice();
 
 
 
+            // Combat 
+            ConsoleKeyInfo keyInfo;
+            bool endChoice = false;
+            while (!endChoice)
+            {
+                keyInfo = Console.ReadKey(true);
+
+                switch (keyInfo.Key)
+                {
+                    case ConsoleKey.DownArrow:
+                        if(positionY != bothLines[positionX].Count - 1)
+                        {
+                            SwitchSelectMain(ref positionX, ref positionY, 0, 1);
+                        }
+                        break;
+                    case ConsoleKey.UpArrow:
+                        if (positionY != 0)
+                        {
+                            SwitchSelectMain(ref positionX, ref positionY, 0, -1);
+                        }
+                        break;
+                    case ConsoleKey.RightArrow:
+                        if (positionX != bothLines.Count - 1)
+                        {
+                            SwitchSelectMain(ref positionX, ref positionY, +1, 0);
+                        }
+                        break;
+                    case ConsoleKey.LeftArrow:
+                        if (positionX != 0)
+                        {
+                            SwitchSelectMain(ref positionX, ref positionY, -1, 0);
+                        }
+                        break;
+                    case ConsoleKey.Enter:
+                        capacityUsed = LoopChoiceCap(pokemon);
+                        endChoice = true;
+                        break;
+                }
+            }
 
 
 
@@ -254,13 +345,39 @@ namespace pokemonConsole
                 
             }
         }
+        private static Capacity LoopChoiceCap(Pokemon pokemon)
+        {
+            PrintMenuAttack(pokemon);
+            PrintPPAttack(pokemon);
 
+            ConsoleKeyInfo keyInfo;
+            bool endChoice = false;
+            while (!endChoice)
+            {
+                keyInfo = Console.ReadKey(true);
 
-
-        string topBoxAttackChoicePP = "0---------0";
-        string middleBoxAttackChoicePP = "|         |";
-
-        string middleBoxAttackChoice = "|               |";
+                switch (keyInfo.Key)
+                {
+                    case ConsoleKey.DownArrow:
+                        if(positionAttack < listAttack.Count - 1)
+                        {
+                            SwitchSelectAttack(ref positionAttack, 1);
+                            PrintPPAttack(pokemon);
+                        }
+                        break;
+                    case ConsoleKey.UpArrow:
+                        if (positionAttack > 0)
+                        {
+                            SwitchSelectAttack(ref positionAttack, -1);
+                            PrintPPAttack(pokemon);
+                        }
+                        break;
+                    case ConsoleKey.Enter:
+                        return pokemon.listAttackActual[positionAttack];
+                }
+            }
+            return new Capacity(165);
+        }
 
 
         static double CalculerDegatSubitPokemon(Pokemon pokemon, Pokemon pokemonAdverse, Capacity capacity)
@@ -451,6 +568,13 @@ namespace pokemonConsole
         {
             int offset = pokemonWidth - 16;
 
+            // Clear
+            for (int i = 4; i > 0; i--)
+            {
+                Console.SetCursorPosition(cursorLeft, cursorTop - i);
+            }
+            Console.SetCursorPosition(cursorLeft, cursorTop);
+
 
             // Variables
             string topBox =    "0--------------0";
@@ -466,52 +590,29 @@ namespace pokemonConsole
                 middleWholeBox += " ";
             }
 
-            int cursorLeft = Console.CursorLeft;
-            int cursorTop = Console.CursorTop; 
-
             //Print
             Console.WriteLine(topWholeBox + topBox);
-            for (int i = 0;i < 2; i++)
+            for (int i = 0;i < 4; i++)
             {
                 Console.WriteLine(middleWholeBox + middleBox);
             }
             Console.WriteLine(topWholeBox + topBox);
 
-            // Boutons
-            firstLine.Add(FightButton);
-            firstLine.Add(PokemonButton);
-            secondLine.Add(ItemButton);
-            secondLine.Add(RunButton);
-
-
-            bool Selected = false;
-            foreach(string button in firstLine)
-            {
-                if (button[0] == '>') Selected = true;
-            }
-            foreach(string button in secondLine)
-            {
-                if (button[0] == '>') Selected = true;
-            }
-
-            if (!Selected) 
-            {
-                firstLine[0] = firstLine[0].Remove(0, 1);
-                firstLine[0] = firstLine[0].Insert(0, ">");
-                positionX = 0;
-                positionY = 0;
-            }
+            
 
             // Print 2
-            Console.SetCursorPosition(cursorLeft + offset + 2, cursorTop + 1);
+
+            Console.SetCursorPosition(cursorLeft + offset + 2, cursorTop + 2);
             Console.Write(firstLine[0]);
             Console.SetCursorPosition(Console.CursorLeft +1, Console.CursorTop);
             Console.WriteLine(firstLine[1]);
 
+            Console.WriteLine();
+
             Console.SetCursorPosition(Console.CursorLeft + offset + 2, Console.CursorTop);
             Console.Write(secondLine[0]);
             Console.SetCursorPosition(Console.CursorLeft + 1, Console.CursorTop);
-            Console.WriteLine(secondLine[1]);
+            Console.Write(secondLine[1]);
 
         }
         static private void PrintMenuAttack(Pokemon pokemon)
@@ -535,55 +636,89 @@ namespace pokemonConsole
                 middleWholeBox += " ";
             }
 
-            int cursorLeft = Console.CursorLeft;
-            int cursorTop = Console.CursorTop;
-
             //Print
+            Console.SetCursorPosition(cursorLeft, cursorTop);
             Console.WriteLine(topWholeBox + topBox);
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 4; i++)
             {
                 Console.WriteLine(middleWholeBox + middleBox);
             }
             Console.WriteLine(topWholeBox + topBox);
 
-            // Boutons
-            string button = " ";
-            foreach (Capacity atk in pokemon.listAttackActual)
-            {
-                listAttack.Add(button + atk.ToString());
-            }
-
-            bool Selected = false;
-            foreach (string attack in listAttack)
-            {
-                if (button[0] == '>') Selected = true;
-            }
-
-            if (!Selected)
-            {
-                listAttack[0] = listAttack[0].Remove(0, 1);
-                listAttack[0] = listAttack[0].Insert(0, ">");
-                positionAttack = 0;
-            }
+            
 
             // Print 2
-            Console.SetCursorPosition(cursorLeft + offset + 2, cursorTop + 1);
-            Console.Write(listAttack[0]);
-            Console.SetCursorPosition(Console.CursorLeft + offset + 2, Console.CursorTop);
-            Console.WriteLine(listAttack[1]);
-
-            Console.SetCursorPosition(Console.CursorLeft + offset + 2, Console.CursorTop);
-            Console.Write(listAttack[2]);
-            Console.SetCursorPosition(Console.CursorLeft + offset + 2, Console.CursorTop);
-            Console.WriteLine(listAttack[3]);
+            Console.SetCursorPosition(cursorLeft, cursorTop + 1);
+            foreach (string str in listAttack)
+            {
+                Console.SetCursorPosition(Console.CursorLeft + offset + 2, Console.CursorTop);
+                Console.WriteLine(str);
+            }
         }
-
         static private void PrintPPAttack(Pokemon pokemon)
         {
             string topBox = "0---------0";
             string MiddleBox = "|         |";
 
+            Console.SetCursorPosition(cursorLeft, cursorTop - 4);
+            Console.WriteLine(topBox);
+            for (int i = 0; i < 3; i++) 
+            {
+                Console.WriteLine(MiddleBox);
+            }
+            Console.WriteLine(topBox);
 
+            Console.SetCursorPosition(cursorLeft+1, cursorTop - 3);
+            Console.WriteLine("TYPE/");
+
+            Console.SetCursorPosition(Console.CursorLeft + 2, Console.CursorTop);
+            Console.WriteLine(pokemon.listAttackActual[positionAttack].type);
+
+            Console.SetCursorPosition(Console.CursorLeft + 3, Console.CursorTop);
+            // Print pp
+
+            Console.SetCursorPosition(cursorLeft, cursorTop + 6);
+        }
+
+
+        static private void SwitchSelectMain(ref int x, ref int y, int nextX, int nextY)
+        {
+            int offset = pokemonWidth - 16;
+
+            bothLines[y][x] = bothLines[y][x].Remove(0, 1);
+            bothLines[y][x] = bothLines[y][x].Insert(0, " ");
+
+            Console.SetCursorPosition(cursorLeft + offset + 2 + x * 7, cursorTop + 2 + y * 2);
+            Console.Write(bothLines[y][x][0]);
+
+            x += nextX;
+            y += nextY;
+
+            bothLines[y][x] = bothLines[y][x].Remove(0, 1);
+            bothLines[y][x] = bothLines[y][x].Insert(0, ">");
+
+            Console.SetCursorPosition(cursorLeft + offset + 2 + x * 7, cursorTop + 2 + y * 2);
+            Console.Write(bothLines[y][x][0]);
+            Console.SetCursorPosition(cursorLeft, cursorTop + 6);
+        }
+        static private void SwitchSelectAttack(ref int x, int nextX)
+        {
+            int offset = pokemonWidth - 17;
+
+            listAttack[x] = listAttack[x].Remove(0, 1);
+            listAttack[x] = listAttack[x].Insert(0, " ");
+
+            Console.SetCursorPosition(cursorLeft + offset + 2, cursorTop + 1 + x);
+            Console.Write(listAttack[x][0]);
+
+            x += nextX;
+
+            listAttack[x] = listAttack[x].Remove(0, 1);
+            listAttack[x] = listAttack[x].Insert(0, ">");
+
+            Console.SetCursorPosition(cursorLeft + offset + 2, cursorTop + 1 + x);
+            Console.Write(listAttack[x][0]);
+            Console.SetCursorPosition(cursorLeft, cursorTop + 6);
         }
 
 
