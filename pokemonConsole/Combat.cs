@@ -32,7 +32,7 @@ namespace pokemonConsole
 
         private static int pokemonWidth;
 
-        public static void LoopCombat(Player player)
+        public static void LoopCombat(Player player, List<Pokemon> pokemonPartyAdverse = null)
         {
 
             // Generer le pokemon adverse
@@ -47,12 +47,28 @@ namespace pokemonConsole
                 pokemonAdverseLevel = random.Next(pokemon.level - 2, pokemon.level + 3);
             }
 
+            Console.WriteLine(pokemonAdverseId);
+            Console.WriteLine(pokemonAdverseLevel);
             Pokemon pokemonAdverse = new Pokemon(pokemonAdverseId, pokemonAdverseLevel);
-
+            Pokemon pokemonAdverse;
+            if (pokemonPartyAdverse == null)
+            { 
+                pokemonPartyAdverse=new List<Pokemon>();
+                pokemonAdverse = new Pokemon(pokemonAdverseId, pokemonAdverseLevel);
+                pokemonPartyAdverse.Add(pokemonAdverse);
+            }
+            else
+            {
+                pokemonAdverse = pokemonPartyAdverse[0];
+            }
+            pokemonPartyAdverse.Add(pokemonAdverse);
+            pokemon.AfficherCombat();
+            Console.WriteLine();
+            pokemonAdverse.AfficherCombat();
+            pokemonAdverse.AfficherCombat();
 
             int nbFuite = 0;
             bool fuiteReussit = false;
-            Capacity capacityUsed = null;
 
 
             // Boutons Main
@@ -155,7 +171,9 @@ namespace pokemonConsole
 
 
             while (!player.IsKO() && pokemonAdverse.pvLeft > 0 && !fuiteReussit)
+
             {
+                tour++;
                 // Demander à l'utilisateur d'entrer son action
                 Console.WriteLine("Attaque");
                 Console.WriteLine("Pokemon");
@@ -163,7 +181,6 @@ namespace pokemonConsole
                 Console.WriteLine("Fuite");
                 int choix = int.Parse(Console.ReadLine());
                 Random randomFuite = new Random();
-                int PvRestantPokemon = pokemon.pvLeft;
                 List<Capacity> listAttackActual = pokemon.listAttackActual;
                 
                 Capacity.ApplyStatusEffects(pokemon);
@@ -196,29 +213,12 @@ namespace pokemonConsole
                                 break;
                         }
 
-                        int PvRestantPokemonAdverse = pokemonAdverse.pvLeft;
                         if (capacityUsed != null && capacityUsed.categorie == 1)
                         {
-                            PvRestantPokemonAdverse -= (int)Math.Round(CalculerDegatSubitPokemon(pokemon, pokemonAdverse, capacityUsed));
+                            pokemonAdverse.pvLeft -= (int)Math.Round(CalculerDegatSubitPokemon(pokemon, pokemonAdverse, capacityUsed));
                             Console.WriteLine(capacityUsed.name);
                         }
 
-                        capacityUsed = pokemonAdverse.listAttackActual[random.Next(0, pokemonAdverse.listAttackActual.Count)];
-                        if (capacityUsed.categorie == 1)
-                        {
-                            PvRestantPokemon -= (int)Math.Round(CalculerDegatSubitPokemon(pokemonAdverse, pokemon, capacityUsed));
-                            Console.WriteLine(capacityUsed.name);
-                        }
-                        else
-                        {
-                            Console.WriteLine(capacityUsed.name);
-                            capacityUsed.Use(pokemonAdverse, pokemon);
-                        }
-
-                        pokemon.pvLeft = (int)PvRestantPokemon;
-                        pokemonAdverse.pvLeft = PvRestantPokemonAdverse;
-                        Console.WriteLine($"Les nouveaux PV du Pokemon du joueur sont = {pokemon.pvLeft}");
-                        Console.WriteLine($"Les nouveaux PV du Pokemon de l'adversaire sont = {pokemonAdverse.pvLeft}\n");
                         break;
                     case 2:
                         ;
@@ -270,8 +270,6 @@ namespace pokemonConsole
                                     }
 
                                     Console.WriteLine("Le Pokemon adverse vous inflige des dégâts !\n");
-                                    Console.WriteLine($"Les nouveaux PV du Pokemon du joueur sont = {pokemon.pvLeft}");
-                                    Console.WriteLine($"Les nouveaux PV du Pokemon de l'adversaire sont = {pokemonAdverse.pvLeft}\n");
                                 }
                                 else if (choixNomObjet == "0")
                                 {
@@ -302,26 +300,56 @@ namespace pokemonConsole
                         }
                         else
                         {
-                            capacityUsed = pokemonAdverse.listAttackActual[random.Next(0, pokemonAdverse.listAttackActual.Count)];
-
-                            if (capacityUsed.categorie > 0)
-                            {
-                                pokemon.pvLeft -= (int)Math.Round(CalculerDegatSubitPokemon(pokemonAdverse, pokemon, capacityUsed));
-                                Console.WriteLine(capacityUsed.name);
-                            }
-
                             Console.WriteLine("Vous n'avez pas reussi à fuir le Pokemon adverse !\n");
-                            Console.WriteLine($"Les nouveaux PV du Pokemon du joueur sont = {pokemon.pvLeft}");
-                            Console.WriteLine($"Les nouveaux PV du Pokemon de l'adversaire sont = {pokemonAdverse.pvLeft}\n");
                         }
                         break;
                 }
-                if (pokemonAdverse.pvLeft <= 0)
+                if (pokemonAdverse.appartenant==2)
                 {
-                    Console.WriteLine("Le Pokemon de l'adversaire a perdu !");
-                    float appartenant ;
-                    float echange = 1; // echange = 1.5x
-                    int nombrePokemon = 1; // Le nombre de pokemo qui ont combattu
+                    double degatsMax = double.MinValue;
+                    Capacity meilleureAttaque = null;
+                    int positionMeilleureAttaque = -1;
+                    for (int i = 0; i < pokemonAdverse.listAttackActual.Count; i++)
+                    {
+                        Capacity attaque = pokemonAdverse.listAttackActual[i];
+                        // Calcul des dégâts infligés par cette attaque
+                        double degats = CalculerDegatSubitPokemon(pokemonAdverse, pokemon, attaque);
+
+                        // Mise à jour de l'attaque choisie si les dégâts sont inférieurs au minimum
+                        if (degats > degatsMax)
+                        {
+                            degatsMax = degats;
+                            meilleureAttaque = attaque;
+                            positionMeilleureAttaque = i; // Mémorisation de la position de l'attaque choisie
+                        }
+                    }
+
+                    // Affectation de capacityUsed à l'attaque choisie
+                    if (positionMeilleureAttaque != -1)
+                    {
+                        capacityUsed = pokemonAdverse.listAttackActual[positionMeilleureAttaque];
+                        pokemon.pvLeft -= (int)Math.Round(CalculerDegatSubitPokemon(pokemonAdverse, pokemon, capacityUsed));
+                        Console.WriteLine($"Meilleure capacite : {capacityUsed.name}");
+                    }
+                }
+                else
+                {
+                    capacityUsed = pokemonAdverse.listAttackActual[random.Next(0, pokemonAdverse.listAttackActual.Count)];
+                    pokemon.pvLeft -= (int)Math.Round(CalculerDegatSubitPokemon(pokemonAdverse, pokemon, capacityUsed));
+                    Console.WriteLine(capacityUsed.name);
+                }
+                Console.WriteLine($"Les nouveaux PV du Pokemon du joueur sont = {pokemon.pvLeft}");
+                Console.WriteLine($"Les nouveaux PV du Pokemon de l'adversaire sont = {pokemonAdverse.pvLeft}\n");
+                if (pokemonPartyAdverse[pokemonEquipeAdverse].pvLeft<=0)
+                {
+                    if (pokemonEquipeAdverse + 1 < pokemonPartyAdverse.Count)
+                    {
+                        pokemonAdverse = pokemonPartyAdverse[pokemonEquipeAdverse + 1];
+                        pokemonEquipeAdverse++;
+                    }
+                    float appartenant;
+                    float echange = 1;
+                    int nombrePokemon = 1; // Le nombre de pokemon qui ont combattu
 
 
                     if (pokemonAdverse.appartenant == 0)
@@ -336,6 +364,10 @@ namespace pokemonConsole
                     float expWon = (appartenant * echange * pokemonAdverse.expDonne * pokemonAdverse.level) / 7 * nombrePokemon;
                     pokemon.GainExp((int)Math.Round(expWon));
                     pokemon.GainEV(pokemonAdverse.listPv[0], pokemonAdverse.listAtk[0], pokemonAdverse.listDef[0], pokemonAdverse.listSpe[0], pokemonAdverse.listSpd[0]);
+                }
+                if (VerifAdverse(pokemonPartyAdverse))
+                {
+                    Console.WriteLine("L'adversaire a perdu !");
                 }
                 if (fuiteReussit)
                 {
@@ -762,6 +794,23 @@ namespace pokemonConsole
                 }
 
             }
+        }
+        public static bool VerifAdverse(List<Pokemon>pokemonPartyAdverse) 
+        {
+            if (pokemonPartyAdverse.Count == 0)
+            {
+                return true;
+            }
+
+            foreach (var pokemon in pokemonPartyAdverse)
+            {
+                if (pokemon.pvLeft > 0)
+                {
+                    return false; 
+                }
+            }
+
+            return true;
         }
     }
 
