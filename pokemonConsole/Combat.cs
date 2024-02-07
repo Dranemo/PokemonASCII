@@ -32,6 +32,12 @@ namespace pokemonConsole
 
         private static int pokemonWidth;
 
+        private static int tour = 0;
+
+
+
+
+
         public static void LoopCombat(Player player, List<Pokemon> pokemonPartyAdverse = null)
         {
 
@@ -46,14 +52,12 @@ namespace pokemonConsole
             {
                 pokemonAdverseLevel = random.Next(pokemon.level - 2, pokemon.level + 3);
             }
-
-            Console.WriteLine(pokemonAdverseId);
-            Console.WriteLine(pokemonAdverseLevel);
             Pokemon pokemonAdverse = new Pokemon(pokemonAdverseId, pokemonAdverseLevel);
 
+
             if (pokemonPartyAdverse == null)
-            { 
-                pokemonPartyAdverse=new List<Pokemon>();
+            {
+                pokemonPartyAdverse = new List<Pokemon>();
                 pokemonAdverse = new Pokemon(pokemonAdverseId, pokemonAdverseLevel);
                 pokemonPartyAdverse.Add(pokemonAdverse);
             }
@@ -61,15 +65,6 @@ namespace pokemonConsole
             {
                 pokemonAdverse = pokemonPartyAdverse[0];
             }
-            pokemonPartyAdverse.Add(pokemonAdverse);
-            pokemon.AfficherCombat();
-            Console.WriteLine();
-            pokemonAdverse.AfficherCombat();
-            pokemonAdverse.AfficherCombat();
-
-            int nbFuite = 0;
-            bool fuiteReussit = false;
-            Capacity capacityUsed = null;
 
 
             // Boutons Main
@@ -125,18 +120,25 @@ namespace pokemonConsole
             PrintMenuChoice();
 
 
+            // Variables
+            int nbFuite = 0;
+            int pokemonEquipeAdverse = 0;
+            bool fuiteReussie = false;
+            Capacity capacityUsed = null;
+
+
 
             // Combat 
             ConsoleKeyInfo keyInfo;
-            bool endChoice = false;
-            while (!endChoice)
+            bool endFight = false;
+            while (!endFight && !player.IsKO())
             {
                 keyInfo = Console.ReadKey(true);
 
                 switch (keyInfo.Key)
                 {
                     case ConsoleKey.DownArrow:
-                        if(positionY != bothLines[positionX].Count - 1)
+                        if (positionY != bothLines[positionX].Count - 1)
                         {
                             SwitchSelectMain(ref positionX, ref positionY, 0, 1);
                         }
@@ -160,225 +162,59 @@ namespace pokemonConsole
                         }
                         break;
                     case ConsoleKey.Enter:
-                        capacityUsed = LoopChoiceCap(pokemon);
-                        listAttack.Clear();
-                        endChoice = true;
+                        if (bothLines[positionX][positionY] == ">ATTAQ")
+                        {
+                            capacityUsed = LoopChoiceCap(pokemon);
+                            listAttack.Clear();
+
+                            Attaque(pokemon, pokemonAdverse, capacityUsed);
+                            AfterAttack(pokemon, ref pokemonAdverse, ref pokemonEquipeAdverse, pokemonPartyAdverse);
+                            if (VerifAdverse(player.pokemonParty))
+                            {
+                                PrintInEmptyMenu("Vous avez perdu !");
+                                endFight = true;
+                            }
+                            else if (VerifAdverse(pokemonPartyAdverse))
+                            {
+                                PrintInEmptyMenu("Vous avez gagné !");
+                                endFight = true;
+                            }
+                        }
+                        else if (bothLines[positionX][positionY] == ">OBJET")
+                        {
+
+                        }
+                        else if (bothLines[positionX][positionY] == ">PKMN")
+                        {
+
+                        }
+                        else if (bothLines[positionX][positionY] == ">FUITE")
+                        {
+                            PrintMenuEmpty();
+
+                            nbFuite++;
+                            int spdQuart = (int)Math.Floor(pokemonAdverse.spdCombat / 4.0);
+                            int fuiteEuclidienne = (spdQuart % 255 == 0) ? 0 : 1;
+                            int randomFuiteValue = random.Next(0, 256);
+                            int fuite = (pokemon.spd * 32 / (spdQuart % 255)) + (30 * nbFuite);
+
+                            if (fuite > 255 || randomFuiteValue < fuite || fuiteEuclidienne == 0)
+                            {
+                                PrintInEmptyMenu("Vous avez reussi a fuir !");
+                                Console.ReadKey(true);
+                                endFight = true;
+                            }
+                            else
+                            {
+                                PrintInEmptyMenu("Vous n'avez pas reussi à fuir !");
+                                Task.Delay(500).Wait();
+                            }
+                        }
                         break;
-                }
-            }
-
-
-
-
-
-            int tour = 0;
-            int pokemonEquipeAdverse = 0;
-            while (!player.IsKO() && pokemonAdverse.pvLeft > 0 && !fuiteReussit)
-
-            {
-                tour++;
-                // Demander à l'utilisateur d'entrer son action
-                Console.WriteLine("Attaque");
-                Console.WriteLine("Pokemon");
-                Console.WriteLine("Sac");
-                Console.WriteLine("Fuite");
-                int choix = int.Parse(Console.ReadLine());
-                Random randomFuite = new Random();
-                List<Capacity> listAttackActual = pokemon.listAttackActual;
                 
-                Capacity.ApplyStatusEffects(pokemon);
-                Capacity.ApplyStatusEffects(pokemonAdverse);
-                switch (choix)
-                {
-                    case 1:
-                        foreach (Capacity attaque in listAttackActual)
-                        {
-                            Console.WriteLine(attaque.name);
-                        }
-                        int choixAttaque = int.Parse(Console.ReadLine());
-                        switch (choixAttaque)
-                        {
-                            case 1:
-                                capacityUsed = listAttackActual[0];
-                                capacityUsed.Use(pokemon, pokemonAdverse);
-                                break;
-                            case 2:
-                                capacityUsed = listAttackActual[1];
-                                capacityUsed.Use(pokemon, pokemonAdverse);
-                                break;
-                            case 3:
-                                capacityUsed = listAttackActual[2];
-                                capacityUsed.Use(pokemon, pokemonAdverse);
-                                break;
-                            case 4:
-                                capacityUsed = listAttackActual[3];
-                                capacityUsed.Use(pokemon, pokemonAdverse);
-                                break;
-                        }
-
-                        if (capacityUsed != null && capacityUsed.categorie == 1)
-                        {
-                            pokemonAdverse.pvLeft -= (int)Math.Round(CalculerDegatSubitPokemon(pokemon, pokemonAdverse, capacityUsed));
-                            Console.WriteLine(capacityUsed.name);
-                        }
-
-                        break;
-                    case 2:
-                        ;
-                        break;
-                    case 3:
-                        inventory.Item.LoadItemsFromSaveFile($"{AdresseFile.FileDirection}\\SaveItemInGame.txt");
-
-                        Console.WriteLine("\n1. Utiliser un objet");
-                        Console.WriteLine("2. Retour");
-
-                        int choixInventaire = int.Parse(Console.ReadLine());
-                       
-
-                        switch (choixInventaire)
-                        {
-                            case 1:
-                                List<inventory.Item> items = inventory.Item.AllItems;
-                                Console.WriteLine("\nListe des objets dans votre inventaire :\n");
-
-                                // Affichez uniquement les objets avec une quantité supérieure à 0
-                                foreach (var item in Item.AllItems.Where(i => i.Quantity > 0)
-                                    .Select((value, index) => new { Index = index, Value = value }))
-                                {
-                                    Console.WriteLine($"Name: {item.Value.Name}, Quantity: {item.Value.Quantity}");
-                                }
-
-                                Console.WriteLine("Choisissez un objet de l'inventaire (numéro) ou 0 pour retourner : ");
-                                string choixNomObjet = Console.ReadLine();
-
-                                inventory.Item itemToUse = items.FirstOrDefault(i => i.Name.Equals(choixNomObjet, StringComparison.OrdinalIgnoreCase));
-
-                                if (itemToUse != null && itemToUse.Quantity > 0)
-                                {
-                                    // Utiliser l'objet sélectionné
-                                    Console.WriteLine($"Vous avez utilisé l'objet : {itemToUse.Name}");
-
-                                    itemToUse.Quantity--;
-                                    Console.WriteLine($"Nouvelle quantité de {itemToUse.Name} : {itemToUse.Quantity}\n");
-
-                                    // Sauvegarder les quantités dans le fichier
-                                    inventory.Item.SaveQuantitiesToFile($"{AdresseFile.FileDirection}\\SaveItemInGame.txt", inventory.Item.AllItems);
-
-                                    capacityUsed = pokemonAdverse.listAttackActual[random.Next(0, pokemonAdverse.listAttackActual.Count)];
-
-                                    if (capacityUsed.categorie > 0)
-                                    {
-                                        pokemon.pvLeft -= (int)Math.Round(CalculerDegatSubitPokemon(pokemonAdverse, pokemon, capacityUsed));
-                                        Console.WriteLine(capacityUsed.name);
-                                    }
-
-                                    Console.WriteLine("Le Pokemon adverse vous inflige des dégâts !\n");
-                                }
-                                else if (choixNomObjet == "0")
-                                {
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Choix invalide.");
-                                }
-                                break;
-
-
-                            case 2:
-                                break;
-                        }
-                        break;
-
-                    case 4:
-                        nbFuite++;
-                        int spdQuart = (int)Math.Floor(pokemonAdverse.spdCombat / 4.0);
-                        int fuiteEuclidienne = (spdQuart % 255 == 0) ? 0 : 1;
-                        int randomFuiteValue = randomFuite.Next(0, 256);
-                        int fuite = (pokemon.spd * 32 / (spdQuart % 255)) + (30 * nbFuite);
-
-                        if (fuite > 255 || randomFuiteValue < fuite || fuiteEuclidienne == 0)
-                        {
-                            fuiteReussit = true;
-                            break;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Vous n'avez pas reussi à fuir le Pokemon adverse !\n");
-                        }
-                        break;
                 }
-                if (pokemonAdverse.appartenant==2)
-                {
-                    double degatsMax = double.MinValue;
-                    Capacity meilleureAttaque = null;
-                    int positionMeilleureAttaque = -1;
-                    for (int i = 0; i < pokemonAdverse.listAttackActual.Count; i++)
-                    {
-                        Capacity attaque = pokemonAdverse.listAttackActual[i];
-                        // Calcul des dégâts infligés par cette attaque
-                        double degats = CalculerDegatSubitPokemon(pokemonAdverse, pokemon, attaque);
+            } 
 
-                        // Mise à jour de l'attaque choisie si les dégâts sont inférieurs au minimum
-                        if (degats > degatsMax)
-                        {
-                            degatsMax = degats;
-                            meilleureAttaque = attaque;
-                            positionMeilleureAttaque = i; // Mémorisation de la position de l'attaque choisie
-                        }
-                    }
-
-                    // Affectation de capacityUsed à l'attaque choisie
-                    if (positionMeilleureAttaque != -1)
-                    {
-                        capacityUsed = pokemonAdverse.listAttackActual[positionMeilleureAttaque];
-                        pokemon.pvLeft -= (int)Math.Round(CalculerDegatSubitPokemon(pokemonAdverse, pokemon, capacityUsed));
-                        Console.WriteLine($"Meilleure capacite : {capacityUsed.name}");
-                    }
-                }
-                else
-                {
-                    capacityUsed = pokemonAdverse.listAttackActual[random.Next(0, pokemonAdverse.listAttackActual.Count)];
-                    pokemon.pvLeft -= (int)Math.Round(CalculerDegatSubitPokemon(pokemonAdverse, pokemon, capacityUsed));
-                    Console.WriteLine(capacityUsed.name);
-                }
-                Console.WriteLine($"Les nouveaux PV du Pokemon du joueur sont = {pokemon.pvLeft}");
-                Console.WriteLine($"Les nouveaux PV du Pokemon de l'adversaire sont = {pokemonAdverse.pvLeft}\n");
-                if (pokemonPartyAdverse[pokemonEquipeAdverse].pvLeft<=0)
-                {
-                    if (pokemonEquipeAdverse + 1 < pokemonPartyAdverse.Count)
-                    {
-                        pokemonAdverse = pokemonPartyAdverse[pokemonEquipeAdverse + 1];
-                        pokemonEquipeAdverse++;
-                    }
-                    float appartenant;
-                    float echange = 1;
-                    int nombrePokemon = 1; // Le nombre de pokemon qui ont combattu
-
-
-                    if (pokemonAdverse.appartenant == 0)
-                    {
-                        appartenant = 1;
-                    }
-                    else
-                    {
-                        appartenant = 1.5f;
-                    }
-
-                    float expWon = (appartenant * echange * pokemonAdverse.expDonne * pokemonAdverse.level) / 7 * nombrePokemon;
-                    pokemon.GainExp((int)Math.Round(expWon));
-                    pokemon.GainEV(pokemonAdverse.listPv[0], pokemonAdverse.listAtk[0], pokemonAdverse.listDef[0], pokemonAdverse.listSpe[0], pokemonAdverse.listSpd[0]);
-                }
-                if (VerifAdverse(pokemonPartyAdverse))
-                {
-                    Console.WriteLine("L'adversaire a perdu !");
-                }
-                if (fuiteReussit)
-                {
-                    Console.WriteLine("Vous avez reussi à fuir le combat");
-                }
-
-                
-            }
         }
         private static Capacity LoopChoiceCap(Pokemon pokemon)
         {
@@ -415,7 +251,138 @@ namespace pokemonConsole
         }
 
 
-        static double CalculerDegatSubitPokemon(Pokemon pokemon, Pokemon pokemonAdverse, Capacity capacity)
+        private static void Attaque(Pokemon pokemon, Pokemon pokemonAdverse, Capacity capacityUsed)
+        {
+            tour++; 
+
+            Random random = new Random();
+            bool playerAttackFirst = false;
+            Capacity capacityAdv = null;
+
+            if (pokemon.spd > pokemonAdverse.spd)
+            {
+                playerAttackFirst = true;
+            }
+            else if (pokemon.spd == pokemonAdverse.spd)
+            {
+                if(random.Next(0, 2) == 0)
+                {
+                    playerAttackFirst = true;
+                }
+            }
+
+            if (playerAttackFirst)
+            {
+                pokemonAdverse.pvLeft = (int)Math.Round(CalculerDegatSubitPokemon(pokemon, pokemonAdverse, capacityUsed));
+                capacityUsed.Use(pokemon, pokemonAdverse);
+
+                if(pokemonAdverse.pvLeft > 0)
+                {
+                    capacityAdv = capacityUsedAdv(pokemonAdverse, pokemon);
+                    pokemonAdverse.pvLeft = (int)Math.Round(CalculerDegatSubitPokemon(pokemonAdverse, pokemon, capacityAdv));
+                    capacityUsed.Use(pokemonAdverse, pokemon);
+                }
+
+            }
+            else
+            {
+                capacityAdv = capacityUsedAdv(pokemonAdverse, pokemon);
+                pokemonAdverse.pvLeft = (int)Math.Round(CalculerDegatSubitPokemon(pokemonAdverse, pokemon, capacityAdv));
+                capacityUsed.Use(pokemonAdverse, pokemon);
+
+
+                if(pokemon.pvLeft > 0)
+                {
+                    pokemonAdverse.pvLeft = (int)Math.Round(CalculerDegatSubitPokemon(pokemon, pokemonAdverse, capacityUsed));
+                    capacityUsed.Use(pokemon, pokemonAdverse);
+                }
+            }
+
+
+            
+        }
+        private static Capacity capacityUsedAdv(Pokemon pokemonAdv, Pokemon pokemon)
+        {
+            Capacity returnCap = null;
+            Random random = new Random();
+
+            if (pokemonAdv.appartenant == 2)
+            {
+                double degatsMax = double.MinValue;
+                Capacity meilleureAttaque = null;
+                int positionMeilleureAttaque = -1;
+                for (int i = 0; i < pokemonAdv.listAttackActual.Count; i++)
+                {
+                    Capacity attaque = pokemonAdv.listAttackActual[i];
+                    // Calcul des dégâts infligés par cette attaque
+                    double degats = CalculerDegatSubitPokemon(pokemonAdv, pokemon, attaque, true);
+
+                    // Mise à jour de l'attaque choisie si les dégâts sont inférieurs au minimum
+                    if (degats > degatsMax)
+                    {
+                        degatsMax = degats;
+                        meilleureAttaque = attaque;
+                        positionMeilleureAttaque = i; // Mémorisation de la position de l'attaque choisie
+                    }
+                }
+
+                // Affectation de capacityUsed à l'attaque choisie
+                if (positionMeilleureAttaque != -1)
+                {
+                    returnCap = pokemonAdv.listAttackActual[positionMeilleureAttaque];
+                }
+            }
+            else
+            {
+                returnCap = pokemonAdv.listAttackActual[random.Next(0, pokemonAdv.listAttackActual.Count)];
+            }
+
+            return returnCap;
+        }
+        private static void KillRewards(Pokemon pokemon, Pokemon pokemonAdverse)
+        {
+            float appartenant;
+            float echange = 1; // x1.5 si c'est un pokemon echangé
+            int nombrePokemon = 1; // Le nombre de pokemon qui ont combattu
+
+
+            if (pokemonAdverse.appartenant == 0)
+            {
+                appartenant = 1;
+            }
+            else
+            {
+                appartenant = 1.5f;
+            }
+
+            float expWon = (appartenant * echange * pokemonAdverse.expDonne * pokemonAdverse.level) / 7 * nombrePokemon;
+            pokemon.GainExp((int)Math.Round(expWon));
+            pokemon.GainEV(pokemonAdverse.listPv[0], pokemonAdverse.listAtk[0], pokemonAdverse.listDef[0], pokemonAdverse.listSpe[0], pokemonAdverse.listSpd[0]);
+        }
+        private static void AfterAttack(Pokemon pokemon, ref Pokemon pokemonAdverse, ref int pokemonEquipeAdverse, List<Pokemon> pokemonPartyAdverse)
+        {
+            ApplyStatusEffects(pokemon);
+            ApplyStatusEffects(pokemonAdverse);
+
+            if (pokemon.pvLeft <= 0)
+            {
+
+            }
+
+            if (pokemonAdverse.pvLeft <= 0)
+            {
+                KillRewards(pokemon, pokemonAdverse);
+
+                if (pokemonEquipeAdverse + 1 < pokemonPartyAdverse.Count)
+                {
+                    pokemonAdverse = pokemonPartyAdverse[pokemonEquipeAdverse + 1];
+                    pokemonEquipeAdverse++;
+                }
+            }
+        }
+
+
+        private static double CalculerDegatSubitPokemon(Pokemon pokemon, Pokemon pokemonAdverse, Capacity capacity, bool test = false)
         {
             // Degâts infliges = (((((((Niveau × 2 ÷ 5) +2) × Puissance × Att[Spe] ÷ 50) ÷ Def[Spe]) × Mod1) +2) × CC × Mod2 × R ÷ 100) × STAB × Type1 × Type2 × Mod3
 
@@ -456,16 +423,21 @@ namespace pokemonConsole
                 isBurn = isBurn * 0.5f;
             }
 
-            // Critique
-            critChance = ((int)Math.Round(pokemon.spdCombat / 2.0) * 2) / 256;
-            if (critChance == 0)
+            if (test)
             {
-                critDamage = 1;
+                // Critique
+                critChance = ((int)Math.Round(pokemon.spdCombat / 2.0) * 2) / 256;
+                if (critChance == 0)
+                {
+                    critDamage = 1;
+                }
+                else
+                {
+                    critDamage = 2;
+                    PrintInEmptyMenu("Coup critique !");
+                }
             }
-            else
-            {
-                critDamage = 2;
-            }
+            
             foreach (string typePokemon in pokemon.listType)
             {
                 if (capacity.type == typePokemon)
@@ -477,22 +449,59 @@ namespace pokemonConsole
 
             if (efficaciteType1 * efficaciteType2 > 1)
             {
-                Console.WriteLine("C'est super efficace !");
+                PrintInEmptyMenu("C'est super efficace !");
             }
             else if (efficaciteType1 * efficaciteType2 < 1 && efficaciteType1 * efficaciteType2 != 0)
             {
-                Console.WriteLine("C'est pas tres efficace !");
+                PrintInEmptyMenu("C'est pas tres efficace !");
             }
             else if (efficaciteType1 * efficaciteType2 == 0)
             {
-                Console.WriteLine("Ca n'a pas d'effet");
+                PrintInEmptyMenu("Ca n'a pas d'effet !");
             }
 
             double damageDone = (((((((pokemon.level * 2 / 5) + 2) * capacity.puissance * atkSpeOrNot / 50) / defSpeOrNot) * isBurn) + 2) * critDamage * randomMod / 100) * stab * efficaciteType1 * efficaciteType2;
             return damageDone;
         }
+        private static void ApplyStatusEffects(Pokemon pokemon)
+        {
+            switch (pokemon.statusProblem)
+            {
+                case "PARA":
+                    Console.WriteLine($"{pokemon.name} est paralysé !");
+                    // Appliquer l'effet de statut de la paralysie
+                    break;
 
+                case "BURN":
+                    Console.WriteLine($"{pokemon.name} est brûlé !");
+                    pokemon.pvLeft -= pokemon.pv / 16;
+                    pokemon.atkCombat = pokemon.atkCombat * 88 / 100;
+                    break;
 
+                case "FREEZE":
+                    Console.WriteLine($"{pokemon.name} est gelé !");
+                    // Appliquer l'effet de statut du gel
+                    break;
+
+                case "SLEEP":
+                    Console.WriteLine($"{pokemon.name} est endormi !");
+                    // Appliquer l'effet de statut du sommeil
+                    break;
+
+                case "POISON":
+                    Console.WriteLine($"{pokemon.name} est empoisonné !");
+                    pokemon.pvLeft -= pokemon.pv / 16;
+                    break;
+
+                case "POISONGRAVE":
+                    Console.WriteLine($"{pokemon.name} est gravement empoisonné !");
+                    // Appliquer l'effet de statut de l'empoisonnement grave
+                    break;
+
+                default:
+                    break;
+            }
+        }
 
 
 
@@ -689,6 +698,11 @@ namespace pokemonConsole
                 Console.SetCursorPosition(Console.CursorLeft + offset + 2, Console.CursorTop);
                 Console.WriteLine(str);
             }
+            for (int i = listAttack.Count;i <= 4; i++)
+            {
+                Console.SetCursorPosition(Console.CursorLeft + offset + 2, Console.CursorTop);
+                Console.WriteLine("-");
+            }
         }
         static private void PrintPPAttack(Pokemon pokemon)
         {
@@ -713,6 +727,119 @@ namespace pokemonConsole
             // Print pp
 
             Console.SetCursorPosition(cursorLeft, cursorTop + 6);
+        }
+        static private void PrintMenuEmpty()
+        {
+            // Clear
+            for (int i = 4; i > 0; i--)
+            {
+                Console.SetCursorPosition(cursorLeft, cursorTop - i);
+            }
+            Console.SetCursorPosition(cursorLeft, cursorTop);
+
+
+
+            string topBox = "0";
+            for (int i = 1; i < pokemonWidth-1; i++)
+            {
+                topBox += "-";
+            }
+            topBox += "0";
+            string middleBox = "|";
+            for (int i = 1; i < pokemonWidth-1; i++)
+            {
+                middleBox += " ";
+            }
+            middleBox += "|";
+
+            Console.SetCursorPosition(cursorLeft, cursorTop);
+            Console.WriteLine(topBox);
+            for(int i = 0;i < 4;i++)
+            {
+                Console.WriteLine(middleBox);
+            }
+            Console.WriteLine(topBox);
+
+        }
+        static private void PrintInEmptyMenu(string text)
+        {
+            // Clear
+            Console.SetCursorPosition(cursorLeft + 2, cursorTop + 1);
+            string clear = "";
+            for (int  i = 0;  i < pokemonWidth - 4;  i++)
+            {
+                clear += " ";
+            }
+            for (int i = 0; i < 4; i++)
+            {
+                Console.SetCursorPosition(cursorLeft + 2, cursorTop);
+                Console.WriteLine(clear);
+            }
+
+
+            Console.SetCursorPosition(cursorLeft+2, cursorTop+1);
+            int charRestant = pokemonWidth - 4;
+            int lineWriting = 1;
+            string[] words = text.Split(" ");
+            int wordIndex = 0;
+
+
+            for (int i = 0; i < text.Length; i++)
+            {
+
+                if (charRestant > 0 && lineWriting == 1)
+                {
+                    Console.Write(text[i]);
+                    charRestant--;
+
+                    // Si le caractère actuel est un espace, passe au mot suivant
+                    if (text[i] == ' ' || (charRestant == 0 && text[i + 1] == ' '))
+                    {
+                        wordIndex++;
+
+                        // Vérifie si le mot suivant peut s'insérer dans la ligne actuelle
+                        if (wordIndex < words.Length && words[wordIndex].Length > charRestant)
+                        {
+                            charRestant = pokemonWidth - 4;
+                            lineWriting++;
+                            Console.SetCursorPosition(cursorLeft + 2, cursorTop + 3);
+                        }
+                    }
+                }
+                else if (charRestant > 0 && lineWriting == 2)
+                {
+                    if (!(charRestant == pokemonWidth - 4 && text[i] == ' '))
+                    {
+                        Console.Write(text[i]);
+                    }
+
+                    charRestant--;
+
+                    // Si le caractère actuel est un espace, passe au mot suivant
+                    if (text[i] == ' ' || (charRestant == 0 && text[i + 1] == ' '))
+                    {
+                        wordIndex++;
+
+                        // Vérifie si le mot suivant peut s'insérer dans la ligne actuelle
+                        if (wordIndex < words.Length && words[wordIndex].Length > charRestant)
+                        {
+                            charRestant = pokemonWidth - 4;
+                            lineWriting++;
+                            Console.SetCursorPosition(cursorLeft + 2, cursorTop + 5);
+                        }
+                    }
+                }
+                else if (charRestant > 0 && lineWriting == 3)
+                {
+                    if (!(charRestant == pokemonWidth - 4 && text[i] == ' '))
+                    {
+                        Console.Write(text[i]);
+                    }
+
+                    charRestant--;
+
+                }
+            }
         }
 
 
@@ -800,20 +927,22 @@ namespace pokemonConsole
         }
         public static bool VerifAdverse(List<Pokemon>pokemonPartyAdverse) 
         {
+            bool returnValue = true;
+
             if (pokemonPartyAdverse.Count == 0)
             {
                 return true;
             }
 
-            foreach (var pokemon in pokemonPartyAdverse)
+            foreach (Pokemon pokemon in pokemonPartyAdverse)
             {
                 if (pokemon.pvLeft > 0)
                 {
-                    return false; 
+                    returnValue = false;
                 }
             }
 
-            return true;
+            return returnValue;
         }
     }
 

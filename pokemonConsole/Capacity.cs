@@ -506,44 +506,6 @@ namespace pokemonConsole
                     return SecondaryEffect.None;
             }
         }
-        public static void ApplyStatusEffects(Pokemon pokemon)
-        {
-            switch (pokemon.statusProblem)
-            {
-                case "PARA":
-                    Console.WriteLine($"{pokemon.name} est paralysé !");
-                    // Appliquer l'effet de statut de la paralysie
-                    break;
-
-                case "BURN":
-                    Console.WriteLine($"{pokemon.name} est brûlé !");
-                    pokemon.pvLeft -= pokemon.pv / 16;
-                    pokemon.atkCombat = pokemon.atkCombat * 88 / 100;
-                    break;
-
-                case "FREEZE":
-                    Console.WriteLine($"{pokemon.name} est gelé !");
-                    // Appliquer l'effet de statut du gel
-                    break;
-
-                case "SLEEP":
-                    Console.WriteLine($"{pokemon.name} est endormi !");
-                    // Appliquer l'effet de statut du sommeil
-                    break;
-
-                case "POISON":
-                    Console.WriteLine($"{pokemon.name} est empoisonné !");
-                    pokemon.pvLeft -= pokemon.pv / 16;
-                    break;
-
-                case "POISONGRAVE":
-                    Console.WriteLine($"{pokemon.name} est gravement empoisonné !");
-                    // Appliquer l'effet de statut de l'empoisonnement grave
-                    break;
-
-                default:
-                    break;
-            }
-        }
+        
     }
 }

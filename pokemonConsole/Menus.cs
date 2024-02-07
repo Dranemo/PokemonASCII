@@ -187,7 +187,7 @@ namespace pokemonConsole
 
         private static int PositionChangement;
 
-        public static void Open(Player player)
+        public static void Open(Player player, bool isCombat = false)
         {
             player.addPokemonToParty(new Pokemon(9, 45));
 
@@ -283,7 +283,7 @@ namespace pokemonConsole
                         if (!isSwitching) OpenLittleMenu(ref isSwitching, player);
                         else
                         {
-                            if (PositionChangement != position)
+                            if (PositionChangement != position && !isCombat)
                             {
                                 Pokemon temp = player.pokemonParty[position];
                                 player.pokemonParty[position] = player.pokemonParty[PositionChangement];
@@ -297,6 +297,10 @@ namespace pokemonConsole
                                 pokemonLines2[PositionChangement] = tempStr2;
 
                                 ChangeSelected(PositionChangement, position, pokemonLines1);
+                            }
+                            else if(isCombat)
+                            {
+
                             }
                             isChangingOnTop = false;
                             isSwitching = false;
@@ -409,6 +413,10 @@ namespace pokemonConsole
             else isChangingOnTop = false;
             list[nextPosition] = list[nextPosition].Remove(0, 1);
             list[nextPosition] = list[nextPosition].Insert(0, ">");
+        }
+        private static void ChangeSelectedCombat()
+        {
+
         }
         private static void PrintMenu(bool isSwitching)
         {
