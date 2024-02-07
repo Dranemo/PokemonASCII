@@ -96,6 +96,7 @@ internal class Map
                 if (IsCurrentMap("bedroom.txt"))
                 {
                     ChangeMap(15, 1, "mom.txt", 8, 1, "\nMaman...");
+                    player.addPokemonToParty(new Pokemon(9, 15));
                 }
 
                 else if (IsCurrentMap("bourg_palette.txt"))
@@ -352,7 +353,7 @@ internal class Map
         {
             NPC chen = new NPC("Prof.Chen", "Voici 3 Pokémon! Mais... Ils sont dans des Poké Balls. Plus jeune, j'étais un sacré Dresseur de Pokémon! Et oui! Mais avec l'âge, il ne m'en reste plus que 3! Choisis-en un!", 'C', filename, 6, 2, map[6, 2]);
             NPC blue = new NPC(rival.name, "Yo minable !", 'R', filename, 4, 4, map[4, 4]);
-
+            rival.addPokemonToParty(player);
             entityList.Add(chen);
             entityList.Add(blue);
 

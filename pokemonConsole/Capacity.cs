@@ -240,7 +240,7 @@ namespace pokemonConsole
                     Console.Write("chancedefdown");
                     if (randomNumber <= 10)
                     {
-                        pokemonAdverse.defCombat = (int)(pokemonAdverse.defCombat * 0.88); // Baisse de 12%
+                        pokemonAdverse.defCombat = (int)(pokemonAdverse.defCombat * 0.88);
                     }
                     return SecondaryEffect.ChanceDefDown;
 
@@ -517,7 +517,8 @@ namespace pokemonConsole
 
                 case "BURN":
                     Console.WriteLine($"{pokemon.name} est brûlé !");
-                    // Appliquer l'effet de statut de la brûlure
+                    pokemon.pvLeft -= pokemon.pv / 16;
+                    pokemon.atkCombat = pokemon.atkCombat * 88 / 100;
                     break;
 
                 case "FREEZE":

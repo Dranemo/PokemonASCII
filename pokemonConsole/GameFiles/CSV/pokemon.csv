@@ -1,4 +1,4 @@
-pokemon ID,Nom,Type primaire,Type secondaire,Base PV,Base Atk,Base Def,Base Special,Base Speed,Peut Evoluer,"Methode d'évolution (0 = level up, 1 = trade, 2 = item, 3 = evoli uniquement)",level / item_id,Courbe d'évolution,Exp Donne,Taux Capture,MoveStart,MovePoolLevelUp,LevelMove,
+pokemon ID,Nom,Type primaire,Type secondaire,Base PV,Base Atk,Base Def,Base Special,Base Speed,Peut Evoluer,"Methode d'évolution (0 = level up, 1 = trade, 2 = item, 3 = evoli uniquement)",level / item_id,Courbe d'évolution,Exp Donne,Taux Capture,MoveStart,MovePoolLevelUp,LevelMove,Color
 ,,,,,,,,,,,,,,,,,,
 1,BULBIZARRE,PLANTE,POISON,45,49,49,65,45,TRUE,0,16,parabolique,64,45,33/45,73/22/77/75/74/79/76,7/13/20/27/34/41/48,Green
 2,HERBIZARRE,PLANTE,POISON,60,62,63,80,60,TRUE,0,32,parabolique,141,45,33/45/73,73/22/77/75/74/79/76,7/13/22/30/38/46/54,Green
