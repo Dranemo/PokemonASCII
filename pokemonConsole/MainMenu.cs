@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using Usefull;
@@ -18,10 +19,9 @@ namespace pokemonConsole
         private static string pathLogoFile = AdresseFile.FileDirection + "Assets\\mainMenuLogo.txt";
 
 
-
-
         static public void Start()
         {
+            Functions.playSound("main_menu.wav");
             Player player = new Player();
             Rival rival = new Rival();
 

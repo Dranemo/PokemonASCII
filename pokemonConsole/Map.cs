@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel.Design;
 using System.Reflection;
+using System.Media;
 using Usefull;
 
 internal class Map
@@ -17,13 +18,6 @@ internal class Map
 
     private static List<Entity> entityList = new List<Entity>();
     private static List<Entity> entityToRemove = new List<Entity>();
-    
-
-
-
-
-
-
 
     public static void MapPlayer(Player player_, Rival rival_)
     {
@@ -145,14 +139,17 @@ internal class Map
                 else if (IsCurrentMap("route_1.txt"))
                 {
                     if(moved) ChangeMap(35, "bourg_palette.txt", player.PositionX + 3, 0, "Vous arrivez à Bourg Palette !");
-
                     foreach (NPC npc in entityList)
                     {
                         CanTalk(npc, keyInfo);
                     }
                 }
+                if (IsCurrentMap("route_1.txt")&&player.PositionY==35)
+                {
+                    Functions.playSound("bourg_palette.wav");
+                }
 
-                
+
                 // Hautes herbes
                 if (map[player.PositionX, player.PositionY] == '#' && moved)
                 {
@@ -356,6 +353,7 @@ internal class Map
         entityList.Clear();
         if (filename == "chen.txt")
         {
+            Functions.playSound("chen.wav");
             NPC chen = new NPC("Prof.Chen", "Voici 3 Pokémon! Mais... Ils sont dans des Poké Balls. Plus jeune, j'étais un sacré Dresseur de Pokémon! Et oui! Mais avec l'âge, il ne m'en reste plus que 3! Choisis-en un!", 'C', filename, 6, 2, map[6, 2]);
             
             RivalNPC rivalNPC = new RivalNPC(rival);
@@ -406,8 +404,13 @@ internal class Map
         }
         else if (filename == "route_1.txt")
         {
+            Functions.playSound("route_1.wav");
             PotionMan potionMan = new PotionMan();
             entityList.Add(potionMan);
+        }
+        else if (filename == "bedroom.txt")
+        {
+            Functions.playSound("bourg_palette.wav");
         }
     }
 

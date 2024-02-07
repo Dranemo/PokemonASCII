@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using inventory;
 using System.Numerics;
 using System.Text;
+using System.Media;
 
 class Program
 {
@@ -30,7 +31,11 @@ namespace Usefull
                 Console.ReadKey(intercept: true);
             }
         }
-
+        public static void playSound(string soundFile)
+        {
+            SoundPlayer simpleSound = new SoundPlayer($"{AdresseFile.FileDirection}Musiques\\{soundFile}");
+            simpleSound.Play();
+        }
 
         public static string ClavierName(int limit)
         {
@@ -265,6 +270,6 @@ namespace Usefull
 
     class AdresseFile
     {
-        public static string FileDirection = "C:\\Users\\ycaillot\\Desktop\\C-Pokemon\\pokemonConsole\\GameFiles\\";
+        public static string FileDirection = "C:\\Users\\moiqu\\OneDrive\\Bureau\\C-Pokemon\\pokemonConsole\\GameFiles\\";
     }
 }
