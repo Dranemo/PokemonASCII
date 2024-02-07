@@ -47,7 +47,6 @@ namespace pokemonConsole
                 Console.WriteLine("Fuite");
                 int choix = int.Parse(Console.ReadLine());
                 Random randomFuite = new Random();
-                int PvRestantPokemon = pokemon.pvLeft;
                 List<Capacity> listAttackActual = pokemon.listAttackActual;
                 
                 Capacity.ApplyStatusEffects(pokemon);
@@ -80,17 +79,16 @@ namespace pokemonConsole
                                 break;
                         }
 
-                        int PvRestantPokemonAdverse = pokemonAdverse.pvLeft;
                         if (capacityUsed != null && capacityUsed.categorie == 1)
                         {
-                            PvRestantPokemonAdverse -= (int)Math.Round(CalculerDegatSubitPokemon(pokemon, pokemonAdverse, capacityUsed));
+                            pokemonAdverse.pvLeft -= (int)Math.Round(CalculerDegatSubitPokemon(pokemon, pokemonAdverse, capacityUsed));
                             Console.WriteLine(capacityUsed.name);
                         }
 
                         capacityUsed = pokemonAdverse.listAttackActual[random.Next(0, pokemonAdverse.listAttackActual.Count)];
                         if (capacityUsed.categorie == 1)
                         {
-                            PvRestantPokemon -= (int)Math.Round(CalculerDegatSubitPokemon(pokemonAdverse, pokemon, capacityUsed));
+                            pokemon.pvLeft -= (int)Math.Round(CalculerDegatSubitPokemon(pokemonAdverse, pokemon, capacityUsed));
                             Console.WriteLine(capacityUsed.name);
                         }
                         else
@@ -99,8 +97,6 @@ namespace pokemonConsole
                             capacityUsed.Use(pokemonAdverse, pokemon);
                         }
 
-                        pokemon.pvLeft = (int)PvRestantPokemon;
-                        pokemonAdverse.pvLeft = PvRestantPokemonAdverse;
                         Console.WriteLine($"Les nouveaux PV du Pokemon du joueur sont = {pokemon.pvLeft}");
                         Console.WriteLine($"Les nouveaux PV du Pokemon de l'adversaire sont = {pokemonAdverse.pvLeft}\n");
                         break;
@@ -120,6 +116,7 @@ namespace pokemonConsole
                         {
                             case 1:
                                 List<inventory.Item> items = inventory.Item.AllItems;
+                                Inventory.InitializeItems();
                                 Console.WriteLine("\nListe des objets dans votre inventaire :\n");
 
                                 // Affichez uniquement les objets avec une quantité supérieure à 0
@@ -132,17 +129,11 @@ namespace pokemonConsole
                                 Console.WriteLine("Choisissez un objet de l'inventaire (numéro) ou 0 pour retourner : ");
                                 string choixNomObjet = Console.ReadLine();
 
+                                Inventory.UseItem(choixNomObjet);
                                 inventory.Item itemToUse = items.FirstOrDefault(i => i.Name.Equals(choixNomObjet, StringComparison.OrdinalIgnoreCase));
 
                                 if (itemToUse != null && itemToUse.Quantity > 0)
                                 {
-                                    // Utiliser l'objet sélectionné
-                                    Console.WriteLine($"Vous avez utilisé l'objet : {itemToUse.Name}");
-
-                                    itemToUse.Quantity--;
-                                    Console.WriteLine($"Nouvelle quantité de {itemToUse.Name} : {itemToUse.Quantity}\n");
-
-                                    // Sauvegarder les quantités dans le fichier
                                     inventory.Item.SaveQuantitiesToFile($"{AdresseFile.FileDirection}\\SaveItemInGame.txt", inventory.Item.AllItems);
 
                                     capacityUsed = pokemonAdverse.listAttackActual[random.Next(0, pokemonAdverse.listAttackActual.Count)];

@@ -1,11 +1,11 @@
 Player :
-Player,8946,7,30,route_1.txt, ,1
+Player,18687,3,26,route_1.txt, ,7
 1
 2
 33,35,35
-45,40,40
-1,PEPITO,8946,Player,5,135,20
-13,0,5,0,2,0,13,0,1,0
+39,30,30
+7,A,18687,Player,5,135,20
+7,0,15,0,13,0,5,0,0,0
 OK,False,False
 Rival :
 Rival
