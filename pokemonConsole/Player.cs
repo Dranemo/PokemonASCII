@@ -21,15 +21,14 @@ namespace pokemonConsole
 
         public bool IsKO()
         {
-            foreach (var p in pokemonParty)
+            foreach (Pokemon p in pokemonParty)
             {
-                if (p.pvLeft <= 0)
+                if (p.pvLeft > 0)
                 {
-                    Thread.Sleep(1000);
-                    return true;
+                    return false; // If any Pokemon is not knocked out, return false
                 }
             }
-            return false;
+            return true; // If all Pokemon are knocked out, return true
         }
 
         public void addPokemonToParty(Pokemon pokemon)

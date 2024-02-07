@@ -35,6 +35,7 @@ namespace pokemonConsole
         private static int tour = 0;
 
 
+        private static List<Pokemon> pokemonPartyPlayer = null;
 
 
 
@@ -44,6 +45,7 @@ namespace pokemonConsole
             // Generer le pokemon adverse
             Random random = new Random();
             Pokemon pokemon = player.pokemonParty[0];
+            pokemonPartyPlayer = player.pokemonParty;
 
             // Generer un pokemon sauvage
             int pokemonAdverseId = random.Next(1, 152);
@@ -95,24 +97,7 @@ namespace pokemonConsole
             bothLines.Add(secondLine);
 
             // Boutons Atk
-            string button = " ";
-            foreach (Capacity atk in pokemon.listAttackActual)
-            {
-                listAttack.Add(button + atk.name);
-            }
-
-            Selected = false;
-            foreach (string attack in listAttack)
-            {
-                if (button[0] == '>') Selected = true;
-            }
-
-            if (!Selected)
-            {
-                listAttack[0] = listAttack[0].Remove(0, 1);
-                listAttack[0] = listAttack[0].Insert(0, ">");
-                positionAttack = 0;
-            }
+            ResetCapPokemon(pokemon);
 
             // Affichage 
             PrintPokemon(pokemon, pokemonAdverse);
@@ -123,7 +108,6 @@ namespace pokemonConsole
             // Variables
             int nbFuite = 0;
             int pokemonEquipeAdverse = 0;
-            bool fuiteReussie = false;
             Capacity capacityUsed = null;
 
 
@@ -162,33 +146,50 @@ namespace pokemonConsole
                         }
                         break;
                     case ConsoleKey.Enter:
-                        if (bothLines[positionX][positionY] == ">ATTAQ")
+                        if (bothLines[positionY][positionX] == ">ATTAQ")
                         {
+                            PrintMenuEmpty();
                             capacityUsed = LoopChoiceCap(pokemon);
-                            listAttack.Clear();
 
-                            Attaque(pokemon, pokemonAdverse, capacityUsed);
-                            AfterAttack(pokemon, ref pokemonAdverse, ref pokemonEquipeAdverse, pokemonPartyAdverse);
-                            if (VerifAdverse(player.pokemonParty))
+                            if(capacityUsed != null)
                             {
-                                PrintInEmptyMenu("Vous avez perdu !");
-                                endFight = true;
+                                PrintMenuEmpty();
+                                Attaque(pokemon, pokemonAdverse, capacityUsed);
+                                AfterAttack(ref pokemon, ref pokemonAdverse, ref pokemonEquipeAdverse, pokemonPartyAdverse, player);
+
+
+                                if (player.IsKO())
+                                {
+                                    PrintInEmptyMenu("Vous avez perdu !");
+                                    endFight = true;
+                                }
+                                else if (VerifAdverse(pokemonPartyAdverse))
+                                {
+                                    PrintInEmptyMenu("Vous avez gagné !");
+                                    endFight = true;
+                                }
+                                else
+                                {
+                                    PrintMenuChoice();
+                                }
                             }
-                            else if (VerifAdverse(pokemonPartyAdverse))
-                            {
-                                PrintInEmptyMenu("Vous avez gagné !");
-                                endFight = true;
-                            }
+
+                            
                         }
-                        else if (bothLines[positionX][positionY] == ">OBJET")
+                        else if (bothLines[positionY][positionX] == ">OBJET")
                         {
 
                         }
-                        else if (bothLines[positionX][positionY] == ">PKMN")
+                        else if (bothLines[positionY][positionX] == ">PKMN")
                         {
+                            MenuPokemon.Open(player, true);
+                            pokemon = player.pokemonParty[0];
 
+                            ResetCapPokemon(pokemon);
+                            PrintPokemon(pokemon, pokemonAdverse);
+                            PrintMenuChoice();
                         }
-                        else if (bothLines[positionX][positionY] == ">FUITE")
+                        else if (bothLines[positionY][positionX] == ">FUITE" && pokemonAdverse.appartenant != 2)
                         {
                             PrintMenuEmpty();
 
@@ -201,20 +202,34 @@ namespace pokemonConsole
                             if (fuite > 255 || randomFuiteValue < fuite || fuiteEuclidienne == 0)
                             {
                                 PrintInEmptyMenu("Vous avez reussi a fuir !");
-                                Console.ReadKey(true);
                                 endFight = true;
                             }
                             else
                             {
                                 PrintInEmptyMenu("Vous n'avez pas reussi à fuir !");
-                                Task.Delay(500).Wait();
+                                capacityUsed = capacityUsedAdv(pokemonAdverse, pokemon);
+
+                                PrintInEmptyMenu($"{pokemonAdverse.name} a utilisé {capacityUsed.name} !");
+
+                                pokemon.pvLeft -= (int)Math.Round(CalculerDegatSubitPokemon(pokemonAdverse, pokemon, capacityUsed));
+                                capacityUsed.Use(pokemonAdverse, pokemon);
+
+                                PrintPvBar(pokemon);
+
+                                PrintMenuChoice();
                             }
+                        }
+                        else if (bothLines[positionX][positionY] == ">FUITE" && pokemonAdverse.appartenant == 2)
+                        {
+                            PrintInEmptyMenu("Vous ne pouvez pas fuir d'un combat de dresseurs !");
+                            PrintMenuChoice();
                         }
                         break;
                 
                 }
-            } 
+            }
 
+            player.pokemonParty = pokemonPartyPlayer;
         }
         private static Capacity LoopChoiceCap(Pokemon pokemon)
         {
@@ -245,6 +260,9 @@ namespace pokemonConsole
                         break;
                     case ConsoleKey.Enter:
                         return pokemon.listAttackActual[positionAttack];
+                    case ConsoleKey.Escape:
+                        return null;
+                        break;
                 }
             }
             return new Capacity(165);
@@ -273,28 +291,48 @@ namespace pokemonConsole
 
             if (playerAttackFirst)
             {
-                pokemonAdverse.pvLeft = (int)Math.Round(CalculerDegatSubitPokemon(pokemon, pokemonAdverse, capacityUsed));
+
+                PrintInEmptyMenu($"{pokemon.name} a utilisé {capacityUsed.name} !");
+
+                pokemonAdverse.pvLeft -= (int)Math.Round(CalculerDegatSubitPokemon(pokemon, pokemonAdverse, capacityUsed));
                 capacityUsed.Use(pokemon, pokemonAdverse);
 
-                if(pokemonAdverse.pvLeft > 0)
+                PrintPvBar(pokemonAdverse, true);
+
+                if (pokemonAdverse.pvLeft > 0)
                 {
                     capacityAdv = capacityUsedAdv(pokemonAdverse, pokemon);
-                    pokemonAdverse.pvLeft = (int)Math.Round(CalculerDegatSubitPokemon(pokemonAdverse, pokemon, capacityAdv));
-                    capacityUsed.Use(pokemonAdverse, pokemon);
+
+                    PrintInEmptyMenu($"{pokemonAdverse.name} a utilisé {capacityAdv.name} !");
+
+                    pokemon.pvLeft -= (int)Math.Round(CalculerDegatSubitPokemon(pokemonAdverse, pokemon, capacityAdv));
+                    capacityAdv.Use(pokemonAdverse, pokemon);
+
+                    PrintPvBar(pokemon);
                 }
 
             }
             else
             {
                 capacityAdv = capacityUsedAdv(pokemonAdverse, pokemon);
-                pokemonAdverse.pvLeft = (int)Math.Round(CalculerDegatSubitPokemon(pokemonAdverse, pokemon, capacityAdv));
-                capacityUsed.Use(pokemonAdverse, pokemon);
+
+                PrintInEmptyMenu($"{pokemonAdverse.name} a utilisé {capacityAdv.name} !");
+
+                pokemon.pvLeft -= (int)Math.Round(CalculerDegatSubitPokemon(pokemonAdverse, pokemon, capacityAdv));
+                capacityAdv.Use(pokemonAdverse, pokemon);
+
+                PrintPvBar(pokemon);
 
 
-                if(pokemon.pvLeft > 0)
+                if (pokemon.pvLeft > 0)
                 {
-                    pokemonAdverse.pvLeft = (int)Math.Round(CalculerDegatSubitPokemon(pokemon, pokemonAdverse, capacityUsed));
+                    PrintInEmptyMenu($"{pokemon.name} a utilisé {capacityUsed.name} !");
+
+                    pokemonAdverse.pvLeft -= (int)Math.Round(CalculerDegatSubitPokemon(pokemon, pokemonAdverse, capacityUsed));
                     capacityUsed.Use(pokemon, pokemonAdverse);
+
+
+                    PrintPvBar(pokemonAdverse, true);
                 }
             }
 
@@ -356,20 +394,28 @@ namespace pokemonConsole
             }
 
             float expWon = (appartenant * echange * pokemonAdverse.expDonne * pokemonAdverse.level) / 7 * nombrePokemon;
-            pokemon.GainExp((int)Math.Round(expWon));
+
+            if (pokemon.level < 100)
+            {
+                pokemon.GainExp((int)Math.Round(expWon));
+            }
             pokemon.GainEV(pokemonAdverse.listPv[0], pokemonAdverse.listAtk[0], pokemonAdverse.listDef[0], pokemonAdverse.listSpe[0], pokemonAdverse.listSpd[0]);
         }
-        private static void AfterAttack(Pokemon pokemon, ref Pokemon pokemonAdverse, ref int pokemonEquipeAdverse, List<Pokemon> pokemonPartyAdverse)
+        private static void AfterAttack(ref Pokemon pokemon, ref Pokemon pokemonAdverse, ref int pokemonEquipeAdverse, List<Pokemon> pokemonPartyAdverse, Player player)
         {
-            ApplyStatusEffects(pokemon);
-            ApplyStatusEffects(pokemonAdverse);
+            Capacity.ApplyStatusEffects(pokemon);
+            Capacity.ApplyStatusEffects(pokemonAdverse);
 
-            if (pokemon.pvLeft <= 0)
+            if (pokemon.pvLeft <= 0 && !player.IsKO())
             {
-
+                MenuPokemon.Open(player, true);
+                pokemon = player.pokemonParty[0];
+                ResetCapPokemon(pokemon);
+                PrintPokemon(pokemon, pokemonAdverse);
+                PrintMenuAttack(pokemon);
             }
 
-            if (pokemonAdverse.pvLeft <= 0)
+            if (pokemonAdverse.pvLeft <= 0 && !VerifAdverse(pokemonPartyAdverse))
             {
                 KillRewards(pokemon, pokemonAdverse);
 
@@ -377,6 +423,9 @@ namespace pokemonConsole
                 {
                     pokemonAdverse = pokemonPartyAdverse[pokemonEquipeAdverse + 1];
                     pokemonEquipeAdverse++;
+
+                    PrintPokemon(pokemon, pokemonAdverse);
+                    PrintMenuAttack(pokemon);
                 }
             }
         }
@@ -387,6 +436,25 @@ namespace pokemonConsole
             // Degâts infliges = (((((((Niveau × 2 ÷ 5) +2) × Puissance × Att[Spe] ÷ 50) ÷ Def[Spe]) × Mod1) +2) × CC × Mod2 × R ÷ 100) × STAB × Type1 × Type2 × Mod3
 
             Random random = new Random();
+
+
+            int hitOrNot = random.Next(1, 101);
+            try
+            {
+                int.Parse(capacity.precision);
+                if (hitOrNot > int.Parse(capacity.precision) && !test)
+                {
+                    PrintInEmptyMenu("Mais cela echoue.");
+                    return 0;
+                }
+            }
+            catch 
+            {
+            }
+
+
+
+
 
             int atkSpeOrNot = 0;
             int defSpeOrNot = 0;
@@ -423,7 +491,20 @@ namespace pokemonConsole
                 isBurn = isBurn * 0.5f;
             }
 
-            if (test)
+            if (efficaciteType1 * efficaciteType2 > 1 && !test)
+            {
+                PrintInEmptyMenu("C'est super efficace !");
+            }
+            else if (efficaciteType1 * efficaciteType2 < 1 && efficaciteType1 * efficaciteType2 != 0 && !test)
+            {
+                PrintInEmptyMenu("C'est pas tres efficace !");
+            }
+            else if (efficaciteType1 * efficaciteType2 == 0 && !test)
+            {
+                PrintInEmptyMenu("Ca n'a pas d'effet !");
+            }
+
+            if (!test)
             {
                 // Critique
                 critChance = ((int)Math.Round(pokemon.spdCombat / 2.0) * 2) / 256;
@@ -447,62 +528,19 @@ namespace pokemonConsole
             }
 
 
-            if (efficaciteType1 * efficaciteType2 > 1)
-            {
-                PrintInEmptyMenu("C'est super efficace !");
-            }
-            else if (efficaciteType1 * efficaciteType2 < 1 && efficaciteType1 * efficaciteType2 != 0)
-            {
-                PrintInEmptyMenu("C'est pas tres efficace !");
-            }
-            else if (efficaciteType1 * efficaciteType2 == 0)
-            {
-                PrintInEmptyMenu("Ca n'a pas d'effet !");
-            }
+            
 
             double damageDone = (((((((pokemon.level * 2 / 5) + 2) * capacity.puissance * atkSpeOrNot / 50) / defSpeOrNot) * isBurn) + 2) * critDamage * randomMod / 100) * stab * efficaciteType1 * efficaciteType2;
+
+
+
             return damageDone;
+
+
+
+            
         }
-        private static void ApplyStatusEffects(Pokemon pokemon)
-        {
-            switch (pokemon.statusProblem)
-            {
-                case "PARA":
-                    Console.WriteLine($"{pokemon.name} est paralysé !");
-                    // Appliquer l'effet de statut de la paralysie
-                    break;
-
-                case "BURN":
-                    Console.WriteLine($"{pokemon.name} est brûlé !");
-                    pokemon.pvLeft -= pokemon.pv / 16;
-                    pokemon.atkCombat = pokemon.atkCombat * 88 / 100;
-                    break;
-
-                case "FREEZE":
-                    Console.WriteLine($"{pokemon.name} est gelé !");
-                    // Appliquer l'effet de statut du gel
-                    break;
-
-                case "SLEEP":
-                    Console.WriteLine($"{pokemon.name} est endormi !");
-                    // Appliquer l'effet de statut du sommeil
-                    break;
-
-                case "POISON":
-                    Console.WriteLine($"{pokemon.name} est empoisonné !");
-                    pokemon.pvLeft -= pokemon.pv / 16;
-                    break;
-
-                case "POISONGRAVE":
-                    Console.WriteLine($"{pokemon.name} est gravement empoisonné !");
-                    // Appliquer l'effet de statut de l'empoisonnement grave
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
+        
 
 
 
@@ -538,7 +576,7 @@ namespace pokemonConsole
 
             // Pokemon
             Console.SetCursorPosition(Console.CursorLeft + offsetPokemon, Console.CursorTop + 3);
-            for (int i = 1; i < pokemon.name.Length; i++)
+            for (int i = pokemon.name.Length; i < 10; i++)
             {
                 Console.Write(' ');
             }
@@ -557,7 +595,20 @@ namespace pokemonConsole
         }
         static private void PrintPvBar(Pokemon pokemon, bool pokemonAdverse = false)
         {
+
             int offsetPokemon = pokemonWidth - 11;
+
+            if (!pokemonAdverse && cursorTop != 0)
+            {
+                Console.SetCursorPosition(cursorLeft + offsetPokemon + 2, cursorTop -3);
+            }
+            else if (pokemonAdverse && cursorTop != 0) 
+            {
+                Console.SetCursorPosition(cursorLeft + 2, cursorTop - 10);
+            }
+
+
+            if(pokemon.pvLeft < 0) pokemon.pvLeft = 0;
 
             int pvPerSix = pokemon.pvLeft * 6 / pokemon.pv;
             string barPv = "PV";
@@ -689,6 +740,7 @@ namespace pokemonConsole
             }
             Console.WriteLine(topWholeBox + topBox);
 
+
             
 
             // Print 2
@@ -731,9 +783,11 @@ namespace pokemonConsole
         static private void PrintMenuEmpty()
         {
             // Clear
+            string clear = "           ";
             for (int i = 4; i > 0; i--)
             {
                 Console.SetCursorPosition(cursorLeft, cursorTop - i);
+                Console.Write(clear);
             }
             Console.SetCursorPosition(cursorLeft, cursorTop);
 
@@ -761,10 +815,9 @@ namespace pokemonConsole
             Console.WriteLine(topBox);
 
         }
-        static private void PrintInEmptyMenu(string text)
+        static public void PrintInEmptyMenu(string text)
         {
             // Clear
-            Console.SetCursorPosition(cursorLeft + 2, cursorTop + 1);
             string clear = "";
             for (int  i = 0;  i < pokemonWidth - 4;  i++)
             {
@@ -772,7 +825,7 @@ namespace pokemonConsole
             }
             for (int i = 0; i < 4; i++)
             {
-                Console.SetCursorPosition(cursorLeft + 2, cursorTop);
+                Console.SetCursorPosition(cursorLeft + 2, cursorTop + i + 1);
                 Console.WriteLine(clear);
             }
 
@@ -840,6 +893,7 @@ namespace pokemonConsole
 
                 }
             }
+            Console.ReadKey(true);
         }
 
 
@@ -883,29 +937,52 @@ namespace pokemonConsole
             Console.SetCursorPosition(cursorLeft, cursorTop + 6);
         }
 
+        static private void ResetCapPokemon(Pokemon pokemon)
+        {
+            listAttack.Clear();
+            string buttonaa = " ";
+            foreach (Capacity atk in pokemon.listAttackActual)
+            {
+                listAttack.Add(buttonaa + atk.name);
+            }
+
+            bool Selected = false;
+            foreach (string attack in listAttack)
+            {
+                if (attack[0] == '>') Selected = true;
+            }
+
+            if (!Selected)
+            {
+                listAttack[0] = listAttack[0].Remove(0, 1);
+                listAttack[0] = listAttack[0].Insert(0, ">");
+                positionAttack = 0;
+            }
+        }
+
 
         public class TypeModifier
         {
             public static float CalculerMultiplicateur(string typePokemon, string typeAdverse)
             {
                 Dictionary<string, Dictionary<string, float>> multiplicateurs = new Dictionary<string, Dictionary<string, float>>()
-    {
-        {"NORMAL", new Dictionary<string, float>() {{"ROCHE", 0.5f}, {"SPECTRE", 0f}, {"default", 1f}}},
-        {"FEU", new Dictionary<string, float>() {{"FEU", 0.5f}, {"EAU", 0.5f}, {"ROCHE", 0.5f}, {"DRAGON", 0.5f}, {"PLANTE", 2f}, {"GLACE", 2f}, {"INSECTE", 2f}, {"default", 1f}}},
-        {"EAU", new Dictionary<string, float>() {{"EAU", 0.5f}, {"PLANTE", 0.5f}, {"DRAGON", 0.5f}, {"FEU", 2f}, {"SOL", 2f}, {"ROCHE", 2f}, {"default", 1f}}},
-        {"PLANTE", new Dictionary<string, float>() {{"FEU", 0.5f}, {"PLANTE", 0.5f}, {"POISON", 0.5f}, { "VOL", 0.5f }, { "INSECTE", 0.5f }, { "DRAGON", 0.5f }, { "EAU", 2f}, {"SOL", 2f}, {"ROCHE", 2f}, {"default", 1f}}},
-        {"ELECTRIK", new Dictionary<string, float>() {{"PLANTE", 0.5f}, {"ELECTRIK", 0.5f}, {"DRAGON", 0.5f}, {"EAU", 2f}, {"VOL", 2f}, {"SOL", 0f}, {"default", 1f}}},
-        {"GLACE", new Dictionary<string, float>() {{"EAU", 0.5f}, {"GLACE", 0.5f}, {"PLANTE", 2f}, {"SOL", 2f}, {"VOL", 2f}, {"DRAGON", 2f}, {"default", 1f}}},
-        {"COMBAT", new Dictionary<string, float>() {{"POISON", 0.5f}, {"VOL", 0.5f}, {"PSY", 0.5f}, {"INSECTE", 0.5f}, {"NORMAL", 2f}, {"GLACE", 2f}, { "ROCHE", 2f }, { "SPECTRE", 0f }, { "default", 1f}}},
-        {"POISON", new Dictionary<string, float>() {{"POISON", 0.5f}, {"SOL", 0.5f}, {"ROCHE", 0.5f}, {"SPECTRE", 0.5f}, {"PLANTE", 2f}, {"INSECTE", 2f}, {"default", 1f}}},
-        {"SOL", new Dictionary<string, float>() {{"PLANTE", 0.5f}, {"INSECTE", 0.5f}, {"FEU", 2f}, {"ELECTRIK", 2f}, {"POISON", 2f}, {"ROCHE", 2f}, { "VOL", 0f }, { "default", 1f}}},
-        {"VOL", new Dictionary<string, float>() {{"ELECTRIK", 0.5f}, {"ROCHE", 0.5f}, {"PLANTE", 2f}, {"COMBAT", 2f}, {"INSECTE", 2f}, {"default", 1f}}},
-        {"PSY", new Dictionary<string, float>() {{"PSY", 0.5f}, {"COMBAT", 2f}, {"POISON", 2f}, {"default", 1f}}},
-        {"INSECTE", new Dictionary<string, float>() {{"FEU", 0.5f}, { "COMBAT", 0.5f }, { "VOL", 0.5f }, { "SPECTRE", 0.5f }, { "PLANTE", 2f}, {"POISON", 2f}, { "PSY", 2f }, { "default", 1f}}},
-        {"ROCHE", new Dictionary<string, float>() {{"COMBAT", 0.5f}, {"SOL", 0.5f}, {"FEU", 2f}, { "GLACE", 2f }, { "VOL", 2f }, { "INSECTE", 2f }, { "default", 1f}}},
-        {"SPECTRE", new Dictionary<string, float>() {{"SPECTRE", 2f}, {"NORMAL", 0f}, { "PSY", 0f }, { "default", 1f}}},
-        {"DRAGON", new Dictionary<string, float>() {{"DRAGON", 2f}, { "default", 1f}}},
-    };
+                {
+                    {"NORMAL", new Dictionary<string, float>() {{"ROCHE", 0.5f}, {"SPECTRE", 0f}, {"default", 1f}}},
+                    {"FEU", new Dictionary<string, float>() {{"FEU", 0.5f}, {"EAU", 0.5f}, {"ROCHE", 0.5f}, {"DRAGON", 0.5f}, {"PLANTE", 2f}, {"GLACE", 2f}, {"INSECTE", 2f}, {"default", 1f}}},
+                    {"EAU", new Dictionary<string, float>() {{"EAU", 0.5f}, {"PLANTE", 0.5f}, {"DRAGON", 0.5f}, {"FEU", 2f}, {"SOL", 2f}, {"ROCHE", 2f}, {"default", 1f}}},
+                    {"PLANTE", new Dictionary<string, float>() {{"FEU", 0.5f}, {"PLANTE", 0.5f}, {"POISON", 0.5f}, { "VOL", 0.5f }, { "INSECTE", 0.5f }, { "DRAGON", 0.5f }, { "EAU", 2f}, {"SOL", 2f}, {"ROCHE", 2f}, {"default", 1f}}},
+                    {"ELECTRIK", new Dictionary<string, float>() {{"PLANTE", 0.5f}, {"ELECTRIK", 0.5f}, {"DRAGON", 0.5f}, {"EAU", 2f}, {"VOL", 2f}, {"SOL", 0f}, {"default", 1f}}},
+                    {"GLACE", new Dictionary<string, float>() {{"EAU", 0.5f}, {"GLACE", 0.5f}, {"PLANTE", 2f}, {"SOL", 2f}, {"VOL", 2f}, {"DRAGON", 2f}, {"default", 1f}}},
+                    {"COMBAT", new Dictionary<string, float>() {{"POISON", 0.5f}, {"VOL", 0.5f}, {"PSY", 0.5f}, {"INSECTE", 0.5f}, {"NORMAL", 2f}, {"GLACE", 2f}, { "ROCHE", 2f }, { "SPECTRE", 0f }, { "default", 1f}}},
+                    {"POISON", new Dictionary<string, float>() {{"POISON", 0.5f}, {"SOL", 0.5f}, {"ROCHE", 0.5f}, {"SPECTRE", 0.5f}, {"PLANTE", 2f}, {"INSECTE", 2f}, {"default", 1f}}},
+                    {"SOL", new Dictionary<string, float>() {{"PLANTE", 0.5f}, {"INSECTE", 0.5f}, {"FEU", 2f}, {"ELECTRIK", 2f}, {"POISON", 2f}, {"ROCHE", 2f}, { "VOL", 0f }, { "default", 1f}}},
+                    {"VOL", new Dictionary<string, float>() {{"ELECTRIK", 0.5f}, {"ROCHE", 0.5f}, {"PLANTE", 2f}, {"COMBAT", 2f}, {"INSECTE", 2f}, {"default", 1f}}},
+                    {"PSY", new Dictionary<string, float>() {{"PSY", 0.5f}, {"COMBAT", 2f}, {"POISON", 2f}, {"default", 1f}}},
+                    {"INSECTE", new Dictionary<string, float>() {{"FEU", 0.5f}, { "COMBAT", 0.5f }, { "VOL", 0.5f }, { "SPECTRE", 0.5f }, { "PLANTE", 2f}, {"POISON", 2f}, { "PSY", 2f }, { "default", 1f}}},
+                    {"ROCHE", new Dictionary<string, float>() {{"COMBAT", 0.5f}, {"SOL", 0.5f}, {"FEU", 2f}, { "GLACE", 2f }, { "VOL", 2f }, { "INSECTE", 2f }, { "default", 1f}}},
+                    {"SPECTRE", new Dictionary<string, float>() {{"SPECTRE", 2f}, {"NORMAL", 0f}, { "PSY", 0f }, { "default", 1f}}},
+                    {"DRAGON", new Dictionary<string, float>() {{"DRAGON", 2f}, { "default", 1f}}},
+                };
 
                 if (multiplicateurs.ContainsKey(typePokemon))
                 {
@@ -927,22 +1004,14 @@ namespace pokemonConsole
         }
         public static bool VerifAdverse(List<Pokemon>pokemonPartyAdverse) 
         {
-            bool returnValue = true;
-
-            if (pokemonPartyAdverse.Count == 0)
+            foreach (Pokemon p in pokemonPartyAdverse)
             {
-                return true;
-            }
-
-            foreach (Pokemon pokemon in pokemonPartyAdverse)
-            {
-                if (pokemon.pvLeft > 0)
+                if (p.pvLeft < 0)
                 {
-                    returnValue = false;
+                    return true;
                 }
             }
-
-            return returnValue;
+            return false;
         }
     }
 

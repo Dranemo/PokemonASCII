@@ -32,10 +32,6 @@ namespace pokemonConsole
         public int expToLevelUp { get; private set; }
         public int expActuel { get; set; }
 
-        public int expToLevelUpLevel { get; set; }
-        public int expActuelLevel { get; set; }
-        public int expPervingt { get; set; }
-
         // ------------------ Statistiques ------------------ //
         public int pv { get; private set; }
         public int pvLeft {  get; set; }
@@ -255,12 +251,6 @@ namespace pokemonConsole
                 expToLevelUp = FormulaCourbeLente(level+1);
             }
 
-            expToLevelUpLevel = expToLevelUp - expActuel;
-            expActuelLevel = 0;
-
-
-            expPervingt = expActuelLevel * 20 / expToLevelUpLevel;
-
             statusProblem = "OK";
             appartenant = appartenant_;
             echange = false;
@@ -445,6 +435,7 @@ namespace pokemonConsole
 
                         if (id_search == id_)
                         {
+                            actual_name = colonnes[1];
                             name = name_;
                             listType.Add(colonnes[2]);
                             if (colonnes[3] != "NONE")
@@ -562,11 +553,6 @@ namespace pokemonConsole
                 temp = FormulaCourbeLente(level);
             }
 
-            expToLevelUpLevel = expToLevelUp - temp;
-            expActuelLevel = expActuel - temp;
-
-            expPervingt = expActuelLevel * 20 / expToLevelUpLevel;
-
             statusProblem = statusProblem_;
             appartenant = 1;
             echange = echange_;
@@ -581,7 +567,11 @@ namespace pokemonConsole
                 }
             }
 
-            listAttackActual = listCapacity;
+
+            foreach (Capacity cap in listCapacity)
+            {
+                listAttackActual.Add(cap);
+            }
 
             // Sprite
             string asciiArtFileName = $"ascii-art ({id}).txt";
@@ -872,66 +862,6 @@ namespace pokemonConsole
         }
 
 
-        public void AfficherDetailsPokemon()
-        {
-            AfficherSprite();
-
-            Console.WriteLine($"N°{id}");
-            Console.WriteLine($"Name = {this.name}");
-            Console.WriteLine($"Level = {this.level}");
-            Console.WriteLine($"Pv = {pvLeft} / {pv}");
-            Console.WriteLine($"Status : {statusProblem}");
-
-            for (int i = 0; i < this.listType.Count; i++)
-            {
-                Console.WriteLine($"Type {i + 1} = {this.listType[i]}");
-            }
-            Console.WriteLine();
-
-            if(appartenant == 1)
-            {
-                Console.WriteLine($"IDOT = {idOT}");
-                Console.WriteLine($"OT = {nameOT}");
-            }
-
-            Console.WriteLine();
-            Console.WriteLine($"Atk = {this.atk}");
-            Console.WriteLine($"Def = {this.def}");
-            Console.WriteLine($"Spe = {this.spe}");
-            Console.WriteLine($"Spd = {this.spd}");
-            Console.WriteLine($"AtkCombat = {this.atkCombat}");
-            Console.WriteLine($"DefCombat = {this.defCombat}");
-            Console.WriteLine($"SpeCombat = {this.speCombat}");
-            Console.WriteLine($"SpdCombat = {this.spdCombat}");
-            Console.WriteLine();
-
-            Console.WriteLine($"Exp Point : {expActuel}");
-            if (level < 100)
-            {
-                Console.WriteLine("Level Up");
-                Console.WriteLine($"{expToLevelUp - expActuel} to: {level + 1}");
-
-                string tempExpBar = "[";
-                for(int i = 0; i < this.expPervingt; i++)
-                {
-                    tempExpBar += "#";
-                }
-                while (tempExpBar.Length <= 21)
-                {
-                    tempExpBar += " ";
-                }
-                tempExpBar += "]";
-
-                Console.WriteLine(tempExpBar);
-            }
-
-            Console.WriteLine();
-
-            foreach(Capacity item in listAttackActual)
-            {
-                Console.WriteLine(item.name);
-            }
-        }
         public void AfficherSprite()
         {
             AfficherSprite(color, asciiArt);
@@ -942,27 +872,8 @@ namespace pokemonConsole
             Console.WriteLine(asciiArt_);
             Console.ForegroundColor = ConsoleColor.White;
         } // Utilisé dans l'évo
-        public void AfficherCombat()
-        {
-            AfficherSprite();
-            Console.WriteLine($"Name = {this.name}");
-            Console.WriteLine($"Level = {this.level}");
-            Console.WriteLine($"Pv = {pvLeft} / {pv}");
-            Console.WriteLine($"Status : {statusProblem}");
+        
 
-            string tempExpBar = "[";
-            for (int i = 0; i < this.expPervingt; i++)
-            {
-                tempExpBar += "#";
-            }
-            while (tempExpBar.Length <= 21)
-            {
-                tempExpBar += " ";
-            }
-            tempExpBar += "]";
-
-            Console.WriteLine(tempExpBar);
-        }
         public static string GetNom(int id)
         {
             string name = "";
@@ -1122,6 +1033,7 @@ namespace pokemonConsole
         public void LevelUp()
         {
             level++;
+            
             int temp = 0;
             if (expCourbe == "rapide")
             {
@@ -1144,10 +1056,10 @@ namespace pokemonConsole
                 temp = FormulaCourbeLente(level);
             }
 
-            expToLevelUpLevel = expToLevelUp - temp;
-            expActuelLevel = expActuel - temp;
-
-            expPervingt = expActuelLevel * 20 / expToLevelUpLevel;
+            if (level == 100)
+            {
+                expActuel = temp;
+            }
 
 
             int tempOldPv = pv;
@@ -1318,14 +1230,9 @@ namespace pokemonConsole
         {
             expActuel += expGained;
             
-            if (expActuel > expToLevelUp)
+            if (expActuel >= expToLevelUp)
             {
                 LevelUp();
-            }
-            else
-            {
-                expActuelLevel += expGained;
-                expPervingt = expActuelLevel * 20 / expToLevelUpLevel;
             }
 
 

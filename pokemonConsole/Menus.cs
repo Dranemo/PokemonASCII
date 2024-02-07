@@ -189,7 +189,7 @@ namespace pokemonConsole
 
         public static void Open(Player player, bool isCombat = false)
         {
-            player.addPokemonToParty(new Pokemon(9, 45));
+            if (!isCombat) player.addPokemonToParty(new Pokemon(9, 45));
 
             for (int i = 0; i < player.pokemonParty.Count; i++)
             {
@@ -281,7 +281,19 @@ namespace pokemonConsole
                         break;
                     case ConsoleKey.Enter:
                         if (!isSwitching) OpenLittleMenu(ref isSwitching, player);
-                        else
+
+                        
+                        if (isCombat && isSwitching)
+                        {
+                            Pokemon temp = player.pokemonParty[position];
+                            player.pokemonParty[position] = player.pokemonParty[0];
+                            player.pokemonParty[0] = temp;
+
+
+                            retour = true;
+                        }
+
+                        if(isSwitching && !isCombat)
                         {
                             if (PositionChangement != position && !isCombat)
                             {
@@ -297,13 +309,11 @@ namespace pokemonConsole
                                 pokemonLines2[PositionChangement] = tempStr2;
 
                                 ChangeSelected(PositionChangement, position, pokemonLines1);
-                            }
-                            else if(isCombat)
-                            {
 
+
+                                isChangingOnTop = false;
+                                isSwitching = false;
                             }
-                            isChangingOnTop = false;
-                            isSwitching = false;
                         }
 
                         PrintMenu(isSwitching);
@@ -414,10 +424,7 @@ namespace pokemonConsole
             list[nextPosition] = list[nextPosition].Remove(0, 1);
             list[nextPosition] = list[nextPosition].Insert(0, ">");
         }
-        private static void ChangeSelectedCombat()
-        {
 
-        }
         private static void PrintMenu(bool isSwitching)
         {
             Console.Clear();

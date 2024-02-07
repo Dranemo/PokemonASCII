@@ -167,7 +167,15 @@ namespace pokemonConsole
                 player.PositionY = int.Parse(colonnes[3]);
                 player.map = colonnes[4];
                 player.actuallPositionChar = colonnes[5][0];
-                player.starterId = int.Parse(colonnes[6]);
+
+                try
+                {
+                    player.starterId = int.Parse(colonnes[6]);
+                }
+                catch
+                {
+                    player.starterId = null;
+                }
 
                 line = sr.ReadLine();
 
@@ -175,6 +183,9 @@ namespace pokemonConsole
 
                 for (int i = 0; i < pokemonListCount; i++)
                 {
+                    pokemonCapacity.Clear();
+
+
                     line = sr.ReadLine();
                     pokemonAttackCount = int.Parse(line);
 
