@@ -49,6 +49,7 @@ namespace pokemonConsole
         }
         public override void Function(Player player)
         {
+            Functions.playSound("combat_trainer.wav");
             Combat.LoopCombat(player, rival.pokemonParty);
         }
     }

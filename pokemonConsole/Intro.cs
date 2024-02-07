@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
 using System.Numerics;
 using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
-
 using Usefull;
 
 namespace pokemonConsole
 {
     internal class Intro
     {
-
         private static string asciiFileOak = AdresseFile.FileDirection + "Assets\\Sprites\\ascii-art_chen.txt";
         private static string asciiFileBlue = AdresseFile.FileDirection + "Assets\\Sprites\\ascii-art_blue.txt";
         private static string asciiFileRed = AdresseFile.FileDirection + "Assets\\Sprites\\ascii-art_red.txt";
@@ -40,7 +39,7 @@ namespace pokemonConsole
         static public void LaunchIntro(Player player, Rival rival)
         {
             LoadAllASCII();
-
+            Functions.playSound("intro.wav");
 
             string line = "0";
 
@@ -104,6 +103,7 @@ namespace pokemonConsole
 
         private static void Print(string line, int lineReading)
         {
+
             if (lineReading == 1 || lineReading == 9)
             {
                 Console.Clear();
