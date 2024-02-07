@@ -6,7 +6,7 @@ namespace pokemonConsole
     class Rival
     {
         public string name { get; set; }
-
+        public bool ia_difficult { get; set; }
         public List<Pokemon> pokemonParty = new List<Pokemon>();
 
         public Rival()
@@ -17,7 +17,7 @@ namespace pokemonConsole
         public void addPokemonToParty(Player player)
         {
             pokemonParty.Clear();
-
+            ia_difficult = true;
             if (pokemonParty.Count <= 6)
             {
                 pokemonParty.Add(new Pokemon(18,61,2));

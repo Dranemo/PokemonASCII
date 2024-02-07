@@ -96,7 +96,7 @@ internal class Map
                 if (IsCurrentMap("bedroom.txt"))
                 {
                     ChangeMap(15, 1, "mom.txt", 8, 1, "\nMaman...");
-                    player.addPokemonToParty(new Pokemon(151, 100));
+                    player.addPokemonToParty(new Pokemon(107, 100));
                 }
 
                 else if (IsCurrentMap("bourg_palette.txt"))
