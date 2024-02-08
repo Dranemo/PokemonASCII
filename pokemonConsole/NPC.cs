@@ -44,6 +44,11 @@ namespace pokemonConsole
         public Nina() : base("Nina", "Va botter les fesses de mon frère au labo du Pr.Chen.", 'N', "blue.txt", 7, 4, ' ')
         {
 
+    class Nina : NPC
+    {
+        public Nina() : base("Nina", "Va botter les fesses de mon frère au labo du Pr.Chen.", 'N', "blue.txt", 7, 4, ' ')
+        {
+
         }
 
         public override void Function(Player player)
