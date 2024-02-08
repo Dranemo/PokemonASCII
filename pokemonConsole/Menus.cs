@@ -71,7 +71,7 @@ namespace pokemonConsole
             bool choiceDone = false;
             while (!choiceDone)
             {
-                keyInfo = Console.ReadKey();
+                keyInfo = Console.ReadKey(true);
 
                 switch (keyInfo.Key)
                 {
@@ -100,7 +100,16 @@ namespace pokemonConsole
                         }
                         else if (icons[position] == "> OBJETS")
                         {
+                            player.addItemToInventory(1, 5);
+                            player.addItemToInventory(2, 5);
+                            player.addItemToInventory(3, 5);
+                            player.addItemToInventory(4, 5);
+                            player.addItemToInventory(5, 5);
+                            player.addItemToInventory(6, 5);
 
+                            MenuItems.Open(player);
+                            Map.DrawMap();
+                            PrintMenu(mapWidth);
                         }
                         else if (icons[position] == "> " + player.name)
                         {
@@ -109,7 +118,6 @@ namespace pokemonConsole
                         else if (icons[position] == "> SAUVER")
                         {
                             Save.Saving(player, rival);
-                            Save.SavingItem();
                             choiceDone = true;
                         }
                         else if (icons[position] == "> RETOUR")
@@ -122,9 +130,6 @@ namespace pokemonConsole
                         choiceDone = true;
                         break;
                     default:
-                        Console.SetCursorPosition(endPositionXText, endPositionYText);
-                        Console.Write(" ");
-                        Console.SetCursorPosition(endPositionXText, endPositionYText);
                         break;
                 }
             }
@@ -189,8 +194,6 @@ namespace pokemonConsole
 
         public static void Open(Player player, bool isCombat = false)
         {
-            if (!isCombat) player.addPokemonToParty(new Pokemon(9, 45));
-
             for (int i = 0; i < player.pokemonParty.Count; i++)
             {
                 Pokemon pokemon = player.pokemonParty[i];
@@ -280,7 +283,7 @@ namespace pokemonConsole
                         }
                         break;
                     case ConsoleKey.Enter:
-                        if (!isSwitching) OpenLittleMenu(ref isSwitching, player);
+                        if (!isSwitching) OpenLittleMenu(ref isSwitching, player, isCombat);
 
                         
                         if (isCombat && isSwitching)
@@ -326,7 +329,7 @@ namespace pokemonConsole
             pokemonLines1.Clear();
             pokemonLines2.Clear();
         }
-        private static void OpenLittleMenu(ref bool isSwitching, Player player)
+        private static void OpenLittleMenu(ref bool isSwitching, Player player, bool isCombat )
         {
 
             littleMenuLines.Add(littleMenuStats);
@@ -384,10 +387,19 @@ namespace pokemonConsole
                         }   
                         else if (positionLittle == 1)
                         {
-                            PositionChangement = position;
-                            isChangingOnTop = true;
-                            isSwitching = true;
-                            retour = true;
+                            if (!isCombat || (isCombat && player.pokemonParty[position].pvLeft > 0))
+                            {
+
+                                PositionChangement = position;
+                                isChangingOnTop = true;
+                                isSwitching = true;
+                                retour = true;
+                            }
+                            else
+                            {
+                                retour = true;
+                            }
+
                         }
                         else if (positionLittle == 2) retour = true;
                         break;
@@ -547,6 +559,166 @@ namespace pokemonConsole
             Console.Write(littleMenuLines[2]);
 
             Console.SetCursorPosition(endPositionXText, endPositionYText);
+        }
+    }
+
+    class MenuItems
+    {
+        private static string topBox = "0---------------0";
+        private static string middleBox = "|               |";
+
+        private static string retourButton = "  RETOUR";
+
+        private static int position;
+        private static int visualPosition;
+        private static List<string> listItem = new List<string>();
+        private static List<int> listItemQuantity = new List<int>();
+
+
+        public static void Open(Player player, bool isCombat = false)
+        {
+            
+            foreach (Item item in player.inventory)
+            {
+                listItem.Add("  " + item.name);
+                listItemQuantity.Add(item.quantity);
+            }
+            listItem.Add(retourButton);
+
+            bool alreadySelected = false;
+            foreach (string item in listItem)
+            {
+                if (item[0] == '>')
+                {
+                    alreadySelected = true;
+                }
+            }
+
+            if (!alreadySelected && listItem.Count != 0)
+            {
+                listItem[0] = listItem[0].Remove(0, 1);
+                listItem[0] = listItem[0].Insert(0, ">");
+                position = 0;
+                visualPosition = 0;
+            }
+
+            PrintInventory();
+
+            ConsoleKeyInfo keyInfo;
+            bool choiceDone = false;
+            while (!choiceDone)
+            {
+                keyInfo = Console.ReadKey();
+
+                switch (keyInfo.Key)
+                {
+                    case ConsoleKey.DownArrow:
+                        if (position < listItem.Count - 1)
+                        {
+                            if(visualPosition == 4)
+                            {
+                                ChangeSelected(1);
+                                PrintItems(position - visualPosition);
+                            }
+                            else
+                            {
+                                ChangeSelected(1);
+                            }
+                        }
+                        break;
+                    case ConsoleKey.UpArrow:
+                        if(position != 0)
+                        {
+                            if (visualPosition == 0)
+                            {
+                                ChangeSelected(-1);
+                                PrintItems(position - visualPosition);
+                            }
+                            else
+                            {
+                                ChangeSelected(-1);
+                            }
+                        }
+                        break;
+                    case ConsoleKey.Enter:
+                        if (position == listItem.Count - 1)
+                        {
+                            choiceDone = true;
+                        }
+                        break;
+                }
+            }
+            listItem.Clear();
+            listItemQuantity.Clear();
+        }
+
+        private static void PrintInventory()
+        {
+
+            Console.Clear();
+            Console.WriteLine(topBox);
+            for (int i = 0; i < 10; i++) Console.WriteLine(middleBox);
+            Console.WriteLine(topBox);
+
+            PrintItems(0);
+        }
+
+        private static void ChangeSelected(int change)
+        {
+            listItem[position] = listItem[position].Remove(0, 1);
+            listItem[position] = listItem[position].Insert(0, " ");
+
+            Console.SetCursorPosition(2, 1 + visualPosition * 2);
+            Console.Write(listItem[position][0]);
+
+            position += change;
+            visualPosition += change;
+
+            if(visualPosition < 0)
+            {
+                visualPosition = 0;
+            }
+            else if (visualPosition > 4)
+            {
+                visualPosition = 4;
+            }
+
+            listItem[position] = listItem[position].Remove(0, 1);
+            listItem[position] = listItem[position].Insert(0, ">");
+
+            Console.SetCursorPosition(2, 1 + visualPosition * 2);
+            Console.Write(listItem[position][0]);
+
+            Console.SetCursorPosition(0, 12);
+        }
+
+        private static void PrintItems(int startList)
+        {
+            int offset = 12;
+            string temp = "               ";
+
+            Console.SetCursorPosition(0, 1);
+            for (int i = 0; i < 10; i++)
+            {
+                Console.SetCursorPosition(Console.CursorLeft + 1, Console.CursorTop);
+                Console.WriteLine(temp);
+            }
+
+
+            for (int i = startList; i < 5 + startList && i < listItem.Count; i++)
+            {
+                Console.SetCursorPosition(2, 1 + (i - startList) * 2);
+                Console.Write(listItem[i]);
+
+                if (i != listItem.Count - 1)
+                {
+                    Console.SetCursorPosition(offset, 2 + (i - startList) * 2);
+                    Console.Write("x");
+                    if (listItemQuantity[i] < 10) Console.Write(" ");
+                    Console.Write(listItemQuantity[i]);
+                }
+            }
+            Console.SetCursorPosition(0, 12);
         }
     }
 }

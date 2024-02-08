@@ -2,99 +2,46 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using Usefull;
 
-namespace inventory
+namespace pokemonConsole
 {
-    public interface IInventorable
+    class Item
     {
-        string Name { get; }
-        int Quantity { get; set; }
-    }
+        public int id;
+        public string name;
 
-    // Classe de base pour les Pokémon
-    public class PokemonInv : IInventorable
-    {
-        public string Name { get; set; }
-        public int Quantity { get; set; }
+        private string effect1;
+        private string effect2;
 
-        public PokemonInv(string name)
+        public int quantity;
+
+        private string fileCSV = AdresseFile.FileDirection + "CSV\\item.csv";
+
+        public Item(int item_id, int quantity = 1)
         {
-            Name = name;
-        }
-    }
-    public class Item : IInventorable
-    {
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public string Effect1 { get; set; }
-        public string Effect2 { get; set; }
-        public int Quantity { get; set; }
-
-        public Item(int id, string name, string effect1, string effect2, int quantity)
-        {
-            ID = id;
-            Name = name;
-            Effect1 = effect1;
-            Effect2 = effect2;
-            Quantity = quantity;
-        }
-        private static List<Item> allItems = new List<Item>();
-
-        public static List<Item> AllItems
-        {
-            get { return allItems; }
-        }
-
-        public static List<Item> LoadItemsFromSaveFile(string saveFilePath)
-        {
-            List<Item> items = new List<Item>();
-
-
-            using (TextFieldParser parser = new TextFieldParser(saveFilePath))
+            using (StreamReader sr = new StreamReader(fileCSV))
             {
-                parser.TextFieldType = FieldType.Delimited;
-                parser.SetDelimiters(",");
+                string line;
+                bool itemFound = false;
 
-                while (!parser.EndOfData)
+                line = sr.ReadLine();
+                line = sr.ReadLine();
+
+                while ((line = sr.ReadLine()) != null && !itemFound)
                 {
-                    string[] fields = parser.ReadFields();
-
-                    if (fields.Length >= 5)
+                    string[] colonnes = line.Split(',');
+                    if (item_id == int.Parse(colonnes[0]))
                     {
-                        if (int.TryParse(fields[0], out int itemId) &&
-                            !string.IsNullOrEmpty(fields[1]) &&
-                            int.TryParse(fields[4], out int quantity))
-                        {
-                            string name = fields[1];
-                            string effect1 = fields[2];
-                            string effect2 = fields[3];
+                        id = item_id;
+                        name = colonnes[1];
+                        effect1 = colonnes[2];
+                        effect2 = colonnes[3];
 
-                            if (quantity >= 0)
-                            {
-                                Item newItem = new Item(itemId, name, effect1, effect2, quantity);
-                                items.Add(newItem);
-                            }
-                        }
+                        this.quantity = quantity;
                     }
                 }
             }
-
-            allItems = items;
-
-            return items;
-        }
-
-
-        public static void SaveQuantitiesToFile(string csvFilePath, List<Item> items)
-        {
-            List<string> lines = new List<string>();
-
-            foreach (var item in items)
-            {
-                lines.Add($"{item.ID},{item.Name},{item.Effect1},{item.Effect2},{item.Quantity}");
-            }
-
-            File.WriteAllLines(csvFilePath, lines);
         }
     }
 }

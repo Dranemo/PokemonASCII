@@ -89,6 +89,8 @@ namespace pokemonConsole
 
         public int width { get; private set; }
 
+        public bool canEvolve { get; private set; } = false;
+
 
 
 
@@ -1029,6 +1031,8 @@ namespace pokemonConsole
             }
 
             CheckNewCapacity();
+
+            canEvolve = false;
         }
         public void LevelUp()
         {
@@ -1074,7 +1078,7 @@ namespace pokemonConsole
             
             if (level >= evolutionLevel)
             {
-                Evolution();
+                canEvolve = true;
             }
         }
         private void CheckNewCapacity()

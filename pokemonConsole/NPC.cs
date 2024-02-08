@@ -1,4 +1,4 @@
-﻿using inventory;
+﻿
 using NUnit.Framework.Constraints;
 using System;
 using System.Collections.Generic;
@@ -55,6 +55,7 @@ namespace pokemonConsole
     }
     class PotionMan : NPC
     {
+        private bool alreadyGave = false;
         public PotionMan() : base("PotionMan", "Tiens ! Une nouvelle Potion !", 'E', "route_1.txt", 3, 24, ' ') { }
 
         public override void Update(DateTime deltatime, Player player)
@@ -107,26 +108,8 @@ namespace pokemonConsole
 
         public override void Function(Player player)
         {
-            inventory.Item.LoadItemsFromSaveFile($"{AdresseFile.FileDirection}\\SaveItemInGame.txt");
-
-            // Ensuite, vous pouvez utiliser la fonction Function
-            //player.Function();
-
-            inventory.Item itemToGive = inventory.Item.AllItems.FirstOrDefault(i => i.ID == 5);
-
-            // Vérifiez si l'objet a été trouvé
-            if (itemToGive != null)
-            {
-                // Augmentez la quantité de l'objet dans l'inventaire du joueur
-                itemToGive.Quantity++;
-
-                // Vous pouvez également sauvegarder l'inventaire mis à jour dans un fichier si nécessaire
-                inventory.Item.SaveQuantitiesToFile($"{AdresseFile.FileDirection}\\SaveItemInGame.txt", inventory.Item.AllItems);
-            }
-            else
-            {
-                Console.WriteLine("Erreur : Objet introuvable.");
-            }
+            player.addItemToInventory(8);
+            alreadyGave = true;
         }
     }
 

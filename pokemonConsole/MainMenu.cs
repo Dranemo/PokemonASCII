@@ -116,7 +116,6 @@ namespace pokemonConsole
                             else if (canLoadGame && loadGame[0] == '>')
                             {
                                 Save.Loading(player, rival);
-                                Save.LoadingItem();
                                 Map.MapPlayer(player, rival);
                             }
                             else
@@ -139,7 +138,6 @@ namespace pokemonConsole
             Console.Clear();
 
             Console.WriteLine(newGame);
-            Save.DestroyData();
             if (File.Exists(AdresseFile.FileDirection + "save.txt"))
             {
                 FileInfo fileInfo = new FileInfo(AdresseFile.FileDirection + "save.txt");

@@ -25,12 +25,13 @@ namespace pokemonConsole
             }
             File.WriteAllText(filePath, string.Empty);
 
-            // Ouvre le fichier en mode d'ajout (append) pour ne pas écraser le contenu existant
             using (StreamWriter writer = File.AppendText(filePath))
             {
-                // Écrit du contenu dans le fichier
+                // ------------- Player ------------- //
                 writer.WriteLine("Player :");
                 writer.WriteLine($"{player.name},{player.id},{player.PositionX},{player.PositionY},{player.map},{player.actuallPositionChar},{player.starterId}");
+
+                // ------------- Pokemon ------------- //
                 writer.WriteLine(player.pokemonParty.Count);
                 foreach (Pokemon pokemon in player.pokemonParty)
                 {
@@ -44,81 +45,16 @@ namespace pokemonConsole
                     writer.WriteLine($"{pokemon.statusProblem},{pokemon.ko},{pokemon.echange}");
                 }
 
-                writer.WriteLine("Rival :");
-                writer.WriteLine($"{rival.name}");
-            }
-        }
-
-        public static void SavingItem()
-        {
-            string sourceFilePath = $"{AdresseFile.FileDirection}\\SaveItemInGame.txt";
-            string destinationFilePath = $"{AdresseFile.FileDirection}\\SaveItem.txt";
-
-            try
-            {
-                // Lire toutes les lignes du fichier source
-                string[] lines = File.ReadAllLines(sourceFilePath);
-
-                // Remplacer le contenu du fichier destination par les nouvelles lignes
-                File.WriteAllText(destinationFilePath, string.Join(Environment.NewLine, lines));
-
-                Console.WriteLine("Les données ont été sauvegardées avec succès.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Une erreur s'est produite : {ex.Message}");
-            }
-        }
-
-        public static void LoadingItem()
-        {
-            string destinationFilePath = $"{AdresseFile.FileDirection}\\SaveItemInGame.txt";
-            string sourceFilePath = $"{AdresseFile.FileDirection}\\SaveItem.txt";
-
-            try
-            {
-                // Lire toutes les lignes du fichier source
-                string[] lines = File.ReadAllLines(sourceFilePath);
-
-                // Remplacer le contenu du fichier destination par les nouvelles lignes
-                File.WriteAllText(destinationFilePath, string.Join(Environment.NewLine, lines));
-
-                Console.WriteLine("Les données ont bien été téléchargées.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Une erreur s'est produite : {ex.Message}");
-            }
-        }
-
-        public static void DestroyData()
-        {
-            string itemInGameFilePath = $"{AdresseFile.FileDirection}\\SaveItemInGame.txt";
-
-            try
-            {
-                // Lire toutes les lignes du fichier
-                string[] lines = File.ReadAllLines(itemInGameFilePath);
-
-                // Parcourir chaque ligne
-                for (int i = 0; i < lines.Length; i++)
+                // ------------- Inventaire ------------- //
+                writer.WriteLine(player.inventory.Count);
+                foreach (Item item in player.inventory)
                 {
-                    string[] columns = lines[i].Split(',');
-
-                    // Vérifier s'il y a au moins 5 colonnes dans la ligne
-                    if (columns.Length >= 5)
-                    {
-                        columns[4] = "0";
-                        lines[i] = string.Join(",", columns);
-                    }
+                    writer.WriteLine($"{item.id},{item.quantity}");
                 }
 
-                // Réécrire le fichier avec les lignes modifiées
-                File.WriteAllLines(itemInGameFilePath, lines);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Une erreur s'est produite : {ex.Message}");
+                // ------------- Rival ------------- //
+                writer.WriteLine("Rival :");
+                writer.WriteLine($"{rival.name}");
             }
         }
 
@@ -127,6 +63,7 @@ namespace pokemonConsole
         {
             int pokemonListCount;
             int pokemonAttackCount;
+            int itemCount;
             List<Capacity> pokemonCapacity = new List<Capacity>();
 
 
@@ -161,6 +98,8 @@ namespace pokemonConsole
                 line = sr.ReadLine();
                 string[] colonnes = line.Split(',');
 
+
+                // ------------- Player ------------- //
                 player.name = colonnes[0];
                 player.id = int.Parse(colonnes[1]);
                 player.PositionX = int.Parse(colonnes[2]);
@@ -179,6 +118,7 @@ namespace pokemonConsole
 
                 line = sr.ReadLine();
 
+                // ------------- Pokemon ------------- //
                 pokemonListCount = int.Parse(line);
 
                 for (int i = 0; i < pokemonListCount; i++)
@@ -233,6 +173,18 @@ namespace pokemonConsole
                     player.addPokemonToParty(pokemon);
                 }
 
+                // ------------- Inventaire ------------- //
+                itemCount = int.Parse(sr.ReadLine());
+                for (int i = 0; i < itemCount; i++)
+                {
+                    line = sr.ReadLine();
+                    colonnes = line.Split(',');
+
+                    player.addItemToInventory(int.Parse(colonnes[0]), int.Parse(colonnes[1]));
+                }
+
+
+                // ------------- Rival ------------- //
                 sr.ReadLine();
                 rival.name = sr.ReadLine();
             }

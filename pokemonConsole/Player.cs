@@ -1,5 +1,4 @@
 ﻿using System;
-using inventory;
 
 namespace pokemonConsole
 {
@@ -8,6 +7,7 @@ namespace pokemonConsole
         public int id { get; set; }
 
         public List<Pokemon> pokemonParty = new List<Pokemon>();
+        public List<Item> inventory = new List<Item>();
 
         public int? starterId;
 
@@ -36,6 +36,24 @@ namespace pokemonConsole
             if (pokemonParty.Count <= 6)
             {
                 pokemonParty.Add(pokemon);
+            }
+        }
+
+        public void addItemToInventory(int item_id, int quantity = 1)
+        {
+            bool itemInInv = false;
+
+            foreach (Item item in inventory)
+            {
+                if(item.id == item_id)
+                {
+                    item.quantity += quantity;
+                    itemInInv = true;
+                }
+            }
+            if (!itemInInv) 
+            {
+                inventory.Add(new Item(item_id, quantity));
             }
         }
     }
