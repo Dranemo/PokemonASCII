@@ -1,5 +1,5 @@
 Player :
-Player,25805,10,1,bourg_palette.txt,#,1
+Player,25805,7,30,route_1.txt, ,1
 1
 2
 94,35,35

@@ -60,6 +60,84 @@ namespace pokemonConsole
             }
             Pokemon pokemonAdverse = new Pokemon(pokemonAdverseId, pokemonAdverseLevel);
 
+            string filePath = AdresseFile.FileDirection + "CSV\\pokemon.csv";
+            List<string> csvLines = new List<string>();
+
+            using (StreamReader sr = new StreamReader(filePath))
+            {
+                while (!sr.EndOfStream)
+                {
+                    string line = sr.ReadLine();
+                    csvLines.Add(line);
+                }
+            }
+
+            bool captureReussi;
+            float chanceCapture;
+            float randomChanceCapture;
+            float statusProbleme;
+            float pokeballUse;
+            float tauxCapture;
+
+            if (pokemonAdverse.statusProblem == "BURN" || pokemonAdverse.statusProblem == "PARA" || pokemonAdverse.statusProblem == "POISON")
+            {
+                statusProbleme = 1.5f;
+            }
+            else if (pokemonAdverse.statusProblem == "GEL" || pokemonAdverse.statusProblem == "SLEEP")
+            {
+                statusProbleme = 2f;
+            }
+            else
+            {
+                statusProbleme = 1f;
+            }
+
+            string itemUse = "MASTER BALL";
+            if(itemUse == "MASTER BALL")
+            {
+                pokeballUse = 255f;
+            }
+            else if(itemUse == "SUPER BALL")
+            {
+                pokeballUse = 1.5f;
+            }
+            else if (itemUse == "HYPER BALL")
+            {
+                pokeballUse = 2f;
+            }
+            else
+            {
+                pokeballUse = 1f;
+            }
+            
+            if (csvLines.Count > 0)
+            {
+                for (int i = 1; i < csvLines.Count; i++)
+                {
+                    string[] columns = csvLines[i].Split(',');
+                    if (int.TryParse(columns[0], out int currentPokemonId) && currentPokemonId == pokemonAdverseId)
+                    {
+                        if (columns.Length >= 15 && int.TryParse(columns[14], out int tauxCapturePokemon))
+                        {
+                            tauxCapture = 0.4f * tauxCapturePokemon * statusProbleme * pokeballUse;
+                            if (tauxCapture > 255)
+                                tauxCapture = 255;
+
+                            chanceCapture = tauxCapture / 255 * 100;
+                            randomChanceCapture = random.Next(0, 101);
+                            if (randomChanceCapture <= chanceCapture)
+                            {
+                                
+                                Player playerInstance = new Player();
+                                playerInstance.addPokemonToParty(pokemonAdverse);
+                            }
+                            break;
+                            
+                        }
+                    }
+                }
+            }
+
 
             if (pokemonPartyAdverse == null)
             {
@@ -983,6 +1061,7 @@ namespace pokemonConsole
             }
         }
 
+        
 
         public class TypeModifier
         {

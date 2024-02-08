@@ -1450,6 +1450,10 @@ namespace pokemonConsole
             }
         }
 
+        
+
+
+
         // ------------------ Formules ------------------ //
         private int FormulaStatsPv(int level, List<int> listPv)
         {
