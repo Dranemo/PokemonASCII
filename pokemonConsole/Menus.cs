@@ -588,7 +588,7 @@ namespace pokemonConsole
         private static List<string> listLittleMenu = new List<string>();
 
 
-        public static void Open(Player player, bool isCombat = false)
+        public static void Open(Player player, bool isCombat = false, Pokemon pokemonAdverse = null)
         {
             
             foreach (Item item in player.inventory)
@@ -660,7 +660,7 @@ namespace pokemonConsole
                         }
                         else
                         {
-                            OpenLittleMenu(player, isCombat);
+                            OpenLittleMenu(player, pokemonAdverse, isCombat);
                             if (position > visualPosition)
                             {
                                 PrintInventory(position - visualPosition);
@@ -677,7 +677,7 @@ namespace pokemonConsole
             listItemQuantity.Clear();
         }
 
-        private static void OpenLittleMenu(Player player, bool isCombat = false)
+        private static void OpenLittleMenu(Player player, Pokemon pokemonAdverse, bool isCombat)
         {
             listLittleMenu.Add(useButton);
             listLittleMenu.Add(tossButton);
@@ -723,7 +723,10 @@ namespace pokemonConsole
                     case ConsoleKey.Enter:
                         if (listLittleMenu[positionLittle] == "> UTILISER")
                         {
-
+                            if (player.inventory[position].id <= 4 && player.inventory[position].id >= 1)
+                            {
+                                Item.UseItem(player.inventory[position], null, null, true, pokemonAdverse, player);
+                            }
                         }
                         else if (listLittleMenu[positionLittle] == "> JETER")
                         {
@@ -748,6 +751,8 @@ namespace pokemonConsole
             {
                 PrintInventory();
             }
+
+
 
 
         }

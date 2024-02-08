@@ -56,6 +56,40 @@ namespace pokemonConsole
                 inventory.Add(new Item(item_id, quantity));
             }
         }
+
+
+        public static void catchPokemon(Pokemon pokemon, Player player, int pokeballCatchRate)
+        {
+            Random random = new Random();
+
+            float chanceCapture;
+            float randomChanceCapture;
+            float statusProbleme;
+            float tauxCapture;
+
+            if (pokemon.statusProblem == "BRN" || pokemon.statusProblem == "PAR" || pokemon.statusProblem == "PSN" || pokemon.statusProblem == "PSNGRAVE")
+            {
+                statusProbleme = 1.5f;
+            }
+            else if (pokemon.statusProblem == "FRZ" || pokemon.statusProblem == "SLP")
+            {
+                statusProbleme = 2f;
+            }
+            else
+            {
+                statusProbleme = 1f;
+            }
+
+            tauxCapture = 0.4f * pokemon.tauxCapture * statusProbleme * pokeballCatchRate;
+            if (tauxCapture > 255) tauxCapture = 255;
+
+            chanceCapture = tauxCapture / 255 * 100;
+            randomChanceCapture = random.Next(0, 101);
+            if (randomChanceCapture <= chanceCapture)
+            {
+                player.addPokemonToParty(pokemon);
+            }
+        }
     }
 }
 
