@@ -49,8 +49,15 @@ namespace pokemonConsole
         }
         public override void Function(Player player)
         {
-            Functions.playSound("combat_trainer.wav");
-            Combat.LoopCombat(player, rival.pokemonParty);
+            if(player.starterId != null)
+            {
+                Functions.playSound("combat_trainer.wav");
+                Combat.LoopCombat(player, rival.pokemonParty);
+            }
+            else
+            {
+                Map.PrintDialogue("Va chercher un pokemon minable");
+            }
         }
     }
     class PotionMan : NPC
@@ -108,7 +115,7 @@ namespace pokemonConsole
 
         public override void Function(Player player)
         {
-            player.addItemToInventory(8);
+            player.addItemToInventory(5);
             alreadyGave = true;
         }
     }

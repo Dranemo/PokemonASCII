@@ -38,7 +38,7 @@ namespace pokemonConsole
                 pokemonParty.Add(pokemon);
             }
         }
-
+        
         public void addItemToInventory(int item_id, int quantity = 1)
         {
             bool itemInInv = false;
