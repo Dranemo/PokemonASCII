@@ -26,9 +26,9 @@ internal class Map
     private static int DialogueY;
 
 
-    public static void MapPlayer(Player player_, Rival rival_)
+    public static async Task MapPlayer(Player player_, Rival rival_)
     {
-        Functions.playSound("bourg_palette.wav");
+        await Functions.playSound("bourg_palette.wav");
         player = player_;
         rival = rival_;
 

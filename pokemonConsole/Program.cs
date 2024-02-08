@@ -9,7 +9,8 @@ using System.Collections.Generic;
 using System.Numerics;
 using System.Text;
 using System.Media;
-
+using NAudio.Wave;
+using System.Threading.Tasks;
 class Program
 {
     static void Main()
@@ -31,15 +32,40 @@ namespace Usefull
                 Console.ReadKey(intercept: true);
             }
         }
-        public static void playSound(string soundFile)
+        public static async Task playSound(string soundFile)
         {
-            SoundPlayer simpleSound = new SoundPlayer($"{AdresseFile.FileDirection}Musiques\\{soundFile}");
-            simpleSound.Play();
-            currentMusicFileName= soundFile;
+            string filePath = $"{AdresseFile.FileDirection}Musiques\\{soundFile}";
+
+            // Crée un lecteur audio
+            using (WaveOutEvent waveOut = new WaveOutEvent())
+            {
+                // Charge le fichier audio
+                using (AudioFileReader audioFileReader = new AudioFileReader(filePath))
+                {
+                    // Réglez le volume (0.5 pour la moitié du volume)
+                    audioFileReader.Volume = 1f;
+
+                    // Attachez le lecteur audio au lecteur de fichier audio
+                    waveOut.Init(audioFileReader);
+
+                    // Jouez le son de manière asynchrone dans un autre thread
+                    Task.Run(() => waveOut.Play());
+
+                    // Mise à jour de la variable pendant la lecture en cours
+                    currentMusicFileName = soundFile;
+
+                    // Attendre la durée totale du fichier son
+                    await Task.Delay((int)audioFileReader.TotalTime.TotalMilliseconds);
+
+                    // Arrêter la lecture après la durée totale du fichier son (facultatif)
+                    waveOut.Stop();
+                }
+            }
         }
+
         public static bool MusicCurrent(string musicToCheck)
         {
-            return currentMusicFileName==musicToCheck;
+            return currentMusicFileName == musicToCheck;
         }
 
         public static string ClavierName(int limit)
