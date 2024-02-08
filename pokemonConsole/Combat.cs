@@ -1029,12 +1029,12 @@ namespace pokemonConsole
         {
             foreach (Pokemon p in pokemonPartyAdverse)
             {
-                if (p.pvLeft < 0)
+                if (p.pvLeft > 0)
                 {
-                    return true;
+                    return false;
                 }
             }
-            return false;
+            return true;
         }
     }
 
