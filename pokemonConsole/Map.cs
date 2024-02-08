@@ -173,7 +173,19 @@ internal class Map
                         }
                         Console.Clear();
                         DrawMap();
-                    }
+                        if (IsCurrentMap("route_1.txt"))
+                            {
+                                Functions.playSound("route_1.wav");
+                            }
+                        else if (IsCurrentMap("bourg_palette.txt"))
+                            {
+                                Functions.playSound("bourg_palette.wav");
+                            }
+                        else if (IsCurrentMap("chen.txt"))
+                            {
+                                Functions.playSound("chen.wav");
+                            }
+                        }
                 }
 
                 if (entityToRemove.Count != 0)
@@ -424,7 +436,11 @@ internal class Map
         }
         else if (filename == "bourg_palette.txt")
         {
-            Functions.playSound("bourg_palette.wav");
+
+            if (!Functions.MusicCurrent("bourg_palette.wav"))
+            {
+                Functions.playSound("bourg_palette.wav");
+            }
         }
     }
 

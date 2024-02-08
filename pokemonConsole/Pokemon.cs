@@ -1351,6 +1351,7 @@ namespace pokemonConsole
         }
         private void EvolutionAnimation(string sprite_oldPokemon, string sprite_newPokemon, string name_oldPokemon, string name_newPokemon, ConsoleColor color_oldPokemon, ConsoleColor color_newPokemon)
         {
+            Functions.playSound("evolution.wav");
             int first_time = 750;
             int second_time = 250;
 
@@ -1425,7 +1426,10 @@ namespace pokemonConsole
 
                     timesSwitch++;
                 }
+                Functions.playSound("tada.wav");
                 Console.WriteLine($"Felicitations ! Votre {name_oldPokemon} a evolue en {name_newPokemon} ! ");
+                Thread.Sleep(3000);
+                Functions.playSound("victoire_sauvage.wav");
                 Console.ReadLine();
                 Console.Clear();
                 evolved = true;

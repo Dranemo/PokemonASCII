@@ -53,6 +53,7 @@ namespace pokemonConsole
             {
                 Functions.playSound("combat_trainer.wav");
                 Combat.LoopCombat(player, rival.pokemonParty);
+                Functions.playSound("chen.wav");
             }
             else
             {
