@@ -587,8 +587,10 @@ namespace pokemonConsole
 
         private static List<string> listLittleMenu = new List<string>();
 
+        private static bool choiceMain;
 
-        public static void Open(Player player, bool isCombat = false, Pokemon pokemonAdverse = null)
+
+        public static void Open(Player player, bool isCombat = false, Pokemon pokemonAdverse = null, Pokemon pokemon = null)
         {
             
             foreach (Item item in player.inventory)
@@ -618,8 +620,8 @@ namespace pokemonConsole
             PrintInventory();
 
             ConsoleKeyInfo keyInfo;
-            bool choiceDone = false;
-            while (!choiceDone)
+            choiceMain = false;
+            while (!choiceMain)
             {
                 keyInfo = Console.ReadKey();
 
@@ -656,11 +658,11 @@ namespace pokemonConsole
                     case ConsoleKey.Enter:
                         if (position == listItem.Count - 1)
                         {
-                            choiceDone = true;
+                            choiceMain = true;
                         }
                         else
                         {
-                            OpenLittleMenu(player, pokemonAdverse, isCombat);
+                            OpenLittleMenu(player, pokemonAdverse, pokemon, isCombat);
                             if (position > visualPosition)
                             {
                                 PrintInventory(position - visualPosition);
@@ -675,9 +677,10 @@ namespace pokemonConsole
             }
             listItem.Clear();
             listItemQuantity.Clear();
+            choiceMain = false;
         }
 
-        private static void OpenLittleMenu(Player player, Pokemon pokemonAdverse, bool isCombat)
+        private static void OpenLittleMenu(Player player, Pokemon pokemonAdverse, Pokemon pokemon, bool isCombat)
         {
             listLittleMenu.Add(useButton);
             listLittleMenu.Add(tossButton);
@@ -725,7 +728,8 @@ namespace pokemonConsole
                         {
                             if (player.inventory[position].id <= 4 && player.inventory[position].id >= 1)
                             {
-                                Item.UseItem(player.inventory[position], null, null, true, pokemonAdverse, player);
+                                Item.UseItem(player.inventory[position], ref player, 0, 0, true, pokemonAdverse, pokemon);
+                                choiceMain = true;
                             }
                         }
                         else if (listLittleMenu[positionLittle] == "> JETER")

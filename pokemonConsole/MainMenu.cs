@@ -109,7 +109,7 @@ namespace pokemonConsole
                             {
                                 player = new Player();
 
-                                Intro.LaunchIntro(player, rival);
+                                //Intro.LaunchIntro(player, rival);
                                 Map.MapPlayer(player, rival);
 
                             }

@@ -119,7 +119,7 @@ namespace pokemonConsole
             // Combat 
             ConsoleKeyInfo keyInfo;
             bool endFight = false;
-            while (!endFight && !player.IsKO())
+            while (!endFight && !player.IsKO() && !player.caughtPokemon)
             {
                 keyInfo = Console.ReadKey(true);
 
@@ -182,7 +182,7 @@ namespace pokemonConsole
                         }
                         else if (bothLines[positionY][positionX] == ">OBJET")
                         {
-                            MenuItems.Open(player, true);
+                            MenuItems.Open(player, true, pokemonAdverse, pokemon);
 
                             PrintPokemon(pokemon, pokemonAdverse);
                             PrintMenuChoice();
@@ -237,11 +237,15 @@ namespace pokemonConsole
             }
             cursorLeft = 0;
             cursorTop = 0;
+            firstLine.Clear();
+            secondLine.Clear();
+            bothLines.Clear();
             player.pokemonParty = pokemonPartyPlayer;
             foreach (Pokemon poke in player.pokemonParty)
             {
                 if (poke.canEvolve == true) poke.Evolution();
             }
+            player.caughtPokemon = false;
         }
         private static Capacity LoopChoiceCap(Pokemon pokemon)
         {
@@ -492,6 +496,11 @@ namespace pokemonConsole
             {
             }
 
+            if(capacity.puissance == 0)
+            {
+                return 0;
+            }
+
 
 
 
@@ -585,7 +594,7 @@ namespace pokemonConsole
 
 
 
-        static private void PrintPokemon(Pokemon pokemon, Pokemon pokemonAdverse)
+        static public void PrintPokemon(Pokemon pokemon, Pokemon pokemonAdverse)
         {
             // Pokemon Adverse
             pokemonWidth = pokemonAdverse.width;
@@ -855,7 +864,7 @@ namespace pokemonConsole
 
             Console.SetCursorPosition(cursorLeft, cursorTop + 6);
         }
-        static private void PrintMenuEmpty()
+        static public void PrintMenuEmpty()
         {
             // Clear
             string clear = "           ";

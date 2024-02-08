@@ -11,6 +11,8 @@ namespace pokemonConsole
 
         public int? starterId;
 
+        public bool caughtPokemon { get; set; } = false;
+
 
         public Player() : base("Player", 8, 8, 'P', "bedroom.txt", ' ')
         {
@@ -58,7 +60,7 @@ namespace pokemonConsole
         }
 
 
-        public static void catchPokemon(Pokemon pokemon, Player player, int pokeballCatchRate)
+        public static bool catchPokemon(Pokemon pokemon, Player player, int pokeballCatchRate, Pokemon pokemonMine)
         {
             Random random = new Random();
 
@@ -87,8 +89,18 @@ namespace pokemonConsole
             randomChanceCapture = random.Next(0, 101);
             if (randomChanceCapture <= chanceCapture)
             {
+                Combat.PrintPokemon(pokemonMine, pokemon);
+                Combat.PrintMenuEmpty();
+
+                Combat.PrintInEmptyMenu($"Vous avez capturé {pokemon.name} !");
                 player.addPokemonToParty(pokemon);
+                return true;
             }
+            else
+            {
+                Combat.PrintInEmptyMenu($"{pokemon.name} s'est libéré !");
+            }
+            return false;
         }
     }
 }

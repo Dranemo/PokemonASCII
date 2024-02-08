@@ -112,79 +112,14 @@ namespace pokemonConsole
 
 
 
-        static public void UseItem(Item item, ref Pokemon pokemon, ref Capacity capacity, bool isCombat = false, Pokemon pokemonAdverse = null, Player player = null)
+        static public void UseItem(Item item, ref Player player, int pokemonPosition, int capPosition, bool isCombat = false, Pokemon pokemonAdverse = null, Pokemon pokemon = null)
         {
-            if((item.usage == "NOTBATTLE" && !isCombat) || (item.usage == "BOTH" && !isCombat))
+            if ((item.usage == "NOTBATTLE" && !isCombat))
             {
                 switch (item.effectAtk)
                 {
-                    case effect.HealPV:
-                        if (pokemon.pvLeft < pokemon.pv && pokemon.pvLeft != 0)
-                        {
-                            try
-                            {
-                                int healInt = int.Parse(item.effect2);
-                                if(pokemon.pvLeft + healInt > pokemon.pv)
-                                {
-                                    pokemon.pvLeft = pokemon.pv;
-                                }
-                                else
-                                {
-                                    pokemon.pvLeft += healInt;
-                                }
-                            }
-                            catch
-                            {
-                                pokemon.pvLeft = pokemon.pv;
-                            }
-                            item.quantity--;
-                        }
-                        break;
-                    case effect.Guerison:
-                        if ((pokemon.pvLeft < pokemon.pv && pokemon.pvLeft != 0) || pokemon.statusProblem != "OK")
-                        {
-                            pokemon.pvLeft = pokemon.pv;
-                            pokemon.statusProblem = "OK";
-
-
-                            item.quantity--;
-                        }
-                        break;
-                    case effect.Curestatut:
-                        if (pokemon.statusProblem != "OK")
-                        {
-                            switch (item.effect2)
-                            {
-                                case "PSN":
-                                    if (pokemon.statusProblem == "PSN" || pokemon.statusProblem == "PSNGRAVE") pokemon.statusProblem = "OK";
-                                    break;
-                                case "PAR":
-                                    if (pokemon.statusProblem == "PAR") pokemon.statusProblem = "OK";
-                                    break;
-                                case "BRN":
-                                    if (pokemon.statusProblem == "BRN") pokemon.statusProblem = "OK";
-                                    break;
-                                case "SLP":
-                                    if (pokemon.statusProblem == "SLP") pokemon.statusProblem = "OK";
-                                    break;
-                                case "ALL":
-                                    pokemon.statusProblem = "OK";
-                                    break;
-                            }
-
-                            item.quantity--;
-                        }
-                        break;
-                    case effect.Revive:
-                        if(pokemon.pvLeft <= 0)
-                        {
-                            pokemon.pvLeft = pokemon.pv * int.Parse(item.effect2) / 100;
-                            pokemon.ko = false;
-                            item.quantity--;
-                        }
-                        break;
                     case effect.TenPPAllCap:
-                        foreach (Capacity cap in pokemon.listAttackActual)
+                        foreach (Capacity cap in player.pokemonParty[pokemonPosition].listAttackActual)
                         {
                             if (cap.ppLeft + 10 > cap.pp) cap.ppLeft = cap.pp;
                             else cap.ppLeft += 10;
@@ -192,65 +127,65 @@ namespace pokemonConsole
                         item.quantity--;
                         break;
                     case effect.AllPPAllCap:
-                        foreach (Capacity cap in pokemon.listAttackActual)
+                        foreach (Capacity cap in player.pokemonParty[pokemonPosition].listAttackActual)
                         {
                             cap.ppLeft = cap.pp;
                         }
                         item.quantity--;
                         break;
                     case effect.TenPPOneCap:
-                        if(capacity.ppLeft < capacity.pp)
+                        if (player.pokemonParty[pokemonPosition].listAttackActual[capPosition].ppLeft < player.pokemonParty[pokemonPosition].listAttackActual[capPosition].pp)
                         {
-                            if(capacity.ppLeft + 10 > capacity.pp) capacity.ppLeft = capacity.pp;
-                            else capacity.ppLeft += 10;
+                            if (player.pokemonParty[pokemonPosition].listAttackActual[capPosition].ppLeft + 10 > player.pokemonParty[pokemonPosition].listAttackActual[capPosition].pp) player.pokemonParty[pokemonPosition].listAttackActual[capPosition].ppLeft = player.pokemonParty[pokemonPosition].listAttackActual[capPosition].pp;
+                            else player.pokemonParty[pokemonPosition].listAttackActual[capPosition].ppLeft += 10;
                             item.quantity--;
                         }
                         break;
                     case effect.AllPPOneCap:
-                        if (capacity.ppLeft < capacity.pp)
+                        if (player.pokemonParty[pokemonPosition].listAttackActual[capPosition].ppLeft < player.pokemonParty[pokemonPosition].listAttackActual[capPosition].pp)
                         {
-                            capacity.ppLeft = capacity.pp;
+                            player.pokemonParty[pokemonPosition].listAttackActual[capPosition].ppLeft = player.pokemonParty[pokemonPosition].listAttackActual[capPosition].pp;
                             item.quantity--;
                         }
                         break;
                     case effect.EVPV:
-                        if (pokemon.listPv[2] < 65535) { pokemon.GainEV(int.Parse(item.effect2), 0, 0, 0, 0); item.quantity--; }
+                        if (player.pokemonParty[pokemonPosition].listPv[2] < 65535) { player.pokemonParty[pokemonPosition].GainEV(int.Parse(item.effect2), 0, 0, 0, 0); item.quantity--; }
 
                         break;
                     case effect.EVATK:
-                        if (pokemon.listAtk[2] < 65535) { pokemon.GainEV(0, int.Parse(item.effect2), 0, 0, 0); item.quantity--; }
+                        if (player.pokemonParty[pokemonPosition].listAtk[2] < 65535) { player.pokemonParty[pokemonPosition].GainEV(0, int.Parse(item.effect2), 0, 0, 0); item.quantity--; }
                         break;
                     case effect.EVDEF:
-                        if (pokemon.listDef[2] < 65535) { pokemon.GainEV(0, 0, int.Parse(item.effect2), 0, 0); item.quantity--; }
-                            break;
+                        if (player.pokemonParty[pokemonPosition].listDef[2] < 65535) { player.pokemonParty[pokemonPosition].GainEV(0, 0, int.Parse(item.effect2), 0, 0); item.quantity--; }
+                        break;
                     case effect.EVSPE:
-                        if (pokemon.listSpe[2] < 65535) { pokemon.GainEV(0, 0, 0, int.Parse(item.effect2), 0); item.quantity--; }
-                            break;
+                        if (player.pokemonParty[pokemonPosition].listSpe[2] < 65535) { player.pokemonParty[pokemonPosition].GainEV(0, 0, 0, int.Parse(item.effect2), 0); item.quantity--; }
+                        break;
                     case effect.EVSPD:
-                        if (pokemon.listSpd[2] < 65535) { pokemon.GainEV(0, 0, 0, 0, int.Parse(item.effect2)); item.quantity--; }
-                            break;
+                        if (player.pokemonParty[pokemonPosition].listSpd[2] < 65535) { player.pokemonParty[pokemonPosition].GainEV(0, 0, 0, 0, int.Parse(item.effect2)); item.quantity--; }
+                        break;
                     case effect.PPPlus:
-                        if(capacity.pp < capacity.ppMax)
+                        if (player.pokemonParty[pokemonPosition].listAttackActual[capPosition].pp < player.pokemonParty[pokemonPosition].listAttackActual[capPosition].ppMax)
                         {
-                            int ppAdded = capacity.ppOriginal * 20 / 100;
+                            int ppAdded = player.pokemonParty[pokemonPosition].listAttackActual[capPosition].ppOriginal * 20 / 100;
 
-                            capacity.pp += ppAdded;
-                            capacity.ppLeft += ppAdded;
+                            player.pokemonParty[pokemonPosition].listAttackActual[capPosition].pp += ppAdded;
+                            player.pokemonParty[pokemonPosition].listAttackActual[capPosition].ppLeft += ppAdded;
                             item.quantity--;
                         }
                         break;
                     case effect.LevelUp:
-                        if(pokemon.level < 100)
+                        if (player.pokemonParty[pokemonPosition].level < 100)
                         {
-                            pokemon.LevelUp(true);
+                            player.pokemonParty[pokemonPosition].LevelUp(true);
                             item.quantity--;
                         }
                         break;
                     case effect.Evolve:
                         bool evolved = false;
-                        foreach (int id in pokemon.evolutionItemId)
+                        foreach (int id in player.pokemonParty[pokemonPosition].evolutionItemId)
                         {
-                            if (item.id == id) { pokemon.Evolution(); evolved = true; }
+                            if (item.id == id) { player.pokemonParty[pokemonPosition].Evolution(); evolved = true; }
                         }
                         if (evolved)
                         {
@@ -258,105 +193,41 @@ namespace pokemonConsole
                             item.quantity--;
                         }
                         break;
-
-
                 }
             }
             else if (item.usage == "NOTBATTLE" && isCombat)
             {
                 Console.WriteLine("Unusable");
             }
-            else if ((item.usage == "BATTLE" && isCombat) || (item.usage == "BOTH" && isCombat))
+            else if ((item.usage == "BATTLE" && isCombat))
             {
                 switch (item.effectAtk)
                 {
                     case effect.CatchPokemon:
-                        if(pokemonAdverse.appartenant == 0)
+                        if (pokemonAdverse.appartenant == 0)
                         {
-                            Player.catchPokemon(pokemonAdverse, player, int.Parse(item.effect2));
-                            item.quantity--;
-                        }
-                        break;
-                    case effect.HealPV:
-                        if (pokemon.pvLeft < pokemon.pv && pokemon.pvLeft != 0)
-                        {
-                            try
-                            {
-                                int healInt = int.Parse(item.effect2);
-                                if (pokemon.pvLeft + healInt > pokemon.pv)
-                                {
-                                    pokemon.pvLeft = pokemon.pv;
-                                }
-                                else
-                                {
-                                    pokemon.pvLeft += healInt;
-                                }
-                            }
-                            catch
-                            {
-                                pokemon.pvLeft = pokemon.pv;
-                            }
-                            item.quantity--;
-                        }
-                        break;
-                    case effect.Guerison:
-                        if ((pokemon.pvLeft < pokemon.pv && pokemon.pvLeft != 0) || pokemon.statusProblem != "OK")
-                        {
-                            pokemon.pvLeft = pokemon.pv;
-                            pokemon.statusProblem = "OK";
-                            item.quantity--;
-                        }
-                        break;
-                    case effect.Curestatut:
-                        if (pokemon.statusProblem != "OK")
-                        {
-                            switch (item.effect2)
-                            {
-                                case "PSN":
-                                    if (pokemon.statusProblem == "PSN" || pokemon.statusProblem == "PSNGRAVE") pokemon.statusProblem = "OK";
-                                    break;
-                                case "PAR":
-                                    if (pokemon.statusProblem == "PAR") pokemon.statusProblem = "OK";
-                                    break;
-                                case "BRN":
-                                    if (pokemon.statusProblem == "BRN") pokemon.statusProblem = "OK";
-                                    break;
-                                case "SLP":
-                                    if (pokemon.statusProblem == "SLP") pokemon.statusProblem = "OK";
-                                    break;
-                                case "ALL":
-                                    pokemon.statusProblem = "OK";
-                                    break;
-                            }
-                            item.quantity--;
-                        }
-                        break;
-                    case effect.Revive:
-                        if (pokemon.pvLeft <= 0)
-                        {
-                            pokemon.pvLeft = pokemon.pv * int.Parse(item.effect2) / 100;
-                            pokemon.ko = false;
+                            player.caughtPokemon = Player.catchPokemon(pokemonAdverse, player, int.Parse(item.effect2), pokemon);
                             item.quantity--;
                         }
                         break;
                     case effect.ADDAtk:
-                        Combat.PrintInEmptyMenu($"L'attaque de {pokemon.name} a augmenté !");
-                        pokemon.atkCombat = (int)(pokemon.atkCombat * 1.5);
+                        Combat.PrintInEmptyMenu($"L'attaque de {player.pokemonParty[pokemonPosition].name} a augmenté !");
+                        player.pokemonParty[pokemonPosition].atkCombat = (int)(player.pokemonParty[pokemonPosition].atkCombat * 1.5);
                         item.quantity--;
                         break;
                     case effect.ADDDef:
-                        Combat.PrintInEmptyMenu($"La défense de {pokemon.name} a augmenté !");
-                        pokemon.defCombat = (int)(pokemon.defCombat * 1.5);
+                        Combat.PrintInEmptyMenu($"La défense de {player.pokemonParty[pokemonPosition].name} a augmenté !");
+                        player.pokemonParty[pokemonPosition].defCombat = (int)(player.pokemonParty[pokemonPosition].defCombat * 1.5);
                         item.quantity--;
                         break;
                     case effect.ADDSpe:
-                        Combat.PrintInEmptyMenu($"La vitesse de {pokemon.name} a augmenté !");
-                        pokemon.spdCombat = (int)(pokemon.spdCombat * 1.5);
+                        Combat.PrintInEmptyMenu($"La vitesse de {player.pokemonParty[pokemonPosition].name} a augmenté !");
+                        player.pokemonParty[pokemonPosition].spdCombat = (int)(player.pokemonParty[pokemonPosition].spdCombat * 1.5);
                         item.quantity--;
                         break;
                     case effect.ADDSpd:
-                        Combat.PrintInEmptyMenu($"Le special de {pokemon.name} a augmenté !");
-                        pokemon.speCombat = (int)(pokemon.speCombat * 1.5);
+                        Combat.PrintInEmptyMenu($"Le special de {player.pokemonParty[pokemonPosition].name} a augmenté !");
+                        player.pokemonParty[pokemonPosition].speCombat = (int)(player.pokemonParty[pokemonPosition].speCombat * 1.5);
                         item.quantity--;
                         break;
                     case effect.ImmuneStats:
@@ -368,14 +239,82 @@ namespace pokemonConsole
                     case effect.CantFail:
                         item.quantity--;
                         break;
-
-
-
                 }
-                }
+            }
             else if (item.usage == "BATTLE" && !isCombat)
             {
                 Console.WriteLine("Unusable");
+            }
+            else if (item.usage == "BOTH")
+            {
+                switch (item.effectAtk)
+                {
+                    case effect.HealPV:
+                        if (player.pokemonParty[pokemonPosition].pvLeft < player.pokemonParty[pokemonPosition].pv && player.pokemonParty[pokemonPosition].pvLeft != 0)
+                        {
+                            try
+                            {
+                                int healInt = int.Parse(item.effect2);
+                                if (player.pokemonParty[pokemonPosition].pvLeft + healInt > player.pokemonParty[pokemonPosition].pv)
+                                {
+                                    player.pokemonParty[pokemonPosition].pvLeft = player.pokemonParty[pokemonPosition].pv;
+                                }
+                                else
+                                {
+                                    player.pokemonParty[pokemonPosition].pvLeft += healInt;
+                                }
+                            }
+                            catch
+                            {
+                                player.pokemonParty[pokemonPosition].pvLeft = player.pokemonParty[pokemonPosition].pv;
+                            }
+                            item.quantity--;
+                        }
+                        break;
+                    case effect.Guerison:
+                        if ((player.pokemonParty[pokemonPosition].pvLeft < player.pokemonParty[pokemonPosition].pv && player.pokemonParty[pokemonPosition].pvLeft != 0) || player.pokemonParty[pokemonPosition].statusProblem != "OK")
+                        {
+                            player.pokemonParty[pokemonPosition].pvLeft = player.pokemonParty[pokemonPosition].pv;
+                            player.pokemonParty[pokemonPosition].statusProblem = "OK";
+
+
+                            item.quantity--;
+                        }
+                        break;
+                    case effect.Curestatut:
+                        if (player.pokemonParty[pokemonPosition].statusProblem != "OK")
+                        {
+                            switch (item.effect2)
+                            {
+                                case "PSN":
+                                    if (player.pokemonParty[pokemonPosition].statusProblem == "PSN" || player.pokemonParty[pokemonPosition].statusProblem == "PSNGRAVE") player.pokemonParty[pokemonPosition].statusProblem = "OK";
+                                    break;
+                                case "PAR":
+                                    if (player.pokemonParty[pokemonPosition].statusProblem == "PAR") player.pokemonParty[pokemonPosition].statusProblem = "OK";
+                                    break;
+                                case "BRN":
+                                    if (player.pokemonParty[pokemonPosition].statusProblem == "BRN") player.pokemonParty[pokemonPosition].statusProblem = "OK";
+                                    break;
+                                case "SLP":
+                                    if (player.pokemonParty[pokemonPosition].statusProblem == "SLP") player.pokemonParty[pokemonPosition].statusProblem = "OK";
+                                    break;
+                                case "ALL":
+                                    player.pokemonParty[pokemonPosition].statusProblem = "OK";
+                                    break;
+                            }
+
+                            item.quantity--;
+                        }
+                        break;
+                    case effect.Revive:
+                        if (player.pokemonParty[pokemonPosition].pvLeft <= 0)
+                        {
+                            player.pokemonParty[pokemonPosition].pvLeft = player.pokemonParty[pokemonPosition].pv * int.Parse(item.effect2) / 100;
+                            player.pokemonParty[pokemonPosition].ko = false;
+                            item.quantity--;
+                        }
+                        break;
+                }
             }
         }
 
