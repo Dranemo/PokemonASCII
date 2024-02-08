@@ -29,7 +29,7 @@ namespace pokemonConsole
 
     class Maman : NPC
     {
-        public Maman() : base("Maman", "Bonjour mon fils ! Bien dormi ?", '8', "mom.txt", 7, 4, ' ')
+        public Maman() : base("Maman", "Bonjour mon fils ! Bien dormi ?", 'M', "mom.txt", 7, 4, ' ')
         {
 
         }
@@ -39,7 +39,18 @@ namespace pokemonConsole
             Pokemon.Heal(player);
         }
     }
+    class Nina : NPC
+    {
+        public Nina() : base("Nina", "Va botter les fesses de mon frère au labo du Pr.Chen.", 'N', "blue.txt", 7, 4, ' ')
+        {
 
+        }
+
+        public override void Function(Player player)
+        {
+            Pokemon.Heal(player);
+        }
+    }
     class RivalNPC :NPC
     {
         public Rival rival { get; private set; } = new Rival();
