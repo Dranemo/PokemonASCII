@@ -180,34 +180,19 @@ namespace pokemonConsole
         {
             switch (pokemon.statusProblem)
             {
-                case "PARA":
-                    Combat.PrintInEmptyMenu($"{pokemon.name} est paralysé !");
-                    // Appliquer l'effet de statut de la paralysie
-                    break;
-
                 case "BURN":
-                    Combat.PrintInEmptyMenu($"{pokemon.name} est brûlé !");
+                    Combat.PrintInEmptyMenu($"{pokemon.name} souffre de sa brûlure !");
                     pokemon.pvLeft -= pokemon.pv / 16;
-                    // pokemon.atkCombat = pokemon.atkCombat * 88 / 100;
-                    break;
-
-                case "FREEZE":
-                    Combat.PrintInEmptyMenu($"{pokemon.name} est gelé !");
-                    // Appliquer l'effet de statut du gel
-                    break;
-
-                case "SLEEP":
-                    Combat.PrintInEmptyMenu($"{pokemon.name} est endormi !");
-                    // Appliquer l'effet de statut du sommeil
+                    pokemon.atkCombat = pokemon.atkCombat * 88 / 100;
                     break;
 
                 case "POISON":
-                    Combat.PrintInEmptyMenu($"{pokemon.name} est empoisonné !");
+                    Combat.PrintInEmptyMenu($"{pokemon.name} souffre du poison !");
                     pokemon.pvLeft -= pokemon.pv / 16;
                     break;
 
                 case "POISONGRAVE":
-                    Combat.PrintInEmptyMenu($"{pokemon.name} est gravement empoisonné !");
+                    Combat.PrintInEmptyMenu($"{pokemon.name} souffre du poison !");
                     // Appliquer l'effet de statut de l'empoisonnement grave
                     break;
 
@@ -309,22 +294,22 @@ namespace pokemonConsole
                     return SecondaryEffect.PrecisionDown;
 
                 case "para":
-                    Combat.PrintInEmptyMenu("para");
+                    Combat.PrintInEmptyMenu($"{pokemonAdverse.name} est paralysé !");
                     pokemonAdverse.statusProblem = "PARA";
                     return SecondaryEffect.Para;
 
                 case "burn":
-                    Combat.PrintInEmptyMenu("burn");
+                    Combat.PrintInEmptyMenu($"{pokemonAdverse.name} est brûlé !");
                     pokemonAdverse.statusProblem = "BURN";
                     return SecondaryEffect.Burn;
 
                 case "freeze":
-                    Combat.PrintInEmptyMenu("freeze");
+                    Combat.PrintInEmptyMenu($"{pokemonAdverse.name} est gelé !");
                     pokemonAdverse.statusProblem = "FREEZE";
                     return SecondaryEffect.Freeze;
 
                 case "sleep":
-                    Combat.PrintInEmptyMenu("sleep");
+                    Combat.PrintInEmptyMenu($"{pokemonAdverse.name} est endormi !");
                     pokemonAdverse.statusProblem = "SLEEP";
                     return SecondaryEffect.Sleep;
 
@@ -334,17 +319,17 @@ namespace pokemonConsole
                     return SecondaryEffect.SelfSleep;
 
                 case "poison":
-                    Combat.PrintInEmptyMenu("Poison");
+                    Combat.PrintInEmptyMenu($"{pokemonAdverse.name} est empoisonné !");
                     pokemonAdverse.statusProblem = "POISON";
                     return SecondaryEffect.Poison;
 
                 case "poisongrave":
-                    Combat.PrintInEmptyMenu("PoisonGrave");
+                    Combat.PrintInEmptyMenu($"{pokemonAdverse.name} est gravement empoisonné !");
                     pokemonAdverse.statusProblem = "POISONGRAVE";
                     return SecondaryEffect.PoisonGrave;
 
                 case "confusion":
-                    Combat.PrintInEmptyMenu("Confusion");
+                    Combat.PrintInEmptyMenu($"{pokemon.name} est confus !");
                     //==============================//
                     return SecondaryEffect.Confusion;
 
