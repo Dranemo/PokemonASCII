@@ -12,6 +12,7 @@ namespace pokemonConsole
         public int? starterId;
 
         public bool caughtPokemon { get; set; } = false;
+        public bool aVaincuBlue { get; set; } = false;
 
 
         public Player() : base("Player", 8, 8, 'P', "bedroom.txt", ' ')

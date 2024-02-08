@@ -546,7 +546,6 @@ namespace pokemonConsole
                     return SecondaryEffect.Clone;
 
                 default:
-                    Combat.PrintInEmptyMenu($"Effect: {sideEffect} (Default)");
                     return SecondaryEffect.None;
             }
         }

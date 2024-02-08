@@ -4,6 +4,7 @@ using System.ComponentModel.Design;
 using System.Reflection;
 using System.Media;
 using Usefull;
+using NUnit.Framework.Interfaces;
 
 internal class Map
 {
@@ -109,8 +110,8 @@ internal class Map
                         ChangeMap(0, "route_1.txt", player.PositionX - 3, 35, "\nVers la route 1 !");
                         ChangeMap(13, 10, "chen.txt", 5, 8, "\nVers le labo du Pr.Chen...");
                         ChangeMap(6, 5, "mom.txt", 3, 8, "\nMaman...");
+                        ChangeMap(14, 5, "blue.txt", 3, 8, $"\nMaison de {rival.name}...");
                     }
-
                 }
 
                 else if (IsCurrentMap("chen.txt"))
@@ -137,8 +138,6 @@ internal class Map
                         ChangeMap(8, "bourg_palette.txt", 6, 6, "\nVers Bourg-Palette...");
                         ChangeMap(8, 1, "bedroom.txt", 15, 1, "\nChambre...");
                     }
-
-
                     foreach (NPC npc in entityList)
                     {
                         CanTalk(npc, keyInfo);
@@ -153,10 +152,21 @@ internal class Map
                         CanTalk(npc, keyInfo);
                     }
                 }
+                else if (IsCurrentMap("blue.txt"))
+                 {
+                     if (moved)
+                     {
+                         ChangeMap(8, "bourg_palette.txt", 14, 6, "\nVers Bourg-Palette...");
+                     }
 
+                     foreach (NPC npc in entityList)
+                     {
+                         CanTalk(npc, keyInfo);
+                     }
+                 }
 
-                // Hautes herbes
-                if (map[player.PositionX, player.PositionY] == '#' && moved)
+                    // Hautes herbes
+                    if (map[player.PositionX, player.PositionY] == '#' && moved)
                 {
                     if (random.Next(1, 101) <= 10) // chance de rencontrer un Pokemon dans les hautes herbes
                     {
@@ -169,11 +179,24 @@ internal class Map
                         {
                             Console.WriteLine("Tous vos Pokemon sont KO !");
                             ChangeMap("mom.txt", 7, 5, "Retour chez maman...");
+                            Functions.playSound("bourg_palette.wav");
                             Pokemon.Heal(player);
                         }
                         Console.Clear();
                         DrawMap();
-                    }
+                        if (IsCurrentMap("route_1.txt"))
+                            {
+                                Functions.playSound("route_1.wav");
+                            }
+                        else if (IsCurrentMap("bourg_palette.txt"))
+                            {
+                                Functions.playSound("bourg_palette.wav");
+                            }
+                        else if (IsCurrentMap("chen.txt"))
+                            {
+                                Functions.playSound("chen.wav");
+                            }
+                        }
                 }
 
                 if (entityToRemove.Count != 0)
@@ -280,7 +303,7 @@ internal class Map
                 {
                     pokeball.Function(player);
                     entityToRemove.Add(pokeball);
-
+                    Functions.playSound("receive_pokemon.wav");
                     PrintDialogue($"Vous avez obtenu {pokeball.name} !");
 
                     if (pokeball.position == 1)
@@ -316,7 +339,7 @@ internal class Map
 
                     Functions.ClearInputBuffer();
 
-
+                    Functions.playSound("chen.wav");
                     DrawMap();
                 }
 
@@ -424,7 +447,15 @@ internal class Map
         }
         else if (filename == "bourg_palette.txt")
         {
-            Functions.playSound("bourg_palette.wav");
+            if (!Functions.MusicCurrent("bourg_palette.wav"))
+            {
+                Functions.playSound("bourg_palette.wav");
+            }
+        }
+        else if (filename == "blue.txt")
+        {
+            Nina nina = new Nina();
+            entityList.Add(nina);
         }
     }
 

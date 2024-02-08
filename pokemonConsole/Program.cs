@@ -23,6 +23,7 @@ namespace Usefull
 {
     class Functions
     {
+        private static string currentMusicFileName = null;
         public static void ClearInputBuffer()
         {
             while (Console.KeyAvailable)
@@ -34,6 +35,11 @@ namespace Usefull
         {
             SoundPlayer simpleSound = new SoundPlayer($"{AdresseFile.FileDirection}Musiques\\{soundFile}");
             simpleSound.Play();
+            currentMusicFileName= soundFile;
+        }
+        public static bool MusicCurrent(string musicToCheck)
+        {
+            return currentMusicFileName==musicToCheck;
         }
 
         public static string ClavierName(int limit)
