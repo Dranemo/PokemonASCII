@@ -182,7 +182,10 @@ namespace pokemonConsole
                         }
                         else if (bothLines[positionY][positionX] == ">OBJET")
                         {
+                            MenuItems.Open(player, true);
 
+                            PrintPokemon(pokemon, pokemonAdverse);
+                            PrintMenuChoice();
                         }
                         else if (bothLines[positionY][positionX] == ">PKMN")
                         {
@@ -232,7 +235,8 @@ namespace pokemonConsole
                 
                 }
             }
-
+            cursorLeft = 0;
+            cursorTop = 0;
             player.pokemonParty = pokemonPartyPlayer;
             foreach (Pokemon poke in player.pokemonParty)
             {
@@ -267,17 +271,33 @@ namespace pokemonConsole
                         }
                         break;
                     case ConsoleKey.Enter:
-                        if(pokemon.listAttackActual[positionAttack].ppLeft > 0)
+                        bool attackHavePP = false;
+                        foreach (Capacity capacity in pokemon.listAttackActual)
                         {
-                            return pokemon.listAttackActual[positionAttack];
+                            if(capacity.ppLeft > 0) attackHavePP = true;
+                        }
+
+                        if (attackHavePP)
+                        {
+                            if (pokemon.listAttackActual[positionAttack].ppLeft > 0)
+                            {
+                                return pokemon.listAttackActual[positionAttack];
+                            }
+                            else
+                            {
+                                PrintMenuEmpty();
+                                PrintInEmptyMenu($"{pokemon.listAttackActual[positionAttack]} n'a plus de PP ! ");
+                                PrintMenuAttack(pokemon);
+                                PrintPPAttack(pokemon);
+                            }
                         }
                         else
                         {
                             PrintMenuEmpty();
-                            PrintInEmptyMenu($"{pokemon.listAttackActual[positionAttack]} n'a plus de PP ! ");
-                            PrintMenuAttack(pokemon);
-                            PrintPPAttack(pokemon);
+                            PrintInEmptyMenu("Vous n'avez plus de PP !");
+                            return new Capacity(165);
                         }
+                        
                         break;
                     case ConsoleKey.Escape:
                         return null;
@@ -435,11 +455,11 @@ namespace pokemonConsole
                 PrintMenuAttack(pokemon);
             }
 
-            if (pokemonAdverse.pvLeft <= 0 && !VerifAdverse(pokemonPartyAdverse))
+            if (pokemonAdverse.pvLeft <= 0)
             {
                 KillRewards(pokemon, pokemonAdverse);
 
-                if (pokemonEquipeAdverse + 1 < pokemonPartyAdverse.Count)
+                if (pokemonEquipeAdverse + 1 < pokemonPartyAdverse.Count && !VerifAdverse(pokemonPartyAdverse))
                 {
                     pokemonAdverse = pokemonPartyAdverse[pokemonEquipeAdverse + 1];
                     pokemonEquipeAdverse++;
@@ -620,15 +640,47 @@ namespace pokemonConsole
 
             if (!pokemonAdverse && cursorTop != 0)
             {
-                Console.SetCursorPosition(cursorLeft + offsetPokemon + 2, cursorTop -3);
+                Console.SetCursorPosition(cursorLeft + offsetPokemon + 5, cursorTop -4);
+
+                if (pokemon.statusProblem == "OK")
+                {
+                    if (pokemon.level.ToString().Length < 3)
+                    {
+                        Console.Write("L");
+                    }
+                    Console.Write(pokemon.level);
+                }
+                else
+                {
+                    Console.Write(pokemon.statusProblem);
+                }
+                Console.SetCursorPosition(cursorLeft + offsetPokemon + 2, cursorTop - 3);
+
             }
             else if (pokemonAdverse && cursorTop != 0) 
             {
+                Console.SetCursorPosition(cursorLeft + 4, cursorTop - 11);
+
+                if (pokemon.statusProblem == "OK")
+                {
+                    if (pokemon.level.ToString().Length < 3)
+                    {
+                        Console.Write("L");
+                    }
+                    Console.Write(pokemon.level);
+                }
+                else
+                {
+                    Console.Write(pokemon.statusProblem);
+                }
+
                 Console.SetCursorPosition(cursorLeft + 2, cursorTop - 10);
             }
 
+            
 
-            if(pokemon.pvLeft < 0) pokemon.pvLeft = 0;
+
+            if (pokemon.pvLeft < 0) pokemon.pvLeft = 0;
 
             int pvPerSix = pokemon.pvLeft * 6 / pokemon.pv;
             string barPv = "PV";
@@ -1029,12 +1081,12 @@ namespace pokemonConsole
         {
             foreach (Pokemon p in pokemonPartyAdverse)
             {
-                if (p.pvLeft < 0)
+                if (p.pvLeft > 0)
                 {
-                    return true;
+                    return false;
                 }
             }
-            return false;
+            return true;
         }
     }
 

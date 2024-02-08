@@ -915,15 +915,17 @@ namespace pokemonConsole
 
 
                 string old_name = name;
+                string old_specie = actual_name;
                 string old_sprite = asciiArt;
                 ConsoleColor old_color = color;
 
                 this.id = int.Parse(colonnes[0]);
-                this.name = colonnes[1];
 
-                if (name == old_name)
+                this.actual_name = colonnes[1];
+
+                if (old_specie == old_name)
                 {
-                    actual_name = name;
+                    name = actual_name;
                 }
 
                 // Sprite

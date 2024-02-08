@@ -567,12 +567,25 @@ namespace pokemonConsole
         private static string topBox = "0---------------0";
         private static string middleBox = "|               |";
 
+        private static string topLittleBox =    "0----------0";
+        private static string middleLittleBox = "|          |";
+
+        private static string topNumberBox = "0----0";
+        private static string middleNumberBox = "|    |";
+
         private static string retourButton = "  RETOUR";
+
+        private static string tossButton = "  JETER";
+        private static string useButton = "  UTILISER";
 
         private static int position;
         private static int visualPosition;
+        private static int positionLittle;
+
         private static List<string> listItem = new List<string>();
         private static List<int> listItemQuantity = new List<int>();
+
+        private static List<string> listLittleMenu = new List<string>();
 
 
         public static void Open(Player player, bool isCombat = false)
@@ -645,6 +658,18 @@ namespace pokemonConsole
                         {
                             choiceDone = true;
                         }
+                        else
+                        {
+                            OpenLittleMenu(player, isCombat);
+                            if (position > visualPosition)
+                            {
+                                PrintInventory(position - visualPosition);
+                            }
+                            else
+                            {
+                                PrintInventory();
+                            }
+                        }
                         break;
                 }
             }
@@ -652,17 +677,119 @@ namespace pokemonConsole
             listItemQuantity.Clear();
         }
 
-        private static void PrintInventory()
+        private static void OpenLittleMenu(Player player, bool isCombat = false)
         {
+            listLittleMenu.Add(useButton);
+            listLittleMenu.Add(tossButton);
+
+            bool alreadySelected = false;
+            foreach (string item in listLittleMenu)
+            {
+                if (item[0] == '>')
+                {
+                    alreadySelected = true;
+                }
+            }
+
+            if (!alreadySelected)
+            {
+                listLittleMenu[0] = listLittleMenu[0].Remove(0, 1);
+                listLittleMenu[0] = listLittleMenu[0].Insert(0, ">");
+                positionLittle = 0;
+            }
+
+            PrintLittleMenu();
+
+            ConsoleKeyInfo key;
+
+            bool choiceDone = false;
+            while (!choiceDone) 
+            {
+                key = Console.ReadKey(true);
+                switch (key.Key)
+                {
+                    case ConsoleKey.DownArrow:
+                        if(positionLittle < listLittleMenu.Count - 1)
+                        {
+                            ChangeSelectedLittle(+1);
+                        }
+                        break;
+                    case ConsoleKey.UpArrow:
+                        if (positionLittle > 0)
+                        {
+                            ChangeSelectedLittle(-1);
+                        }
+                        break;
+                    case ConsoleKey.Enter:
+                        if (listLittleMenu[positionLittle] == "> UTILISER")
+                        {
+
+                        }
+                        else if (listLittleMenu[positionLittle] == "> JETER")
+                        {
+
+                        }
+                        choiceDone = true;
+                        break;
+                    case ConsoleKey.Escape:
+                        choiceDone = true;
+                        break;
+                }
+            }
+            
+        }
+        private static void OpenNumberMenu(Player player)
+        {
+            if (position > visualPosition)
+            {
+                PrintInventory(position - visualPosition);
+            }
+            else
+            {
+                PrintInventory();
+            }
+
+
+        }
+
+
+        private static void PrintInventory(int position = 0)
+        {
+            if (position < 0) position = 0;
 
             Console.Clear();
             Console.WriteLine(topBox);
             for (int i = 0; i < 10; i++) Console.WriteLine(middleBox);
             Console.WriteLine(topBox);
 
-            PrintItems(0);
+            PrintItems(position);
         }
+        private static void PrintLittleMenu()
+        {
+            int offsetLeft = 11;
+            int offsetTop = 8;
 
+            Console.SetCursorPosition(offsetLeft, offsetTop);
+            Console.Write(topLittleBox);
+            for (int i = 1; i <= 2; i++)
+            {
+                Console.SetCursorPosition(offsetLeft, offsetTop + i);
+                Console.Write(middleLittleBox);
+            }
+            Console.SetCursorPosition(offsetLeft, offsetTop + 3);
+            Console.Write(topLittleBox);
+
+            for (int i = 1; i <= 2; i++)
+            {
+                Console.SetCursorPosition(offsetLeft + 1, offsetTop + i);
+                Console.Write(listLittleMenu[i-1]);
+            }
+
+        }
+        private static void PrintNumberMenu()
+        {
+
+        }
         private static void ChangeSelected(int change)
         {
             listItem[position] = listItem[position].Remove(0, 1);
@@ -691,7 +818,30 @@ namespace pokemonConsole
 
             Console.SetCursorPosition(0, 12);
         }
+        private static void ChangeSelectedLittle(int change)
+        {
 
+            int offsetLeft = 11;
+            int offsetTop = 8;
+
+
+            listLittleMenu[positionLittle] = listLittleMenu[positionLittle].Remove(0, 1);
+            listLittleMenu[positionLittle] = listLittleMenu[positionLittle].Insert(0, " ");
+
+            Console.SetCursorPosition(offsetLeft + 1, offsetTop + 1 + positionLittle);
+            Console.Write(listLittleMenu[positionLittle][0]);
+
+            positionLittle += change;
+
+            listLittleMenu[positionLittle] = listLittleMenu[positionLittle].Remove(0, 1);
+            listLittleMenu[positionLittle] = listLittleMenu[positionLittle].Insert(0, ">");
+
+            Console.SetCursorPosition(offsetLeft + 1, offsetTop + 1 + positionLittle);
+            Console.Write(listLittleMenu[positionLittle][0]);
+
+
+            Console.SetCursorPosition(0, 12);
+        }
         private static void PrintItems(int startList)
         {
             int offset = 12;
