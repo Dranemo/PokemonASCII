@@ -452,6 +452,11 @@ internal class Map
                 Functions.playSound("bourg_palette.wav");
             }
         }
+        else if (filename == "blue.txt")
+        {
+            Nina nina = new Nina();
+            entityList.Add(nina);
+        }
     }
 
 
