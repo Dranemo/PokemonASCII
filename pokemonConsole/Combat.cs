@@ -1,5 +1,4 @@
-﻿using inventory;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -44,7 +43,12 @@ namespace pokemonConsole
 
             // Generer le pokemon adverse
             Random random = new Random();
-            Pokemon pokemon = player.pokemonParty[0];
+
+            Pokemon pokemon = null;
+            foreach (Pokemon poke in player.pokemonParty)
+            {
+                if (poke.pvLeft > 0) pokemon = poke; break;
+            }
             pokemonPartyPlayer = player.pokemonParty;
 
             // Generer un pokemon sauvage
@@ -230,6 +234,10 @@ namespace pokemonConsole
             }
 
             player.pokemonParty = pokemonPartyPlayer;
+            foreach (Pokemon poke in player.pokemonParty)
+            {
+                if (poke.canEvolve == true) poke.Evolution();
+            }
         }
         private static Capacity LoopChoiceCap(Pokemon pokemon)
         {
@@ -259,7 +267,18 @@ namespace pokemonConsole
                         }
                         break;
                     case ConsoleKey.Enter:
-                        return pokemon.listAttackActual[positionAttack];
+                        if(pokemon.listAttackActual[positionAttack].ppLeft > 0)
+                        {
+                            return pokemon.listAttackActual[positionAttack];
+                        }
+                        else
+                        {
+                            PrintMenuEmpty();
+                            PrintInEmptyMenu($"{pokemon.listAttackActual[positionAttack]} n'a plus de PP ! ");
+                            PrintMenuAttack(pokemon);
+                            PrintPPAttack(pokemon);
+                        }
+                        break;
                     case ConsoleKey.Escape:
                         return null;
                         break;
@@ -296,6 +315,7 @@ namespace pokemonConsole
 
                 pokemonAdverse.pvLeft -= (int)Math.Round(CalculerDegatSubitPokemon(pokemon, pokemonAdverse, capacityUsed));
                 capacityUsed.Use(pokemon, pokemonAdverse);
+                capacityUsed.ppLeft -= 1;
 
                 PrintPvBar(pokemonAdverse, true);
 
@@ -330,7 +350,7 @@ namespace pokemonConsole
 
                     pokemonAdverse.pvLeft -= (int)Math.Round(CalculerDegatSubitPokemon(pokemon, pokemonAdverse, capacityUsed));
                     capacityUsed.Use(pokemon, pokemonAdverse);
-
+                    capacityUsed.ppLeft -= 1;
 
                     PrintPvBar(pokemonAdverse, true);
                 }
@@ -775,8 +795,11 @@ namespace pokemonConsole
             Console.SetCursorPosition(Console.CursorLeft + 2, Console.CursorTop);
             Console.WriteLine(pokemon.listAttackActual[positionAttack].type);
 
-            Console.SetCursorPosition(Console.CursorLeft + 3, Console.CursorTop);
-            // Print pp
+            Console.SetCursorPosition(Console.CursorLeft + 4, Console.CursorTop);
+            if (pokemon.listAttackActual[positionAttack].ppLeft < 10) Console.Write(" ");
+            Console.Write(pokemon.listAttackActual[positionAttack].ppLeft + "/");
+            if (pokemon.listAttackActual[positionAttack].pp < 10) Console.Write(" ");
+            Console.Write(pokemon.listAttackActual[positionAttack].pp);
 
             Console.SetCursorPosition(cursorLeft, cursorTop + 6);
         }

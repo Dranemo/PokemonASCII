@@ -19,6 +19,11 @@ internal class Map
     private static List<Entity> entityList = new List<Entity>();
     private static List<Entity> entityToRemove = new List<Entity>();
 
+    private static string topBox;
+    private static string middleBox;
+    private static int DialogueX;
+    private static int DialogueY;
+
     public static void MapPlayer(Player player_, Rival rival_)
     {
         Functions.playSound("bourg_palette.wav");
@@ -26,7 +31,7 @@ internal class Map
         rival = rival_;
 
         LoadMap(player.map);
-        ConsoleKeyInfo keyInfo;
+        ConsoleKeyInfo keyInfo = new ConsoleKeyInfo();
 
 
         player.actuallPositionChar = map[player.PositionX, player.PositionY];
@@ -36,9 +41,9 @@ internal class Map
 
         do
         {
-            foreach(Entity entity in entityList)
+            foreach (Entity entity in entityList)
             {
-                if(entity is NPC npc)
+                if (entity is NPC npc)
                 {
                     npc.Update(time, player);
                     if (npc.updated)
@@ -49,41 +54,44 @@ internal class Map
                     }
                 }
             }
-            keyInfo = Console.ReadKey(true);
 
-            // Deplacer le joueur en fonction de la touche pressee
-            int deltaX = 0, deltaY = 0;
+
             bool moved = false;
-
-            switch (keyInfo.Key)
+            int deltaX = 0, deltaY = 0;
+            if (Console.KeyAvailable)
             {
-                case ConsoleKey.UpArrow:
-                    deltaY = -1;
-                    moved = true;
-                    break;
-                case ConsoleKey.DownArrow:
-                    deltaY = 1;
-                    moved = true;
-                    break;
-                case ConsoleKey.LeftArrow:
-                    deltaX = -1;
-                    moved = true;
-                    break;
-                case ConsoleKey.RightArrow:
-                    deltaX = 1;
-                    moved = true;
-                    break;
-                case ConsoleKey.X:
-                    Menu_principal.Open(player, mapWidth, rival);
+                keyInfo = Console.ReadKey(true);
 
-                    DrawMap();
+                // Deplacer le joueur en fonction de la touche pressee
 
-                    break;
-            }
+                switch (keyInfo.Key)
+                {
+                    case ConsoleKey.UpArrow:
+                        deltaY = -1;
+                        moved = true;
+                        break;
+                    case ConsoleKey.DownArrow:
+                        deltaY = 1;
+                        moved = true;
+                        break;
+                    case ConsoleKey.LeftArrow:
+                        deltaX = -1;
+                        moved = true;
+                        break;
+                    case ConsoleKey.RightArrow:
+                        deltaX = 1;
+                        moved = true;
+                        break;
+                    case ConsoleKey.X:
+                        Menu_principal.Open(player, mapWidth, rival);
 
+                        DrawMap();
+
+                        break;
+                }
 
             if (MovePlayer(deltaX, deltaY))
-            { 
+            {
                 DrawPlayer();
 
 
@@ -102,12 +110,12 @@ internal class Map
                         ChangeMap(13, 10, "chen.txt", 5, 8, "\nVers le labo du Pr.Chen...");
                         ChangeMap(6, 5, "mom.txt", 3, 8, "\nMaman...");
                     }
-                    
+
                 }
 
                 else if (IsCurrentMap("chen.txt"))
                 {
-                    if(moved) ChangeMap(8, "bourg_palette.txt", 13, 11, "\nVers Bourg-Palette...");
+                    if (moved) ChangeMap(8, "bourg_palette.txt", 13, 11, "\nVers Bourg-Palette...");
 
                     foreach (Entity entity in entityList)
                     {
@@ -129,7 +137,7 @@ internal class Map
                         ChangeMap(8, "bourg_palette.txt", 6, 6, "\nVers Bourg-Palette...");
                         ChangeMap(8, 1, "bedroom.txt", 15, 1, "\nChambre...");
                     }
-                    
+
 
                     foreach (NPC npc in entityList)
                     {
@@ -139,7 +147,7 @@ internal class Map
 
                 else if (IsCurrentMap("route_1.txt"))
                 {
-                    if(moved) ChangeMap(35, "bourg_palette.txt", player.PositionX + 3, 0, "Vous arrivez à Bourg Palette !");
+                    if (moved) ChangeMap(35, "bourg_palette.txt", player.PositionX + 3, 0, "Vous arrivez à Bourg Palette !");
                     foreach (NPC npc in entityList)
                     {
                         CanTalk(npc, keyInfo);
@@ -168,13 +176,17 @@ internal class Map
                     }
                 }
 
-                if (entityToRemove.Count!= 0)
+                if (entityToRemove.Count != 0)
                 {
                     RemoveEntity();
                 }
             }
+        }
+
 
         } while (keyInfo.Key != ConsoleKey.Escape);
+
+        
 
         player.pokemonParty.Clear();
     }
@@ -240,22 +252,13 @@ internal class Map
             {
                 if (keyInfo.Key == ConsoleKey.Enter)
                 {
-                    if (!string.IsNullOrEmpty(npc.dialogue))
-                    {
-                        foreach (char c in npc.dialogue)
-                        {
-                            Console.Write(c);
-                            Task.Delay(50).Wait();
-                        }
-                    }
+                    PrintDialogue(npc.dialogue);
                     if (npc is RivalNPC rivalNPC)
                     {
                         rivalNPC.rival.addPokemonToParty(player);
                     }
 
                     npc.Function(player);
-                    Functions.ClearInputBuffer();
-                    Console.ReadKey();
 
 
                     DrawMap();
@@ -275,9 +278,10 @@ internal class Map
             {
                 if (keyInfo.Key == ConsoleKey.Enter)
                 {
-                    Console.WriteLine(pokeball.name);
                     pokeball.Function(player);
                     entityToRemove.Add(pokeball);
+
+                    PrintDialogue($"Vous avez obtenu {pokeball.name} !");
 
                     if (pokeball.position == 1)
                     {
@@ -346,6 +350,18 @@ internal class Map
                 map[x, y] = line[x];
             }
         }
+
+        topBox = "0";
+        middleBox = "|";
+        for (int y = 1;y < (mapWidth - 1) * 2; y++)
+        {
+            topBox += "-";
+            middleBox += " ";
+        }
+        topBox += "0";
+        middleBox+= "|";
+        DialogueX = 0;
+        DialogueY = mapHeight - 2;
 
 
         entityList.Clear();
@@ -508,6 +524,94 @@ internal class Map
         
     }
 
+
+    private static void printBoxDialogue()
+    {
+        Console.SetCursorPosition(DialogueX, DialogueY);
+        Console.WriteLine(topBox);
+        for (int i = 0; i < 3; i++) 
+        {
+            Console.WriteLine(middleBox);        
+        }
+        Console.WriteLine(topBox);
+    }
+    public static void PrintDialogue(string text)
+    {
+        printBoxDialogue();
+
+        Console.SetCursorPosition(DialogueX + 2, DialogueY + 1);
+        if (!string.IsNullOrEmpty(text))
+        {
+            int charRestant = topBox.Length - 4;
+            int lineWriting = 1;
+            string[] words = text.Split(" ");
+            int wordIndex = 0;
+
+
+            for (int i = 0; i < text.Length; i++)
+            {
+
+                if (charRestant > 0 && lineWriting == 1)
+                {
+                    Console.Write(text[i]);
+                    charRestant--;
+
+                    // Si le caractère actuel est un espace, passe au mot suivant
+                    if (text[i] == ' ' || (charRestant == 0 && text[i + 1] == ' '))
+                    {
+                        wordIndex++;
+
+                        // Vérifie si le mot suivant peut s'insérer dans la ligne actuelle
+                        if (wordIndex < words.Length && words[wordIndex].Length > charRestant)
+                        {
+                            charRestant = topBox.Length - 4;
+                            lineWriting++;
+                            Console.SetCursorPosition(DialogueX + 2, DialogueY + 2);
+                        }
+                    }
+                }
+                else if (charRestant > 0 && lineWriting == 2)
+                {
+                    if (!(charRestant == topBox.Length - 4 && text[i] == ' '))
+                    {
+                        Console.Write(text[i]);
+                    }
+
+                    charRestant--;
+
+                    // Si le caractère actuel est un espace, passe au mot suivant
+                    if (text[i] == ' ' || (charRestant == 0 && text[i + 1] == ' '))
+                    {
+                        wordIndex++;
+
+                        // Vérifie si le mot suivant peut s'insérer dans la ligne actuelle
+                        if (wordIndex < words.Length && words[wordIndex].Length > charRestant)
+                        {
+                            charRestant = topBox.Length - 4;
+                            lineWriting++;
+                            Console.SetCursorPosition(DialogueX + 2, DialogueY + 3);
+                        }
+                    }
+                }
+                else if (charRestant > 0 && lineWriting == 3)
+                {
+                    if (!(charRestant == topBox.Length - 4 && text[i] == ' '))
+                    {
+                        Console.Write(text[i]);
+                    }
+
+                    charRestant--;
+
+                }
+                Thread.Sleep(20);
+            }
+
+            Functions.ClearInputBuffer();
+            Console.ReadKey(true);
+            Functions.ClearInputBuffer();
+        }
+    }
+    
 
 
 

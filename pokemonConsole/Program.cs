@@ -6,7 +6,6 @@ using System.Collections;
 using System.Data;
 ﻿using System;
 using System.Collections.Generic;
-using inventory;
 using System.Numerics;
 using System.Text;
 using System.Media;
@@ -270,6 +269,6 @@ namespace Usefull
 
     class AdresseFile
     {
-        public static string FileDirection = "C:\\Users\\Yanaël\\OneDrive\\Bureau\\C-Pokemon\\pokemonConsole\\GameFiles\\";
+        public static string FileDirection = "C:\\Users\\yanae\\Desktop\\C-Pokemon\\pokemonConsole\\GameFiles\\";
     }
 }
