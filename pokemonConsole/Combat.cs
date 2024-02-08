@@ -130,6 +130,7 @@ namespace pokemonConsole
                                 string choixNomObjet = Console.ReadLine();
 
                                 Inventory.UseItem(choixNomObjet);
+
                                 inventory.Item itemToUse = items.FirstOrDefault(i => i.Name.Equals(choixNomObjet, StringComparison.OrdinalIgnoreCase));
 
                                 if (itemToUse != null && itemToUse.Quantity > 0)
@@ -140,8 +141,18 @@ namespace pokemonConsole
 
                                     if (capacityUsed.categorie > 0)
                                     {
-                                        pokemon.pvLeft -= (int)Math.Round(CalculerDegatSubitPokemon(pokemonAdverse, pokemon, capacityUsed));
-                                        Console.WriteLine(capacityUsed.name);
+                                        // Utilisation de l'effet de l'objet sur le Pokémon
+                                        int healingAmount = Inventory.GetHealingAmountForItem(itemToUse);
+                                        pokemon.pvLeft += healingAmount;
+
+                                        // Vérification si les PV du Pokémon ne dépassent pas la limite
+                                        if (pokemon.pvLeft > pokemon.pv)
+                                        {
+                                            pokemon.pvLeft = pokemon.pv;
+                                        }
+
+                                        Console.WriteLine($"Votre Pokémon récupère {healingAmount} points de vie.");
+                                        Console.WriteLine($"\nLes nouveaux PV du Pokemon du joueur sont = {pokemon.pvLeft}\n");
                                     }
 
                                     Console.WriteLine("Le Pokemon adverse vous inflige des dégâts !\n");

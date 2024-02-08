@@ -106,24 +106,16 @@ namespace inventory
     public class Inventory
     {
         private static List<Item> items;
-
+        private static Player player;
         public static void InitializeItems()
         {
             items = Item.LoadItemsFromSaveFile($"{AdresseFile.FileDirection}\\SaveItemInGame.txt");
         }
         public static void UseItem(string choice)
         {
-            Player player = new Player();
-            if (items == null)
-            {
-                Console.WriteLine("Liste d'items non initialisée.");
-                return;
-            }
-
             Item itemToUse = items.Find(i => i.Name.Equals(choice, StringComparison.OrdinalIgnoreCase));
+            
 
-            // Initialisez la variable pokemon ici
-            Pokemon pokemon = new Pokemon(1, 15, player.id, 1, player.id, player.name);
             if (itemToUse != null)
             {
                 Console.WriteLine($"Vous utilisez {itemToUse.Name}...");
@@ -131,25 +123,7 @@ namespace inventory
                 switch (itemToUse.Name)
                 {
                     case "POTION":
-                        Item potionDetails = Item.AllItems.FirstOrDefault(i => i.Name.Equals("POTION", StringComparison.OrdinalIgnoreCase));
-
-                        if (potionDetails != null)
-                        {
-                            // Appliquer les effets de la POTION sur le Pokémon
-                            int healingAmount = int.Parse(potionDetails.Effect1);
-                            pokemon.pvLeft += healingAmount;
-                            if (pokemon.pvLeft > pokemon.pv)
-                            {
-                                pokemon.pvLeft = pokemon.pv;
-                            }
-
-                            Console.WriteLine($"Votre Pokémon récupère {healingAmount} points de vie.");
-                            Console.WriteLine($"\nLes nouveaux PV du Pokemon du joueur sont = {pokemon.pvLeft}\n");
-                        }
-                        else
-                        {
-                            Console.WriteLine("Détails de la POTION introuvables.");
-                        }
+                        GetHealingAmountForItem(itemToUse);
                         break;
                     case "Medicament":
                         Console.WriteLine("Medicament");
@@ -174,13 +148,22 @@ namespace inventory
                 Console.WriteLine($"Effets appliqués avec succès. Quantité restante : {itemToUse.Quantity}");
 
                 // Sauvegarder les quantités dans le fichier
-                inventory.Item.SaveQuantitiesToFile($"{AdresseFile.FileDirection}\\SaveItemInGame.txt", inventory.Item.AllItems);
+                Item.SaveQuantitiesToFile($"{AdresseFile.FileDirection}\\SaveItemInGame.txt", inventory.Item.AllItems);
             }
+
             else
             {
                 Console.WriteLine("Objet non trouvé dans l'inventaire.");
             }
         }
-    }
+        public static int GetHealingAmountForItem(Item item)
+        {
+            int healingAmount = 0;
+            Item potionDetails = Item.AllItems.FirstOrDefault(i => i.Name.Equals("POTION", StringComparison.OrdinalIgnoreCase));
+            healingAmount = int.Parse(potionDetails.Effect1);
 
+            Console.WriteLine($"Votre Pokémon récupère {healingAmount} points de vie.");
+            return int.Parse(item.Effect1);
+        }
+    }
 }
