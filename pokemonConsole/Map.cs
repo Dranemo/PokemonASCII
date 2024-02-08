@@ -169,6 +169,7 @@ internal class Map
                         {
                             Console.WriteLine("Tous vos Pokemon sont KO !");
                             ChangeMap("mom.txt", 7, 5, "Retour chez maman...");
+                            Functions.playSound("bourg_palette.wav");
                             Pokemon.Heal(player);
                         }
                         Console.Clear();
@@ -292,7 +293,7 @@ internal class Map
                 {
                     pokeball.Function(player);
                     entityToRemove.Add(pokeball);
-
+                    Functions.playSound("receive_pokemon.wav");
                     PrintDialogue($"Vous avez obtenu {pokeball.name} !");
 
                     if (pokeball.position == 1)
@@ -328,7 +329,7 @@ internal class Map
 
                     Functions.ClearInputBuffer();
 
-
+                    Functions.playSound("chen.wav");
                     DrawMap();
                 }
 
