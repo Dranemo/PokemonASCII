@@ -39,14 +39,10 @@ namespace pokemonConsole
             Pokemon.Heal(player);
         }
     }
-    class Nina : NPC
-    {
-        public Nina() : base("Nina", "Va botter les fesses de mon frère au labo du Pr.Chen.", 'N', "blue.txt", 7, 4, ' ')
-        {
 
     class Nina : NPC
     {
-        public Nina() : base("Nina", "Va botter les fesses de mon frère au labo du Pr.Chen.", 'N', "blue.txt", 7, 4, ' ')
+        public Nina() : base("Nina", "Va botter les fesses de mon frère au labo !", 'N', "blue.txt", 7, 4, ' ')
         {
 
         }

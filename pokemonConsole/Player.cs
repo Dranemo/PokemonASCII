@@ -11,6 +11,9 @@ namespace pokemonConsole
 
         public int? starterId;
 
+        public bool caughtPokemon { get; set; } = false;
+        public bool aVaincuBlue { get; set; } = false;
+
 
         public Player() : base("Player", 8, 8, 'P', "bedroom.txt", ' ')
         {
@@ -55,6 +58,50 @@ namespace pokemonConsole
             {
                 inventory.Add(new Item(item_id, quantity));
             }
+        }
+
+
+        public static bool catchPokemon(Pokemon pokemon, Player player, int pokeballCatchRate, Pokemon pokemonMine)
+        {
+            Random random = new Random();
+
+            float chanceCapture;
+            float randomChanceCapture;
+            float statusProbleme;
+            float tauxCapture;
+
+            if (pokemon.statusProblem == "BRN" || pokemon.statusProblem == "PAR" || pokemon.statusProblem == "PSN" || pokemon.statusProblem == "PSNGRAVE")
+            {
+                statusProbleme = 1.5f;
+            }
+            else if (pokemon.statusProblem == "FRZ" || pokemon.statusProblem == "SLP")
+            {
+                statusProbleme = 2f;
+            }
+            else
+            {
+                statusProbleme = 1f;
+            }
+
+            tauxCapture = 0.4f * pokemon.tauxCapture * statusProbleme * pokeballCatchRate;
+            if (tauxCapture > 255) tauxCapture = 255;
+
+            chanceCapture = tauxCapture / 255 * 100;
+            randomChanceCapture = random.Next(0, 101);
+            if (randomChanceCapture <= chanceCapture)
+            {
+                Combat.PrintPokemon(pokemonMine, pokemon);
+                Combat.PrintMenuEmpty();
+
+                Combat.PrintInEmptyMenu($"Vous avez capturé {pokemon.name} !");
+                player.addPokemonToParty(pokemon);
+                return true;
+            }
+            else
+            {
+                Combat.PrintInEmptyMenu($"{pokemon.name} s'est libéré !");
+            }
+            return false;
         }
     }
 }

@@ -21,7 +21,9 @@ namespace pokemonConsole
         public string precision { get; private set; }
         public int pp;
         public int ppLeft;
-        private int ppMax;
+
+        public int ppOriginal { get; private set;}
+        public int ppMax { get; private set; }
 
         private string sideEffect;
         private string sideEffectInfo;
@@ -57,6 +59,7 @@ namespace pokemonConsole
                         puissance = int.Parse(colonnes[4]);
                         precision = colonnes[5];
                         pp = int.Parse(colonnes[6]);
+                        ppOriginal = pp;
                         ppMax = int.Parse(colonnes[7]);
 
                         sideEffect = colonnes[8];
