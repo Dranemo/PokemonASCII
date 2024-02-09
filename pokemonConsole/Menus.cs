@@ -101,9 +101,6 @@ namespace pokemonConsole
                         }
                         else if (icons[position] == "> OBJETS")
                         {
-                            player.addItemToInventory(30, 1);
-                            player.addItemToInventory(31, 5);
-
                             MenuItems.Open(player);
                             Map.DrawMap();
                             PrintMenu(mapWidth);

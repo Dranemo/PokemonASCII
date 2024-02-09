@@ -25,6 +25,7 @@ internal class Map
     private static int DialogueX;
     private static int DialogueY;
 
+
     public static void MapPlayer(Player player_, Rival rival_)
     {
         Functions.playSound("bourg_palette.wav");
@@ -62,34 +63,64 @@ internal class Map
             if (Console.KeyAvailable)
             {
                 keyInfo = Console.ReadKey(true);
-
                 // Deplacer le joueur en fonction de la touche pressee
-
-                switch (keyInfo.Key)
+                if (player.name != "BLUE" && rival.name != "RED")
                 {
-                    case ConsoleKey.UpArrow:
-                        deltaY = -1;
-                        moved = true;
-                        break;
-                    case ConsoleKey.DownArrow:
-                        deltaY = 1;
-                        moved = true;
-                        break;
-                    case ConsoleKey.LeftArrow:
-                        deltaX = -1;
-                        moved = true;
-                        break;
-                    case ConsoleKey.RightArrow:
-                        deltaX = 1;
-                        moved = true;
-                        break;
-                    case ConsoleKey.X:
-                        Menu_principal.Open(player, mapWidth, rival);
+                    switch (keyInfo.Key)
+                    {
+                        case ConsoleKey.UpArrow:
+                            deltaY = -1;
+                            moved = true;
+                            break;
+                        case ConsoleKey.DownArrow:
+                            deltaY = 1;
+                            moved = true;
+                            break;
+                        case ConsoleKey.LeftArrow:
+                            deltaX = -1;
+                            moved = true;
+                            break;
+                        case ConsoleKey.RightArrow:
+                            deltaX = 1;
+                            moved = true;
+                            break;
+                        case ConsoleKey.X:
+                            Menu_principal.Open(player, mapWidth, rival);
 
-                        DrawMap();
+                            DrawMap();
 
-                        break;
+                            break;
+                    }
                 }
+                else
+                {
+                    switch (keyInfo.Key)
+                    {
+                        case ConsoleKey.DownArrow:
+                            deltaY = -1;
+                            moved = true;
+                            break;
+                        case ConsoleKey.UpArrow:
+                            deltaY = 1;
+                            moved = true;
+                            break;
+                        case ConsoleKey.RightArrow:
+                            deltaX = -1;
+                            moved = true;
+                            break;
+                        case ConsoleKey.LeftArrow:
+                            deltaX = 1;
+                            moved = true;
+                            break;
+                        case ConsoleKey.X:
+                            Menu_principal.Open(player, mapWidth, rival);
+
+                            DrawMap();
+
+                            break;
+                    }
+                }
+                
 
             if (MovePlayer(deltaX, deltaY))
             {
