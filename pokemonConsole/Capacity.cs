@@ -8,7 +8,7 @@ using Usefull;
 
 namespace pokemonConsole
 {
-    internal class Capacity
+    public class Capacity
     {
 
         public int id { get; private set; }

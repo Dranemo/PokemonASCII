@@ -99,8 +99,16 @@ internal class Map
                 // Transition et npc
                 if (IsCurrentMap("bedroom.txt"))
                 {
-                    ChangeMap(15, 1, "mom.txt", 8, 1, "\nMaman...");
-                    //player.addPokemonToParty(new Pokemon(145, 100));
+                    if (moved)
+                    {
+                        ChangeMap(15, 1, "mom.txt", 8, 1, "\nMaman...");
+
+                    }
+
+                    foreach (Entity entity in entityList)
+                    {
+                        if (entity is PC pc) UsePC(pc, keyInfo);
+                    }
                 }
 
                 else if (IsCurrentMap("bourg_palette.txt"))
@@ -138,9 +146,9 @@ internal class Map
                         ChangeMap(8, "bourg_palette.txt", 6, 6, "\nVers Bourg-Palette...");
                         ChangeMap(8, 1, "bedroom.txt", 15, 1, "\nChambre...");
                     }
-                    foreach (NPC npc in entityList)
+                    foreach (Entity entity in entityList)
                     {
-                        CanTalk(npc, keyInfo);
+                        if(entity is NPC npc) CanTalk(npc, keyInfo);
                     }
                 }
 
@@ -166,7 +174,7 @@ internal class Map
                  }
 
                     // Hautes herbes
-                    if (map[player.PositionX, player.PositionY] == '#' && moved)
+                if (map[player.PositionX, player.PositionY] == '#' && moved)
                 {
                     if (random.Next(1, 101) <= 10) // chance de rencontrer un Pokemon dans les hautes herbes
                     {
@@ -301,45 +309,97 @@ internal class Map
             {
                 if (keyInfo.Key == ConsoleKey.Enter)
                 {
-                    pokeball.Function(player);
-                    entityToRemove.Add(pokeball);
-                    Functions.playSound("receive_pokemon.wav");
-                    PrintDialogue($"Vous avez obtenu {pokeball.name} !");
+                    PrintDialogue($"Voulez vous {pokeball.name} ?");
+                    int position = 0;
+                    Console.SetCursorPosition(Console.CursorLeft + mapWidth * 2- 7, Console.CursorTop-5);
+                    int cursorLeft = Console.CursorLeft;
+                    int cursorTop = Console.CursorTop;
 
-                    if (pokeball.position == 1)
+                    Console.WriteLine("0-----0");
+                    Console.SetCursorPosition(cursorLeft, Console.CursorTop);
+                    Console.WriteLine("|> OUI|");
+                    Console.SetCursorPosition(cursorLeft, Console.CursorTop);
+                    Console.WriteLine("|  NON|");
+                    Console.SetCursorPosition(cursorLeft, Console.CursorTop);
+                    Console.WriteLine("0-----0");
+
+                    bool choicePokemon = false;
+                    while (!choicePokemon)
                     {
-                        foreach (Entity entity in entityList)
+                        keyInfo = Console.ReadKey(true);
+                        switch (keyInfo.Key)
                         {
-                            if (entity is Pokeball pokeball2 && pokeball2.position == 2)
-                            {
-                                entityToRemove.Add(pokeball2);
-                            }
+                            case ConsoleKey.UpArrow:
+                                if (position == 1)
+                                {
+                                    Console.SetCursorPosition(cursorLeft + 1, cursorTop + 2);
+                                    Console.Write(" ");
+                                    Console.SetCursorPosition(cursorLeft + 1, Console.CursorTop - 1);
+                                    Console.Write(">");
+                                    position -= 1;
+                                }
+                                break;
+                            case ConsoleKey.DownArrow:
+                                if (position == 0)
+                                {
+                                    Console.SetCursorPosition(cursorLeft + 1, cursorTop + 1);
+                                    Console.WriteLine(" ");
+                                    Console.SetCursorPosition(cursorLeft + 1, Console.CursorTop);
+                                    Console.Write(">");
+                                    position += 1;
+                                }
+                                break;
+                            case ConsoleKey.Enter:
+                                if (position == 0)
+                                {
+                                    pokeball.Function(player);
+                                    entityToRemove.Add(pokeball);
+                                    Functions.playSound("receive_pokemon.wav");
+                                    PrintDialogue($"Vous avez obtenu {pokeball.name} !");
+
+                                    if (pokeball.position == 1)
+                                    {
+                                        foreach (Entity entity in entityList)
+                                        {
+                                            if (entity is Pokeball pokeball2 && pokeball2.position == 2)
+                                            {
+                                                entityToRemove.Add(pokeball2);
+                                            }
+                                        }
+                                    }
+                                    else if (pokeball.position == 2)
+                                    {
+                                        foreach (Entity entity in entityList)
+                                        {
+                                            if (entity is Pokeball pokeball2 && pokeball2.position == 3)
+                                            {
+                                                entityToRemove.Add(pokeball2);
+                                            }
+                                        }
+                                    }
+                                    else if (pokeball.position == 3)
+                                    {
+                                        foreach (Entity entity in entityList)
+                                        {
+                                            if (entity is Pokeball pokeball2 && pokeball2.position == 1)
+                                            {
+                                                entityToRemove.Add(pokeball2);
+                                            }
+                                        }
+                                    }
+
+                                    Functions.ClearInputBuffer();
+
+                                    Functions.playSound("chen.wav");
+                                }
+
+                                choicePokemon = true;
+                                break;
                         }
                     }
-                    else if (pokeball.position == 2)
-                    {
-                        foreach (Entity entity in entityList)
-                        {
-                            if (entity is Pokeball pokeball2 && pokeball2.position == 3)
-                            {
-                                entityToRemove.Add(pokeball2);
-                            }
-                        }
-                    }
-                    else if (pokeball.position == 3)
-                    {
-                        foreach (Entity entity in entityList)
-                        {
-                            if (entity is Pokeball pokeball2 && pokeball2.position == 1)
-                            {
-                                entityToRemove.Add(pokeball2);
-                            }
-                        }
-                    }
+                    
 
-                    Functions.ClearInputBuffer();
-
-                    Functions.playSound("chen.wav");
+                    
                     DrawMap();
                 }
 
@@ -348,6 +408,18 @@ internal class Map
 
     }
     
+    private static void UsePC(PC pc, ConsoleKeyInfo keyInfo)
+    {
+        if (player.PositionX == pc.PositionX && player.PositionY == pc.PositionY + 1)
+        {
+            if (keyInfo.Key == ConsoleKey.Enter)
+            {
+                pc.Function(player);
+                DrawMap();
+            }
+        }
+    }
+
     
     
     
@@ -456,6 +528,11 @@ internal class Map
         {
             Nina nina = new Nina();
             entityList.Add(nina);
+        }
+        else if (filename == "bedroom.txt")
+        {
+            PC pc = new PC();
+            entityList.Add(pc);
         }
     }
 
@@ -637,6 +714,7 @@ internal class Map
                 Thread.Sleep(20);
             }
 
+            Console.WriteLine();
             Functions.ClearInputBuffer();
             Console.ReadKey(true);
             Functions.ClearInputBuffer();

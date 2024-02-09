@@ -4,7 +4,7 @@ using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using Usefull;
 
-class Entity
+public class Entity
 {
     public string name { get; set; }
 

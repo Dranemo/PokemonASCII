@@ -8,12 +8,12 @@ using Usefull;
 
 namespace pokemonConsole
 {
-    class Item
+    public class Item
     {
         public int id;
         public string name;
 
-        private effect effectAtk;
+        public effect effectAtk;
         private string effect2;
 
 
@@ -51,7 +51,7 @@ namespace pokemonConsole
                 }
             }
         }
-        private enum effect
+        public enum effect
         { 
             none,
             CatchPokemon,
@@ -315,6 +315,11 @@ namespace pokemonConsole
                         }
                         break;
                 }
+            }
+
+            if (item.quantity == 0)
+            {
+                player.inventory.Remove(item);
             }
         }
 

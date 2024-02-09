@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -100,12 +101,8 @@ namespace pokemonConsole
                         }
                         else if (icons[position] == "> OBJETS")
                         {
-                            player.addItemToInventory(1, 5);
-                            player.addItemToInventory(2, 5);
-                            player.addItemToInventory(3, 5);
-                            player.addItemToInventory(4, 5);
-                            player.addItemToInventory(5, 5);
-                            player.addItemToInventory(6, 5);
+                            player.addItemToInventory(30, 1);
+                            player.addItemToInventory(31, 5);
 
                             MenuItems.Open(player);
                             Map.DrawMap();
@@ -171,6 +168,7 @@ namespace pokemonConsole
         private static string pokemonLine2 = "   ";
 
         private static string littleMenuStats = "  STATS";
+        private static string littleMenuItemUse = "  USE";
         private static string littleMenuOrdre = "  ORDRE";
         private static string littleMenuRetour = "  RETOUR";
 
@@ -181,18 +179,22 @@ namespace pokemonConsole
         private static List<string> pokemonLines1 = new List<string>();
         private static List<string> pokemonLines2 = new List<string>();
         private static List<string> littleMenuLines = new List<string>();
+        private static List<string> littleAttackLine = new List<string>();
 
 
         private static bool alreadySelected;
         private static bool alreadySelectedLittle;
         private static int position;
         private static int positionLittle;
+        private static int positionAttack;
         private static int endPositionXText;
         private static int endPositionYText;
 
         private static int PositionChangement;
 
-        public static void Open(Player player, bool isCombat = false)
+        private static bool itemUsed = false;
+
+        public static void Open(Player player, bool isCombat = false, int itemType = 0) // itemType = 0 : none, = 1 : heal & autres, = 2 : capacity
         {
             for (int i = 0; i < player.pokemonParty.Count; i++)
             {
@@ -283,8 +285,12 @@ namespace pokemonConsole
                         }
                         break;
                     case ConsoleKey.Enter:
-                        if (!isSwitching) OpenLittleMenu(ref isSwitching, player, isCombat);
-
+                        if (!isSwitching) OpenLittleMenu(ref isSwitching, player, isCombat, itemType);
+                        if (itemUsed)
+                        {
+                            itemUsed = false;
+                            retour = true;
+                        }
                         
                         if (isCombat && isSwitching)
                         {
@@ -329,11 +335,17 @@ namespace pokemonConsole
             pokemonLines1.Clear();
             pokemonLines2.Clear();
         }
-        private static void OpenLittleMenu(ref bool isSwitching, Player player, bool isCombat )
+        private static void OpenLittleMenu(ref bool isSwitching, Player player, bool isCombat, int itemType)
         {
-
-            littleMenuLines.Add(littleMenuStats);
-            littleMenuLines.Add(littleMenuOrdre);
+            if(itemType == 0)
+            {
+                littleMenuLines.Add(littleMenuStats);
+                littleMenuLines.Add(littleMenuOrdre);
+            }
+            else if(itemType > 0)
+            {
+                littleMenuLines.Add(littleMenuItemUse);
+            }
             littleMenuLines.Add(littleMenuRetour);
 
             alreadySelectedLittle = false;
@@ -359,7 +371,7 @@ namespace pokemonConsole
 
             while (!retour)
             {
-                keyInfo = Console.ReadKey();
+                keyInfo = Console.ReadKey(true);
 
                 switch (keyInfo.Key)
                 {
@@ -382,12 +394,27 @@ namespace pokemonConsole
                     case ConsoleKey.Enter:
                         if (positionLittle == 0)
                         {
-                            player.pokemonParty[position].AfficherDetailsMenu();
-                            retour = true;
+                            if (itemType == 0)
+                            {
+                                player.pokemonParty[position].AfficherDetailsMenu();
+                                retour = true;
+                            }
+                            else if (itemType == 1)
+                            {
+                                Item.UseItem(player.inventory[MenuItems.position], ref player, position, 0, isCombat);
+                                itemUsed = true;
+                                retour = true;
+                            }
+                            else if (itemType == 2)
+                            {
+                                OpenAttackMenu(player.pokemonParty[position], player, isCombat);
+                                itemUsed = true;
+                                retour = true;
+                            }
                         }   
                         else if (positionLittle == 1)
                         {
-                            if (!isCombat || (isCombat && player.pokemonParty[position].pvLeft > 0))
+                            if (!isCombat || (isCombat && player.pokemonParty[position].pvLeft > 0) && itemType == 0)
                             {
 
                                 PositionChangement = position;
@@ -406,17 +433,72 @@ namespace pokemonConsole
                     case ConsoleKey.Escape:
                         retour = true;
                         break;
-                    default:
-                        Console.SetCursorPosition(endPositionXText, endPositionYText);
-                        Console.Write(" ");
-                        Console.SetCursorPosition(endPositionXText, endPositionYText);
-                        break;
                 }
             }
             littleMenuLines.Clear();
         }
 
+        private static void OpenAttackMenu(Pokemon pokemon, Player player, bool isCombat)
+        {
+            foreach (Capacity cap in pokemon.listAttackActual)
+            {
+                littleAttackLine.Add("  " + cap.name);
+            }
 
+            alreadySelectedLittle = false;
+            foreach (string button in littleAttackLine)
+            {
+                if (button[0] == '>')
+                {
+                    alreadySelectedLittle = true;
+                }
+            }
+
+            if (!alreadySelectedLittle)
+            {
+                littleAttackLine[0] = littleAttackLine[0].Remove(0, 1);
+                littleAttackLine[0] = littleAttackLine[0].Insert(0, ">");
+                positionAttack = 0;
+            }
+
+            PrintAttackMenu(pokemon);
+
+            bool retour = false;
+            ConsoleKeyInfo keyInfo;
+
+            while (!retour)
+            {
+                keyInfo = Console.ReadKey(true);
+
+                switch (keyInfo.Key)
+                {
+                    case ConsoleKey.DownArrow:
+                        if (positionAttack != littleAttackLine.Count - 1)
+                        {
+                            ChangeSelected(positionAttack, positionAttack + 1, littleAttackLine);
+                            PrintAttackMenu(pokemon);
+                            positionAttack++;
+                        }
+                        break;
+                    case ConsoleKey.UpArrow:
+                        if (positionAttack != 0)
+                        {
+                            ChangeSelected(positionAttack, positionAttack - 1, littleAttackLine);
+                            PrintAttackMenu(pokemon);
+                            positionAttack--;
+                        }
+                        break;
+                    case ConsoleKey.Enter:
+                        Item.UseItem(player.inventory[MenuItems.position], ref player, position, positionAttack, isCombat);
+                        retour = true;
+                        break;
+                    case ConsoleKey.Escape:
+                        retour = true;
+                        break;
+                }
+            }
+            littleAttackLine.Clear();
+        }
 
         private static void ChangeSelected(int position, int nextPosition, List<string> list)
         {
@@ -544,19 +626,41 @@ namespace pokemonConsole
             Console.SetCursorPosition(endPositionXText + 10, endPositionYText - 5);
             Console.Write(hautBox);
             Console.SetCursorPosition(endPositionXText + 10, endPositionYText - 4);
-            for (int i = 4; i >= 1; i--)
+            for (int i = littleMenuLines.Count; i >= 1; i--)
             {
                 Console.Write(middleBox); 
                 Console.SetCursorPosition(endPositionXText + 10, endPositionYText - i);
             }
             Console.Write(hautBox);
 
-            Console.SetCursorPosition(endPositionXText + 12, endPositionYText - 4);
-            Console.Write(littleMenuLines[0]);
-            Console.SetCursorPosition(endPositionXText + 12, endPositionYText - 3);
-            Console.Write(littleMenuLines[1]);
-            Console.SetCursorPosition(endPositionXText + 12, endPositionYText - 2);
-            Console.Write(littleMenuLines[2]);
+            for (int i = 0; i < littleMenuLines.Count; i++)
+            {
+                Console.SetCursorPosition(endPositionXText + 12, endPositionYText - 4 + i);
+                Console.Write(littleMenuLines[i]);
+            }
+
+            Console.SetCursorPosition(endPositionXText, endPositionYText);
+        }
+        private static void PrintAttackMenu(Pokemon pokemon)
+        {
+            string hautBox =   "0-----------------0";
+            string middleBox = "|                 |";
+
+            Console.SetCursorPosition(endPositionXText + 2, endPositionYText - 5);
+            Console.Write(hautBox);
+            Console.SetCursorPosition(endPositionXText + 2, endPositionYText - 4);
+            for (int i = 4; i >= 1; i--)
+            {
+                Console.Write(middleBox);
+                Console.SetCursorPosition(endPositionXText + 2, endPositionYText - i);
+            }
+            Console.Write(hautBox);
+
+            for (int i = 0; i < littleAttackLine.Count; i++)
+            {
+                Console.SetCursorPosition(endPositionXText + 4, endPositionYText - 4 + i);
+                Console.Write(littleAttackLine[i]);
+            }
 
             Console.SetCursorPosition(endPositionXText, endPositionYText);
         }
@@ -578,7 +682,7 @@ namespace pokemonConsole
         private static string tossButton = "  JETER";
         private static string useButton = "  UTILISER";
 
-        private static int position;
+        public static int position;
         private static int visualPosition;
         private static int positionLittle;
 
@@ -663,6 +767,21 @@ namespace pokemonConsole
                         else
                         {
                             OpenLittleMenu(player, pokemonAdverse, pokemon, isCombat);
+
+                            listItem.Clear();
+                            listItemQuantity.Clear();
+
+                            choiceMain = false;
+                            foreach(Item item in player.inventory)
+                            {
+                                listItem.Add("  " + item.name);
+                                listItemQuantity.Add(item.quantity);
+                            }
+                            listItem.Add(retourButton);
+
+                            listItem[position] = listItem[position].Remove(0, 1);
+                            listItem[position] = listItem[position].Insert(0, ">");
+
                             if (position > visualPosition)
                             {
                                 PrintInventory(position - visualPosition);
@@ -726,9 +845,19 @@ namespace pokemonConsole
                     case ConsoleKey.Enter:
                         if (listLittleMenu[positionLittle] == "> UTILISER")
                         {
-                            if (player.inventory[position].id <= 4 && player.inventory[position].id >= 1)
+                            if (player.inventory[position].effectAtk == Item.effect.CatchPokemon)
                             {
                                 Item.UseItem(player.inventory[position], ref player, 0, 0, true, pokemonAdverse, pokemon);
+                                choiceMain = true;
+                            }
+                            else if (player.inventory[position].effectAtk == Item.effect.TenPPOneCap || player.inventory[position].effectAtk == Item.effect.AllPPOneCap || player.inventory[position].effectAtk == Item.effect.PPPlus)
+                            {
+                                MenuPokemon.Open(player, isCombat, 2);
+                                choiceMain = true;
+                            }
+                            else
+                            {
+                                MenuPokemon.Open(player, isCombat, 1);
                                 choiceMain = true;
                             }
                         }

@@ -1,24 +1,6 @@
 Player :
-Player,11080,11,1,bourg_palette.txt,#,7
-2
-2
-106,35,35
-39,30,30
-7,AAAAAAAAAA,11080,Player,5,135,10
-8,0,7,0,15,0,11,0,11,0
-OK,False,False
-2
-83,15,15
-64,35,35
-146,SULFURA,0,,6,270,27
-9,0,10,0,13,0,9,0,8,0
-OK,False,False
-6
-1,5
-2,5
-3,5
-4,4
-5,5
-6,5
+Player,44563,8,4,chen.txt, ,
+0
+0
 Rival :
 Rival

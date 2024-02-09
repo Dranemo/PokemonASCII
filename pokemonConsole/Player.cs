@@ -2,7 +2,7 @@
 
 namespace pokemonConsole
 {
-    class Player : Entity
+    public class Player : Entity
     {
         public int id { get; set; }
 
@@ -39,6 +39,10 @@ namespace pokemonConsole
             if (pokemonParty.Count <= 6)
             {
                 pokemonParty.Add(pokemon);
+            }
+            else
+            {
+                PC.AddPokemonBox(pokemon);
             }
         }
         
@@ -94,6 +98,9 @@ namespace pokemonConsole
                 Combat.PrintMenuEmpty();
 
                 Combat.PrintInEmptyMenu($"Vous avez capturé {pokemon.name} !");
+                pokemon.idOT = player.id;
+                pokemon.nameOT = player.name;
+                pokemon.appartenant = 1;
                 player.addPokemonToParty(pokemon);
                 return true;
             }
