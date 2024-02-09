@@ -13,7 +13,7 @@ using System.Buffers.Text;
 
 namespace pokemonConsole
 {
-    internal class Pokemon
+    public class Pokemon
     {
         // ------------------------------------- Infos Pokemon ------------------------------------- //
         public int id { get; private set; }
@@ -23,8 +23,8 @@ namespace pokemonConsole
         public string asciiArt { get; private set; }
         public ConsoleColor color { get; private set; }
 
-        public int idOT { get; private set; }
-        public string nameOT { get; private set; }
+        public int idOT { get;  set; }
+        public string nameOT { get;  set; }
 
 
         // ------------------ Level ------------------ //
@@ -826,7 +826,7 @@ namespace pokemonConsole
             }
             else
             {
-                exp += "N" + level;
+                exp += "N" + (level +1);
             }
             Console.SetCursorPosition(Console.CursorLeft + spaceStartInt + pokemonOffset + offSetxp, Console.CursorTop);
             Console.WriteLine((expToLevelUp - expActuel) + "> " + exp);

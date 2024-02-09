@@ -60,20 +60,6 @@ namespace pokemonConsole
             }
             Pokemon pokemonAdverse = new Pokemon(pokemonAdverseId, pokemonAdverseLevel);
 
-            string filePath = AdresseFile.FileDirection + "CSV\\pokemon.csv";
-            List<string> csvLines = new List<string>();
-
-            using (StreamReader sr = new StreamReader(filePath))
-            {
-                while (!sr.EndOfStream)
-                {
-                    string line = sr.ReadLine();
-                    csvLines.Add(line);
-                }
-            }
-
-            
-
 
             if (pokemonPartyAdverse == null)
             {
