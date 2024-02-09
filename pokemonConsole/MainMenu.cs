@@ -112,6 +112,7 @@ namespace pokemonConsole
                                 Intro.LaunchIntro(player, rival);
                                 player.addItemToInventory(1, 15);
                                 player.addItemToInventory(5, 5);
+                                player.addItemToInventory(31, 50);
                                 Map.MapPlayer(player, rival);
 
                             }
