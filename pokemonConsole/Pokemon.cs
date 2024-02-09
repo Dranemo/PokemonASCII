@@ -21,6 +21,7 @@ namespace pokemonConsole
         private string actual_name;
         public List<string> listType = new List<string>();
         public string asciiArt { get; private set; }
+        public string asciiArtBack { get; private set; }
         public ConsoleColor color { get; private set; }
 
         public int idOT { get;  set; }
@@ -88,6 +89,7 @@ namespace pokemonConsole
         public bool echange {  get; set; }
 
         public int width { get; private set; }
+public int widthBack {get; private set;}
 
         public bool canEvolve { get; private set; } = false;
 
@@ -390,19 +392,10 @@ namespace pokemonConsole
 
             // Sprite
             string asciiArtFileName = $"ascii-art ({id_generate}).txt";
+            string asciiArtBackFileName = $"back({id_generate}).txt";
 
-            string asciiArtFilePath = Path.Combine(AdresseFile.FileDirection, "Assets\\Sprites\\Pokemon\\", asciiArtFileName);
-
-            if (File.Exists(asciiArtFilePath))
-            {
-                asciiArt = File.ReadAllText(asciiArtFilePath);
-                string[] temp = asciiArt.Split('\n');
-                width = temp[0].Length;
-            }
-            else
-            {
-                Console.WriteLine($"Sprite ASCII non trouve pour le Pokemon avec l'ID {id_generate}");
-            }
+            asciiArt = GetSprite(asciiArtFileName, true);
+            asciiArtBack = GetSprite(asciiArtBackFileName, false);
 
 
             ColorForegroundCheck();
@@ -576,20 +569,12 @@ namespace pokemonConsole
             }
 
             // Sprite
-            string asciiArtFileName = $"ascii-art ({id}).txt";
+                        string asciiArtFileName = $"ascii-art ({id}).txt";
+            string asciiArtBackFileName = $"back({id}).txt";
 
-            string asciiArtFilePath = Path.Combine(AdresseFile.FileDirection, "Assets\\Sprites\\Pokemon\\", asciiArtFileName);
+            asciiArt = GetSprite(asciiArtFileName, true);
+            asciiArtBack = GetSprite(asciiArtBackFileName, false);
 
-            if (File.Exists(asciiArtFilePath))
-            {
-                asciiArt = File.ReadAllText(asciiArtFilePath);
-                string[] temp2 = asciiArt.Split('\n');
-                width = temp2[0].Length;
-            }
-            else
-            {
-                Console.WriteLine($"Sprite ASCII non trouve pour le Pokemon avec l'ID {id}");
-            }
 
 
             ColorForegroundCheck();
@@ -929,21 +914,14 @@ namespace pokemonConsole
                 }
 
                 // Sprite
-                string asciiArtFileName = $"ascii-art ({id}).txt";
+                
+            string asciiArtFileName = $"ascii-art ({id}).txt";
+            string asciiArtBackFileName = $"back({id}).txt";
 
-                string asciiArtFilePath = Path.Combine(AdresseFile.FileDirection, "Assets\\Sprites\\Pokemon\\", asciiArtFileName);
+            asciiArt = GetSprite(asciiArtFileName, true);
+            asciiArtBack = GetSprite(asciiArtBackFileName, false);
 
 
-                if (File.Exists(asciiArtFilePath))
-                {
-                    asciiArt = File.ReadAllText(asciiArtFilePath);
-                    string[] temp2 = asciiArt.Split('\n');
-                    width = temp2[0].Length;
-                }
-                else
-                {
-                    Console.WriteLine($"Sprite ASCII non trouve pour le Pokemon avec l'ID {id}");
-                }
 
                 this.listType[0] = colonnes[2];
                 if (colonnes[3] != "NONE")
@@ -1286,6 +1264,31 @@ namespace pokemonConsole
                 }
             }
         }
+
+
+
+
+        private string GetSprite(string filedirection, bool isnotBack) {
+
+string returnValue = "";
+
+filedirection =  Path.Combine(AdresseFile.FileDirection,"Assets\\Sprites\\Pokemon", filedirection);
+
+            if (File.Exists(filedirection))
+            {
+                returnValue = File.ReadAllText(filedirection);
+                string[] temp = returnValue.Split('\n');
+                if(isnotBack)
+                {
+
+                    this.width = temp[0].Length;
+                }
+                else
+                {
+                    this.widthBack = temp[0].Length;
+                }
+            }
+            return returnValue;            }
 
 
         private void ColorForegroundCheck()

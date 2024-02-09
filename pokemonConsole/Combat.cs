@@ -597,7 +597,10 @@ namespace pokemonConsole
         static public void PrintPokemon(Pokemon pokemon, Pokemon pokemonAdverse)
         {
             // Pokemon Adverse
-            pokemonWidth = pokemonAdverse.width;
+            if (pokemonAdverse.width >= pokemon.widthBack + 11) pokemonWidth = pokemonAdverse.width;
+            else pokemonWidth = pokemon.widthBack + 11;
+
+
             int offsetPokemon = pokemonWidth - 11;
 
             Console.Clear();
@@ -624,7 +627,13 @@ namespace pokemonConsole
 
 
             // Pokemon
-            Console.SetCursorPosition(Console.CursorLeft + offsetPokemon, Console.CursorTop + 3);
+
+            Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop + 3);
+            Console.ForegroundColor = pokemon.color;
+            Console.WriteLine(pokemon.asciiArtBack);
+            Console.ForegroundColor = ConsoleColor.White;
+
+            Console.SetCursorPosition(Console.CursorLeft + offsetPokemon, Console.CursorTop - 5);
             for (int i = pokemon.name.Length; i < 10; i++)
             {
                 Console.Write(' ');
