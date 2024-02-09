@@ -1,6 +1,12 @@
 Player :
-Player,44563,8,4,chen.txt, ,
-0
+Player,44563,10,2,bourg_palette.txt, ,1
+1
+2
+33,35,35
+45,40,40
+1,AAAAAAAAAA,44563,Player,5,135,20
+10,0,6,0,15,0,8,0,6,0
+OK,False,False
 0
 Rival :
 Rival

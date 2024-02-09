@@ -21,7 +21,7 @@ namespace pokemonConsole
         private string actual_name;
         public List<string> listType = new List<string>();
         public string asciiArt { get; private set; }
-        public strong asciiArtBack {get, private set;}
+        public string asciiArtBack { get; private set; }
         public ConsoleColor color { get; private set; }
 
         public int idOT { get;  set; }
@@ -392,10 +392,10 @@ public int widthBack {get; private set;}
 
             // Sprite
             string asciiArtFileName = $"ascii-art ({id_generate}).txt";
-            string asciiArtBackFileName = $"{}";
+            string asciiArtBackFileName = $"back({id_generate}).txt";
 
-            asciiArt = GetSprite(asciiArtFileName, ref width);
-            asciiArtBack = GetSprite(asciiArtBackFileName, ref width back);
+            asciiArt = GetSprite(asciiArtFileName, true);
+            asciiArtBack = GetSprite(asciiArtBackFileName, false);
 
 
             ColorForegroundCheck();
@@ -569,11 +569,11 @@ public int widthBack {get; private set;}
             }
 
             // Sprite
-                        string asciiArtFileName = $"ascii-art ({id_generate}).txt";
-            string asciiArtBackFileName = $"{}";
+                        string asciiArtFileName = $"ascii-art ({id}).txt";
+            string asciiArtBackFileName = $"back({id}).txt";
 
-            asciiArt = GetSprite(asciiArtFileName, ref width);
-            asciiArtBack = GetSprite(asciiArtBackFileName, ref widthBack);
+            asciiArt = GetSprite(asciiArtFileName, true);
+            asciiArtBack = GetSprite(asciiArtBackFileName, false);
 
 
 
@@ -915,11 +915,11 @@ public int widthBack {get; private set;}
 
                 // Sprite
                 
-            string asciiArtFileName = $"ascii-art ({id_generate}).txt";
-            string asciiArtBackFileName = $"{}";
+            string asciiArtFileName = $"ascii-art ({id}).txt";
+            string asciiArtBackFileName = $"back({id}).txt";
 
-            asciiArt = GetSprite(asciiArtFileName, ref width);
-            asciiArtBack = GetSprite(asciiArtBackFileName, ref width back);
+            asciiArt = GetSprite(asciiArtFileName, true);
+            asciiArtBack = GetSprite(asciiArtBackFileName, false);
 
 
 
@@ -1268,17 +1268,25 @@ public int widthBack {get; private set;}
 
 
 
-        private string GetSprite(string filedirection, ref int width) {
+        private string GetSprite(string filedirection, bool isnotBack) {
 
 string returnValue = "";
 
-filedirection =  Path.Combine(AdresseFile.FileDirection,"\\Assets\\Sprites\\Pokemon\\", filedirection);
+filedirection =  Path.Combine(AdresseFile.FileDirection,"Assets\\Sprites\\Pokemon", filedirection);
 
-            if (File.Exists(fildirection))
+            if (File.Exists(filedirection))
             {
                 returnValue = File.ReadAllText(filedirection);
                 string[] temp = returnValue.Split('\n');
-                width = temp[0].Length;
+                if(isnotBack)
+                {
+
+                    this.width = temp[0].Length;
+                }
+                else
+                {
+                    this.widthBack = temp[0].Length;
+                }
             }
             return returnValue;            }
 
