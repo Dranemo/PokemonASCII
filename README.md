@@ -2,7 +2,7 @@
 
 ## Projet réalisé en deux semaines dans la cadre de mes études au [Gaming Campus](https://gamingcampus.fr).
 ### Projet réalisé en C# en console.
-### Acuellement non continué.
+### *Acuellement non continué.*
 
 
 Le projet recréé une petite partie du jeu Pokemon Rouge et Bleu initialement sorti en 1998 par GameFreak.
