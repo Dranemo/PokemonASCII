@@ -31,7 +31,7 @@ La ville de Bourg-Palette ainsi que la Route 1 sont inclus dans le jeu. L'introd
 
 * Système de combat très similaire à celui présent dans la première génération des jeux Pokémon.
  * Formule de dégats issue des jeux.[^1]
- * Formule de capture issue des jeux.
+ * Formule de capture issue des jeux.[^2]
  * Changement de Pokémon possibles pendant notre tour et à la mort de notre Pokémon.
  * Utilisation d'objets possible.
 * Système de Pokémon similaire aux jeux originaux.
@@ -65,5 +65,6 @@ Dans le fichier Program.cs, trouver la classe "AdresseFile" et le string "FileDi
 
 
 [^1]: [Formule de dégats utilisée](https://www.pokebip.com/page/jeuxvideo/guide_tactique_strategie_pokemon/formules_mathematiques)
+[^2]: [Formule de capture utilisée](https://www.pokepedia.fr/Capture_de_Pokémon)
 [^3]: [Sprites de face](https://www.pokencyclopedia.info/fr/index.php?id=sprites/gen1/spr_red-blue_gb) [Sprites de dos](https://www.pokencyclopedia.info/fr/index.php?id=sprites/gen1/spr-b_red-blue_gb)
 [^4]: [Musiques et sons](https://www.zophar.net/music/gameboy-gbs/pokemon-red)
