@@ -30,18 +30,18 @@ La ville de Bourg-Palette ainsi que la Route 1 sont inclus dans le jeu. L'introd
 ### Fonctionnalités spécifiques :
 
 * Système de combat très similaire à celui présent dans la première génération des jeux Pokémon.
- * Formule de dégats issue des jeux.[^1]
- * Formule de capture issue des jeux.[^2]
- * Changement de Pokémon possibles pendant notre tour et à la mort de notre Pokémon.
- * Utilisation d'objets possible.
+  * Formule de dégats issue des jeux.[^1]
+  * Formule de capture issue des jeux.[^2]
+  * Changement de Pokémon possibles pendant notre tour et à la mort de notre Pokémon.
+  * Utilisation d'objets possible.
 * Système de Pokémon similaire aux jeux originaux.
- * Génération de statistiques (DV) aléatoires.
- * Gain de statistiques pour chaque Pokémon mis KO (EV).
- * Gain d'experience et montée de niveau pour chaque pokemon mis KO.
- * Génération des attaques correspondant à leur liste d'apprentissage de la première génération.
- * Evolution par montée de niveau.
- * Apprentissage d'attaque par montée de niveau.
- * Sprite de face et de dos de la première génération.[^3]
+  * Génération de statistiques (DV) aléatoires.
+  * Gain de statistiques pour chaque Pokémon mis KO (EV).
+  * Gain d'experience et montée de niveau pour chaque pokemon mis KO.
+  * Génération des attaques correspondant à leur liste d'apprentissage de la première génération.
+  * Evolution par montée de niveau.
+  * Apprentissage d'attaque par montée de niveau.
+  * Sprite de face et de dos de la première génération.[^3]
 * Musiques et Sons de la première génération.[^4]
 
 
