@@ -50,6 +50,7 @@ La ville de Bourg-Palette ainsi que la Route 1 sont inclus dans le jeu. L'introd
 
 * Plantage lorsque l'on tente d'utiliser un objet sans avoir de Pokémon.
 * Problèmes d'affichage lors des combats avec tout qui se décale. 
+* Bug qui freeze le programme lorsque le joueur pousse le PNJ de la route 1 contre le mur car la fonction de mouvement du PNJ ne contient pas de vérif s'il y en a un disponible.
 
 ### Lancer le programme avec la solution :
 Dans le fichier Program.cs, trouver la classe "AdresseFile" et le string "FileDirection" en bas du fichier, et modifier l'adresse du fichier GameFiles.
