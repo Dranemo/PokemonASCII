@@ -5,7 +5,7 @@
 ### *Acuellement non continué.*
 
 
-Le projet recréé une petite partie du jeu Pokemon Rouge et Bleu initialement sorti en 1998 par GameFreak.
+Le projet recrée une petite partie du jeu Pokemon Rouge et Bleu initialement sorti en 1998 par GameFreak.
 La ville de Bourg-Palette ainsi que la Route 1 sont inclus dans le jeu. L'introduction du professeur Chen est également présente.
 
 ### Bourg-Palette :
