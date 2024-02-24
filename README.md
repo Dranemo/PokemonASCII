@@ -11,7 +11,7 @@ La ville de Bourg-Palette ainsi que la Route 1 sont inclus dans le jeu. L'introd
 ### Bourg-Palette :
 
 * Soin des Pokémons dans la maison, en interragissant avec la mère du joueur représentée par un 'M'.
-* PC inutilisable, mais permettant de voir les pokemon capturés si on en a plus que 6.
+* PC inutilisable, mais permettant de voir les pokemon capturés si on en a plus de 6 dans son équipe.
 * Petite quête, en interragissant avec la soeur du rival dans la maison voisine, représentée par un 'N'.
 * Récupération du pokemon de départ dans la laboratoire du professeur Chen.
 * Combat contre le rival, représenté par un 'R' dans le laboratoire du professeur Chen.
@@ -32,7 +32,7 @@ La ville de Bourg-Palette ainsi que la Route 1 sont inclus dans le jeu. L'introd
 * Système de combat très similaire à celui présent dans la première génération des jeux Pokémon.
   * Formule de dégats issue des jeux.[^1]
   * Formule de capture issue des jeux.[^2]
-  * Changement de Pokémon possibles pendant notre tour et à la mort de notre Pokémon.
+  * Changement de Pokémon possibles pendant le tour du joueur et à la mort de son Pokémon.
   * Utilisation d'objets possible.
 * Système de Pokémon similaire aux jeux originaux.
   * Génération de statistiques (DV) aléatoires.
