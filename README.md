@@ -1,8 +1,17 @@
 # Pokemon Version ASCII
 
-## Projet réalisé en deux semaines dans la cadre de mes études au [Gaming Campus](https://gamingcampus.fr).
+## Table of Content
+
+1. [Français](#Francais)
+2. [Anglais](#Anglais)  
+
+
+## Français <a name="Francais"></a>
+
+### Projet réalisé en deux semaines dans la cadre de mes études au [Gaming Campus](https://gamingcampus.fr).
 ### Projet réalisé en C# en console.
-### *Acuellement non continué.*
+### Francais uniquement
+### *Actuellement non continué.*
 
 
 Le projet recrée une petite partie du jeu Pokemon Rouge et Bleu initialement sorti en 1998 par GameFreak.
@@ -41,8 +50,8 @@ La ville de Bourg-Palette ainsi que la Route 1 sont inclus dans le jeu. L'introd
   * Génération des attaques correspondant à leur liste d'apprentissage de la première génération.
   * Evolution par montée de niveau.
   * Apprentissage d'attaque par montée de niveau.
-  * Sprite de face et de dos de la première génération.[^3]
-* Musiques et Sons de la première génération.[^4]
+  * Sprite de face[^3] et de dos[^4] de la première génération.
+* Musiques et Sons de la première génération.[^5]
 
 
 
@@ -65,7 +74,82 @@ Dans le fichier Program.cs, trouver la classe "AdresseFile" et le string "FileDi
 ### La license Pokemon, les sprites, les musiques, les sons et l'UI utilisés dans ce projet appartiennent à Nintendo et à GameFreak Compagny.
 
 
-[^1]: [Formule de dégats utilisée](https://www.pokebip.com/page/jeuxvideo/guide_tactique_strategie_pokemon/formules_mathematiques)
-[^2]: [Formule de capture utilisée](https://www.pokepedia.fr/Capture_de_Pokémon)
-[^3]: [Sprites de face](https://www.pokencyclopedia.info/fr/index.php?id=sprites/gen1/spr_red-blue_gb) [Sprites de dos](https://www.pokencyclopedia.info/fr/index.php?id=sprites/gen1/spr-b_red-blue_gb)
-[^4]: [Musiques et sons](https://www.zophar.net/music/gameboy-gbs/pokemon-red)
+
+
+
+
+
+## Anglais <a name="Anglais"></a>
+
+### Project completed in two weeks as part of my studies at [Gaming Campus](https://gamingcampus.fr).
+### Project implemented in C# console application.
+### Only in french
+### *Currently not continued.*
+
+The project recreates a small part of the Pokemon Red and Blue game originally released in 1998 by GameFreak.
+Pallet Town and Route 1 are included in the game. Professor Oak's introduction is also present.
+
+### Pallet Town:
+
+* Healing of Pokemon in the house by interacting with the player's mother represented by an 'M'.
+* PC is unusable but allows viewing of captured Pokemon if the player has more than 6 in their team.
+* Small quest by interacting with the rival's sister in the neighboring house, represented by an 'N'.
+* Obtaining the starter Pokemon in Professor Oak's laboratory.
+* Battle against the rival, represented by an 'R' in Professor Oak's laboratory.
+
+### Route 1:
+
+* Random encounter of wild Pokemon among the first 151.
+* NPC giving a potion to the player if interacted with.
+
+### Introduction:
+
+* Ability to name the player and the rival.
+
+### Specific Features:
+
+* Combat system very similar to the first generation of Pokemon games.
+  * Damage formula from the games.[^1]
+  * Catch rate formula from the games.[^2]
+  * Switching Pokemon possible during the player's turn and when their Pokemon faints.
+  * Use of items is possible.
+* Pokemon system similar to the original games.
+  * Generation of random statistics (DV).
+  * Stat gain for each Pokemon fainted (EV).
+  * Experience gain and level-up for each Pokemon knocked out.
+  * Generation of attacks corresponding to their first-generation movepool.
+  * Evolution by level-up.
+  * Learning attacks by level-up.
+  * Front sprite[^3] and back sprite[^4] from the first generation.
+* Music and sounds from the first generation.[^5]
+
+### Known Bugs (due to time constraints):
+
+* Crash when trying to use an item without having a Pokemon.
+* Display issues during battles with everything shifting.
+* Bug that freezes the program when the player pushes the NPC on Route 1 against the wall because the NPC's movement function lacks a check if there is an obstacle.
+
+### Run the program with the solution:
+In the Program.cs file, find the "AddressFile" class and the "FileDirection" string at the bottom of the file, and modify the file's address in GameFiles.
+
+### Project completed by:
+
+* Caillot Yanaël: [LinkedIn](https://www.linkedin.com/in/ycaillot/) [GitHub](https://github.com/Dranemo)
+* Guellaf Melvin: [LinkedIn](https://www.linkedin.com/in/melvin-guellaff-353628202/) [GitHub](https://github.com/MGuellaf)
+* Gathelier Axel: [LinkedIn](https://www.linkedin.com/in/axel-gathelier-13198b252/) [GitHub](https://github.com/GolfOcean334)
+
+### The Pokemon license, sprites, music, sounds, and UI used in this project belong to Nintendo and GameFreak Company.
+
+
+
+
+
+
+
+
+
+[^1]: [Source](https://www.pokebip.com/page/jeuxvideo/guide_tactique_strategie_pokemon/formules_mathematiques)
+[^2]: [Source](https://www.pokepedia.fr/Capture_de_Pokémon)
+[^3]: [Source](https://www.pokencyclopedia.info/fr/index.php?id=sprites/gen1/spr_red-blue_gb) 
+[^4]: [Source](https://www.pokencyclopedia.info/fr/index.php?id=sprites/gen1/spr-b_red-blue_gb)
+[^5]: [Source](https://www.zophar.net/music/gameboy-gbs/pokemon-red)
