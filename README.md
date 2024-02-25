@@ -3,15 +3,15 @@
 ## Table of Content
 
 1. [Français](#Francais)
-   1. [Fonctionnalités de base par zone](FoncBaseFr)
+   1. [Fonctionnalités de base par zone](#FoncBaseFr)
    2. [Fonctionnalités spécifiques](#FoncSpeFr)
    3. [Bug connus](#GlitchFr)
    4. [Lancer le programme avec la solution](#RunFr)
 2. [Anglais](#Anglais)
-   1. [Basic Features per zone](FoncBaseEn)
-   2. [Specific Features](FoncSpeEn)
-   3. [Known Glitches](GlitchEn)
-   4. [Run program using the solution](#RunEn)
+   1. [Basic Features per zone](#FoncBaseEn)
+   2. [Specific Features](#FoncSpeEn)
+   3. [Known Glitches](#GlitchEn)
+   4. [Run program using the solution](##RunEn)
 
 
 ## Français <a name="Francais"></a>
