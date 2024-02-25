@@ -3,10 +3,18 @@
 ## Table of Content
 
 1. [Français](#Francais)
-2. [Anglais](#Anglais)  
+   1. [Fonctionnalités de base par zone](FoncBaseFr)
+   2. [Fonctionnalités spécifiques](#FoncSpeFr)
+   3. [Bug connus](#GlitchFr)
+   4. [Lancer le programme avec la solution](#RunFr)
+2. [Anglais](#Anglais)
+   1. [Basic Features](FoncBaseEn)
+   2. [Specific Features](FoncSpeEn)
+   3. [Known Glitches](GlitchEn)
+   4. [Run program using the solution](#RunEn)
 
 
-## Français <a name="Francais"></a>
+## Français <a name="Francais"><\a>
 
 ### Projet réalisé en deux semaines dans la cadre de mes études au [Gaming Campus](https://gamingcampus.fr).
 ### Projet réalisé en C# en console.
@@ -17,7 +25,7 @@
 Le projet recrée une petite partie du jeu Pokemon Rouge et Bleu initialement sorti en 1998 par GameFreak.
 La ville de Bourg-Palette ainsi que la Route 1 sont inclus dans le jeu. L'introduction du professeur Chen est également présente.
 
-### Bourg-Palette :
+### Bourg-Palette : <a name="FoncBaseFr"><\a>
 
 * Soin des Pokémons dans la maison, en interragissant avec la mère du joueur représentée par un 'M'.
 * PC inutilisable, mais permettant de voir les pokemon capturés si on en a plus de 6 dans son équipe.
@@ -36,7 +44,7 @@ La ville de Bourg-Palette ainsi que la Route 1 sont inclus dans le jeu. L'introd
 
 
 
-### Fonctionnalités spécifiques :
+### Fonctionnalités spécifiques : <a name="FoncSpeFr"><\a>
 
 * Système de combat très similaire à celui présent dans la première génération des jeux Pokémon.
   * Formule de dégats issue des jeux.[^1]
@@ -55,13 +63,13 @@ La ville de Bourg-Palette ainsi que la Route 1 sont inclus dans le jeu. L'introd
 
 
 
-### Bug connus (issus d'un manque de temps) : 
+### Bug connus (issus d'un manque de temps) : <a name="GlitchFr"><\a>
 
 * Plantage lorsque l'on tente d'utiliser un objet sans avoir de Pokémon.
 * Problèmes d'affichage lors des combats avec tout qui se décale. 
 * Bug qui freeze le programme lorsque le joueur pousse le PNJ de la route 1 contre le mur car la fonction de mouvement du PNJ ne contient pas de vérif s'il y en a un disponible.
 
-### Lancer le programme avec la solution :
+### Lancer le programme avec la solution : <a name="RunFr"><\a>
 Dans le fichier Program.cs, trouver la classe "AdresseFile" et le string "FileDirection" en bas du fichier, et modifier l'adresse du fichier GameFiles.
 
 
@@ -79,7 +87,7 @@ Dans le fichier Program.cs, trouver la classe "AdresseFile" et le string "FileDi
 
 
 
-## Anglais <a name="Anglais"></a>
+## Anglais <a name="Anglais"><\a>
 
 ### Project completed in two weeks as part of my studies at [Gaming Campus](https://gamingcampus.fr).
 ### Project implemented in C# console application.
@@ -89,7 +97,7 @@ Dans le fichier Program.cs, trouver la classe "AdresseFile" et le string "FileDi
 The project recreates a small part of the Pokemon Red and Blue game originally released in 1998 by GameFreak.
 Pallet Town and Route 1 are included in the game. Professor Oak's introduction is also present.
 
-### Pallet Town:
+### Pallet Town: <a name="FoncBaseEn"><\a>
 
 * Healing of Pokemon in the house by interacting with the player's mother represented by an 'M'.
 * PC is unusable but allows viewing of captured Pokemon if the player has more than 6 in their team.
@@ -106,7 +114,7 @@ Pallet Town and Route 1 are included in the game. Professor Oak's introduction i
 
 * Ability to name the player and the rival.
 
-### Specific Features:
+### Specific Features: <a name="FoncSpeEn"><\a>
 
 * Combat system very similar to the first generation of Pokemon games.
   * Damage formula from the games.[^1]
@@ -123,13 +131,13 @@ Pallet Town and Route 1 are included in the game. Professor Oak's introduction i
   * Front sprite[^3] and back sprite[^4] from the first generation.
 * Music and sounds from the first generation.[^5]
 
-### Known Bugs (due to time constraints):
+### Known Glitches (due to time constraints): <a name="GlitchEn"><\a>
 
 * Crash when trying to use an item without having a Pokemon.
 * Display issues during battles with everything shifting.
 * Bug that freezes the program when the player pushes the NPC on Route 1 against the wall because the NPC's movement function lacks a check if there is an obstacle.
 
-### Run the program with the solution:
+### Run the program with the solution: <a name="RunEn"><\a>
 In the Program.cs file, find the "AddressFile" class and the "FileDirection" string at the bottom of the file, and modify the file's address in GameFiles.
 
 ### Project completed by:
