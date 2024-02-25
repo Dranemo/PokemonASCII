@@ -47,7 +47,7 @@ La ville de Bourg-Palette ainsi que la Route 1 sont inclus dans le jeu. L'introd
 
 
 
-### Fonctionnalités spécifiques : <a name="FoncSpeFr"></a>
+### Fonctionnalités spécifiques <a name="FoncSpeFr"></a>
 
 * Système de combat très similaire à celui présent dans la première génération des jeux Pokémon.
   * Formule de dégats issue des jeux.[^1]
@@ -66,13 +66,13 @@ La ville de Bourg-Palette ainsi que la Route 1 sont inclus dans le jeu. L'introd
 
 
 
-### Bug connus (issus d'un manque de temps) : <a name="GlitchFr"></a>
+### Bug connus (issus d'un manque de temps) <a name="GlitchFr"></a>
 
 * Plantage lorsque l'on tente d'utiliser un objet sans avoir de Pokémon.
 * Problèmes d'affichage lors des combats avec tout qui se décale. 
 * Bug qui freeze le programme lorsque le joueur pousse le PNJ de la route 1 contre le mur car la fonction de mouvement du PNJ ne contient pas de vérif s'il y en a un disponible.
 
-### Lancer le programme avec la solution : <a name="RunFr"></a>
+### Lancer le programme avec la solution <a name="RunFr"></a>
 Dans le fichier Program.cs, trouver la classe "AdresseFile" et le string "FileDirection" en bas du fichier, et modifier l'adresse du fichier GameFiles.
 
 
@@ -96,7 +96,7 @@ The project recreates a small part of the Pokemon Red and Blue game originally r
 Pallet Town and Route 1 are included in the game. Professor Oak's introduction is also present.
 
 
-### Basic Features per zone: <a name="FoncBaseEn"></a>
+### Basic Features per zone <a name="FoncBaseEn"></a>
 
 1. Pallet Town: 
 
@@ -117,7 +117,7 @@ Pallet Town and Route 1 are included in the game. Professor Oak's introduction i
   
 
 
-### Specific Features: <a name="FoncSpeEn"></a>
+### Specific Features <a name="FoncSpeEn"></a>
 
 * Combat system very similar to the first generation of Pokemon games.
   * Damage formula from the games.[^1]
@@ -134,13 +134,13 @@ Pallet Town and Route 1 are included in the game. Professor Oak's introduction i
   * Front sprite[^3] and back sprite[^4] from the first generation.
 * Music and sounds from the first generation.[^5]
 
-### Known Glitches (due to time constraints): <a name="GlitchEn"></a>
+### Known Glitches (due to time constraints) <a name="GlitchEn"></a>
 
 * Crash when trying to use an item without having a Pokemon.
 * Display issues during battles with everything shifting.
 * Bug that freezes the program when the player pushes the NPC on Route 1 against the wall because the NPC's movement function lacks a check if there is an obstacle.
 
-### Run the program with the solution: <a name="RunEn"></a>
+### Run the program with the solution <a name="RunEn"></a>
 In the Program.cs file, find the "AddressFile" class and the "FileDirection" string at the bottom of the file, and modify the file's address in GameFiles.
 
 
@@ -150,7 +150,7 @@ In the Program.cs file, find the "AddressFile" class and the "FileDirection" str
 
 
 
-## Credits :
+## Credits
 
 * Caillot Yanaël : [LinkedIn](https://www.linkedin.com/in/ycaillot/) [GitHub](https://github.com/Dranemo)
 * Guellaf Melvin : [LinkedIn](https://www.linkedin.com/in/melvin-guellaff-353628202/) [GitHub](https://github.com/MGuellaf)
