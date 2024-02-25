@@ -7,7 +7,7 @@
    2. [Fonctionnalités spécifiques](#FoncSpeFr)
    3. [Bug connus](#GlitchFr)
    4. [Lancer le programme avec la solution](#RunFr)
-2. [Anglais](#Anglais)
+2. [English](#Anglais)
    1. [Basic Features per zone](#FoncBaseEn)
    2. [Specific Features](#FoncSpeEn)
    3. [Known Glitches](#GlitchEn)
@@ -84,7 +84,7 @@ Dans le fichier Program.cs, trouver la classe "AdresseFile" et le string "FileDi
 
 
 
-## Anglais <a name="Anglais"></a>
+## English <a name="Anglais"></a>
 
 ***Project completed in two weeks as part of my studies at [Gaming Campus](https://gamingcampus.fr).***  
 
