@@ -1,5 +1,10 @@
 # Pokemon Version ASCII
 
+[Download Link]()
+
+
+
+
 ## Table of Content
 
 1. [Français](#Francais)
@@ -15,6 +20,8 @@
 3. [Credits](#Credits)
 
 
+
+
 ## Français <a name="Francais"></a>
 
 ***Projet réalisé en deux semaines dans la cadre de mes études au [Gaming Campus](https://gamingcampus.fr) en Fevrier 2024.***  
@@ -25,6 +32,8 @@ Francais uniquement
 
 Le projet recrée une petite partie du jeu Pokemon Rouge et Bleu initialement sorti en 1998 par GameFreak.  
 La ville de Bourg-Palette ainsi que la Route 1 sont inclus dans le jeu. L'introduction du professeur Chen est également présente.  
+
+
 
 ### Fonctionnalités par zone <a name="FoncBaseFr"></a>
 
@@ -49,12 +58,12 @@ La ville de Bourg-Palette ainsi que la Route 1 sont inclus dans le jeu. L'introd
 
 ### Fonctionnalités spécifiques <a name="FoncSpeFr"></a>
 
-* Système de combat très similaire à celui présent dans la première génération des jeux Pokémon.
+- Système de combat très similaire à celui présent dans la première génération des jeux Pokémon.
   * Formule de dégats issue des jeux.[^1]
   * Formule de capture issue des jeux.[^2]
   * Changement de Pokémon possibles pendant le tour du joueur et à la mort de son Pokémon.
   * Utilisation d'objets possible.
-* Système de Pokémon similaire aux jeux originaux.
+- Système de Pokémon similaire aux jeux originaux.
   * Génération de statistiques (DV) aléatoires.
   * Gain de statistiques pour chaque Pokémon mis KO (EV).
   * Gain d'experience et montée de niveau pour chaque pokemon mis KO.
@@ -62,7 +71,7 @@ La ville de Bourg-Palette ainsi que la Route 1 sont inclus dans le jeu. L'introd
   * Evolution par montée de niveau.
   * Apprentissage d'attaque par montée de niveau.
   * Sprite de face[^3] et de dos[^4] de la première génération.
-* Musiques et Sons de la première génération.[^5]
+- Musiques et Sons de la première génération.[^5]
 
 
 
@@ -72,14 +81,14 @@ La ville de Bourg-Palette ainsi que la Route 1 sont inclus dans le jeu. L'introd
 * Problèmes d'affichage lors des combats avec tout qui se décale. 
 * Bug qui freeze le programme lorsque le joueur pousse le PNJ de la route 1 contre le mur car la fonction de mouvement du PNJ ne contient pas de vérif s'il y en a un disponible.
 
+
+
 ### Lancer le programme avec la solution <a name="RunFr"></a>
 Dans le fichier Program.cs, trouver la classe "AdresseFile" et le string "FileDirection" en bas du fichier, et modifier l'adresse du fichier GameFiles.
 
 
+
 ### La license Pokemon, les sprites, les musiques, les sons et l'UI utilisés dans ce projet appartiennent à Nintendo et à GameFreak Compagny.  
-
-
-
 
 
 
@@ -94,6 +103,7 @@ Only in french
 
 The project recreates a small part of the Pokemon Red and Blue game originally released in 1998 by GameFreak.  
 Pallet Town and Route 1 are included in the game. Professor Oak's introduction is also present.
+
 
 
 ### Basic Features per zone <a name="FoncBaseEn"></a>
@@ -119,12 +129,12 @@ Pallet Town and Route 1 are included in the game. Professor Oak's introduction i
 
 ### Specific Features <a name="FoncSpeEn"></a>
 
-* Combat system very similar to the first generation of Pokemon games.
+- Combat system very similar to the first generation of Pokemon games.
   * Damage formula from the games.[^1]
   * Catch rate formula from the games.[^2]
   * Switching Pokemon possible during the player's turn and when their Pokemon faints.
   * Use of items is possible.
-* Pokemon system similar to the original games.
+- Pokemon system similar to the original games.
   * Generation of random statistics (DV).
   * Stat gain for each Pokemon fainted (EV).
   * Experience gain and level-up for each Pokemon knocked out.
@@ -132,7 +142,9 @@ Pallet Town and Route 1 are included in the game. Professor Oak's introduction i
   * Evolution by level-up.
   * Learning attacks by level-up.
   * Front sprite[^3] and back sprite[^4] from the first generation.
-* Music and sounds from the first generation.[^5]
+- Music and sounds from the first generation.[^5]
+
+
 
 ### Known Glitches (due to time constraints) <a name="GlitchEn"></a>
 
@@ -140,8 +152,11 @@ Pallet Town and Route 1 are included in the game. Professor Oak's introduction i
 * Display issues during battles with everything shifting.
 * Bug that freezes the program when the player pushes the NPC on Route 1 against the wall because the NPC's movement function lacks a check if there is an obstacle.
 
+
+
 ### Run the program with the solution <a name="RunEn"></a>
 In the Program.cs file, find the "AddressFile" class and the "FileDirection" string at the bottom of the file, and modify the file's address in GameFiles.
+
 
 
 ### The Pokemon license, sprites, music, sounds, and UI used in this project belong to Nintendo and GameFreak Company.
@@ -149,16 +164,11 @@ In the Program.cs file, find the "AddressFile" class and the "FileDirection" str
 
 
 
-
 ## Credits
 
-* Caillot Yanaël : [LinkedIn](https://www.linkedin.com/in/ycaillot/) [GitHub](https://github.com/Dranemo)
-* Guellaf Melvin : [LinkedIn](https://www.linkedin.com/in/melvin-guellaff-353628202/) [GitHub](https://github.com/MGuellaf)
-* Gathelier Axel : [LinkedIn](https://www.linkedin.com/in/axel-gathelier-13198b252/) [GitHub](https://github.com/GolfOcean334)
-
-
-
-
+* Caillot Yanaël - [LinkedIn](https://www.linkedin.com/in/ycaillot/) - [GitHub](https://github.com/Dranemo)
+* Guellaf Melvin - [LinkedIn](https://www.linkedin.com/in/melvin-guellaff-353628202/) - [GitHub](https://github.com/MGuellaf)
+* Gathelier Axel - [LinkedIn](https://www.linkedin.com/in/axel-gathelier-13198b252/) - [GitHub](https://github.com/GolfOcean334)
 [^1]: [Source](https://www.pokebip.com/page/jeuxvideo/guide_tactique_strategie_pokemon/formules_mathematiques)
 [^2]: [Source](https://www.pokepedia.fr/Capture_de_Pokémon)
 [^3]: [Source](https://www.pokencyclopedia.info/fr/index.php?id=sprites/gen1/spr_red-blue_gb) 
