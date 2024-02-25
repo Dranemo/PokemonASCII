@@ -17,7 +17,7 @@
 
 ## Français <a name="Francais"></a>
 
-***Projet réalisé en deux semaines dans la cadre de mes études au [Gaming Campus](https://gamingcampus.fr).***  
+***Projet réalisé en deux semaines dans la cadre de mes études au [Gaming Campus](https://gamingcampus.fr) en Fevrier 2024.***  
 
 Projet réalisé en **C# en console**.  
 Francais uniquement  
@@ -86,7 +86,7 @@ Dans le fichier Program.cs, trouver la classe "AdresseFile" et le string "FileDi
 
 ## English <a name="Anglais"></a>
 
-***Project completed in two weeks as part of my studies at [Gaming Campus](https://gamingcampus.fr).***  
+***Project completed in two weeks as part of my studies at [Gaming Campus](https://gamingcampus.fr) in February 2024.***  
 
 Project implemented in **C# console application.**  
 Only in french  
