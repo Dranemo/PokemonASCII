@@ -12,6 +12,7 @@
    2. [Specific Features](#FoncSpeEn)
    3. [Known Glitches](#GlitchEn)
    4. [Run program using the solution](##RunEn)
+3. [Credits](#Credits)
 
 
 ## Français <a name="Francais"></a>
@@ -74,12 +75,6 @@ La ville de Bourg-Palette ainsi que la Route 1 sont inclus dans le jeu. L'introd
 ### Lancer le programme avec la solution : <a name="RunFr"></a>
 Dans le fichier Program.cs, trouver la classe "AdresseFile" et le string "FileDirection" en bas du fichier, et modifier l'adresse du fichier GameFiles.
 
-
-### Projet réalisé par :
-
-* Caillot Yanaël : [LinkedIn](https://www.linkedin.com/in/ycaillot/) [GitHub](https://github.com/Dranemo)
-* Guellaf Melvin : [LinkedIn](https://www.linkedin.com/in/melvin-guellaff-353628202/) [GitHub](https://github.com/MGuellaf)
-* Gathelier Axel : [LinkedIn](https://www.linkedin.com/in/axel-gathelier-13198b252/) [GitHub](https://github.com/GolfOcean334)
 
 ### La license Pokemon, les sprites, les musiques, les sons et l'UI utilisés dans ce projet appartiennent à Nintendo et à GameFreak Compagny.  
 
@@ -148,11 +143,6 @@ Pallet Town and Route 1 are included in the game. Professor Oak's introduction i
 ### Run the program with the solution: <a name="RunEn"></a>
 In the Program.cs file, find the "AddressFile" class and the "FileDirection" string at the bottom of the file, and modify the file's address in GameFiles.
 
-### Project completed by:
-
-* Caillot Yanaël: [LinkedIn](https://www.linkedin.com/in/ycaillot/) [GitHub](https://github.com/Dranemo)
-* Guellaf Melvin: [LinkedIn](https://www.linkedin.com/in/melvin-guellaff-353628202/) [GitHub](https://github.com/MGuellaf)
-* Gathelier Axel: [LinkedIn](https://www.linkedin.com/in/axel-gathelier-13198b252/) [GitHub](https://github.com/GolfOcean334)
 
 ### The Pokemon license, sprites, music, sounds, and UI used in this project belong to Nintendo and GameFreak Company.
 
@@ -160,6 +150,11 @@ In the Program.cs file, find the "AddressFile" class and the "FileDirection" str
 
 
 
+## Credits :
+
+* Caillot Yanaël : [LinkedIn](https://www.linkedin.com/in/ycaillot/) [GitHub](https://github.com/Dranemo)
+* Guellaf Melvin : [LinkedIn](https://www.linkedin.com/in/melvin-guellaff-353628202/) [GitHub](https://github.com/MGuellaf)
+* Gathelier Axel : [LinkedIn](https://www.linkedin.com/in/axel-gathelier-13198b252/) [GitHub](https://github.com/GolfOcean334)
 
 
 
