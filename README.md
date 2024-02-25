@@ -8,7 +8,7 @@
    3. [Bug connus](#GlitchFr)
    4. [Lancer le programme avec la solution](#RunFr)
 2. [Anglais](#Anglais)
-   1. [Basic Features](FoncBaseEn)
+   1. [Basic Features per zone](FoncBaseEn)
    2. [Specific Features](FoncSpeEn)
    3. [Known Glitches](GlitchEn)
    4. [Run program using the solution](#RunEn)
@@ -16,31 +16,33 @@
 
 ## Français <a name="Francais"></a>
 
-### Projet réalisé en deux semaines dans la cadre de mes études au [Gaming Campus](https://gamingcampus.fr).
-### Projet réalisé en C# en console.
-### Francais uniquement
-### *Actuellement non continué.*
+***Projet réalisé en deux semaines dans la cadre de mes études au [Gaming Campus](https://gamingcampus.fr).***  
 
+Projet réalisé en **C# en console**.  
+Francais uniquement  
+*Actuellement non continué.*  
 
-Le projet recrée une petite partie du jeu Pokemon Rouge et Bleu initialement sorti en 1998 par GameFreak.
-La ville de Bourg-Palette ainsi que la Route 1 sont inclus dans le jeu. L'introduction du professeur Chen est également présente.
+Le projet recrée une petite partie du jeu Pokemon Rouge et Bleu initialement sorti en 1998 par GameFreak.  
+La ville de Bourg-Palette ainsi que la Route 1 sont inclus dans le jeu. L'introduction du professeur Chen est également présente.  
 
-### Bourg-Palette : <a name="FoncBaseFr"></a>
+### Fonctionnalités par zone <a name="FoncBaseFr"></a>
 
-* Soin des Pokémons dans la maison, en interragissant avec la mère du joueur représentée par un 'M'.
-* PC inutilisable, mais permettant de voir les pokemon capturés si on en a plus de 6 dans son équipe.
-* Petite quête, en interragissant avec la soeur du rival dans la maison voisine, représentée par un 'N'.
-* Récupération du pokemon de départ dans la laboratoire du professeur Chen.
-* Combat contre le rival, représenté par un 'R' dans le laboratoire du professeur Chen.
+1. Bourg-Palette : 
 
-### Route 1 :
+   * Soin des Pokémons dans la maison, en interragissant avec la mère du joueur représentée par un 'M'.
+   * PC inutilisable, mais permettant de voir les pokemon capturés si on en a plus de 6 dans son équipe.
+   * Petite quête, en interragissant avec la soeur du rival dans la maison voisine, représentée par un 'N'.
+   * Récupération du pokemon de départ dans la laboratoire du professeur Chen.
+   * Combat contre le rival, représenté par un 'R' dans le laboratoire du professeur Chen.
 
-* Rencontre aléatoire de pokemon sauvages parmis les 151 premiers.
-* PNJ donnant une potion au joueur si on interragit avec lui.
+2. Route 1 :
 
-### Introduction : 
+   * Rencontre aléatoire de pokemon sauvages parmis les 151 premiers.
+   * PNJ donnant une potion au joueur si on interragit avec lui.
 
-* Possibilité de nommer le joueur et le rival.
+3. Introduction : 
+
+   * Possibilité de nommer le joueur et le rival.
 
 
 
@@ -79,7 +81,7 @@ Dans le fichier Program.cs, trouver la classe "AdresseFile" et le string "FileDi
 * Guellaf Melvin : [LinkedIn](https://www.linkedin.com/in/melvin-guellaff-353628202/) [GitHub](https://github.com/MGuellaf)
 * Gathelier Axel : [LinkedIn](https://www.linkedin.com/in/axel-gathelier-13198b252/) [GitHub](https://github.com/GolfOcean334)
 
-### La license Pokemon, les sprites, les musiques, les sons et l'UI utilisés dans ce projet appartiennent à Nintendo et à GameFreak Compagny.
+### La license Pokemon, les sprites, les musiques, les sons et l'UI utilisés dans ce projet appartiennent à Nintendo et à GameFreak Compagny.  
 
 
 
@@ -89,30 +91,36 @@ Dans le fichier Program.cs, trouver la classe "AdresseFile" et le string "FileDi
 
 ## Anglais <a name="Anglais"></a>
 
-### Project completed in two weeks as part of my studies at [Gaming Campus](https://gamingcampus.fr).
-### Project implemented in C# console application.
-### Only in french
-### *Currently not continued.*
+***Project completed in two weeks as part of my studies at [Gaming Campus](https://gamingcampus.fr).***  
 
-The project recreates a small part of the Pokemon Red and Blue game originally released in 1998 by GameFreak.
+Project implemented in **C# console application.**  
+Only in french  
+*Currently not continued.*  
+
+The project recreates a small part of the Pokemon Red and Blue game originally released in 1998 by GameFreak.  
 Pallet Town and Route 1 are included in the game. Professor Oak's introduction is also present.
 
-### Pallet Town: <a name="FoncBaseEn"></a>
 
-* Healing of Pokemon in the house by interacting with the player's mother represented by an 'M'.
-* PC is unusable but allows viewing of captured Pokemon if the player has more than 6 in their team.
-* Small quest by interacting with the rival's sister in the neighboring house, represented by an 'N'.
-* Obtaining the starter Pokemon in Professor Oak's laboratory.
-* Battle against the rival, represented by an 'R' in Professor Oak's laboratory.
+### Basic Features per zone: <a name="FoncBaseEn"></a>
 
-### Route 1:
+1. Pallet Town: 
 
-* Random encounter of wild Pokemon among the first 151.
-* NPC giving a potion to the player if interacted with.
+   * Healing of Pokemon in the house by interacting with the player's mother represented by an 'M'.
+   * PC is unusable but allows viewing of captured Pokemon if the player has more than 6 in their team.
+   * Small quest by interacting with the rival's sister in the neighboring house, represented by an 'N'.
+   * Obtaining the starter Pokemon in Professor Oak's laboratory.
+   * Battle against the rival, represented by an 'R' in Professor Oak's laboratory.
 
-### Introduction:
+2. Route 1:
 
-* Ability to name the player and the rival.
+   * Random encounter of wild Pokemon among the first 151.
+   * NPC giving a potion to the player if interacted with.
+
+3. Introduction:
+
+   * Ability to name the player and the rival.
+  
+
 
 ### Specific Features: <a name="FoncSpeEn"></a>
 
