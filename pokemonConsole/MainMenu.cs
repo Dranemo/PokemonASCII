@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Media;
 using System.Text;
@@ -16,15 +17,19 @@ namespace pokemonConsole
         private static string quitGame = "QUITTER ";
         private static string logoMainMenuPokemon = "";
         private static string logoMainMenuAscii = "";
-        private static string pathLogoFile = AdresseFile.FileDirection + "Assets\\mainMenuLogo.txt";
+        private static string pathLogoFile = "";
 
+        private static string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
         static public void Start()
         {
-            Functions.playSound("main_menu.wav");
+            string soundFilePath = "main_menu.wav";
+            GlobalSettings.projectRoot = Path.GetFullPath(Path.Combine(baseDirectory, @"..\..\..\")+@"\GameFiles\");
+            Functions.playSound(soundFilePath);
             Player player = new Player();
             Rival rival = new Rival();
 
+            pathLogoFile = Path.Combine(GlobalSettings.projectRoot, "Assets", "mainMenuLogo.txt");
             using (StreamReader reader = new StreamReader(pathLogoFile))
             {
                 for (int i = 0; i < 7; i++)
@@ -141,9 +146,10 @@ namespace pokemonConsole
             Console.Clear();
 
             Console.WriteLine(newGame);
-            if (File.Exists(AdresseFile.FileDirection + "save.txt"))
+
+            if (File.Exists(GlobalSettings.projectRoot + "save.txt"))
             {
-                FileInfo fileInfo = new FileInfo(AdresseFile.FileDirection + "save.txt");
+                FileInfo fileInfo = new FileInfo(GlobalSettings.projectRoot + "save.txt");
               
                 if (fileInfo.Length != 0)
                 {

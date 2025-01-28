@@ -458,7 +458,7 @@ internal class Map
     private static void LoadMap(string filename)
     {
 
-        currentMapFileName = AdresseFile.FileDirection + "Assets\\Maps\\" + filename;
+        currentMapFileName = GlobalSettings.projectRoot + "Assets\\Maps\\" + filename;
 
         string[] lines = File.ReadAllLines(currentMapFileName);
 
@@ -758,7 +758,7 @@ internal class Map
 
     private static bool IsCurrentMap(string mapToCheck)
     {
-        string fullPathToCheck = AdresseFile.FileDirection + "Assets\\Maps\\" + mapToCheck;
+        string fullPathToCheck = GlobalSettings.projectRoot + "Assets\\Maps\\" + mapToCheck;
         return currentMapFileName.Equals(fullPathToCheck, StringComparison.OrdinalIgnoreCase);
     }
     private static bool IsInsideMap(int x, int y)

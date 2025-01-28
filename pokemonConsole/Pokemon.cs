@@ -82,7 +82,7 @@ namespace pokemonConsole
 
         public int tauxCapture {  get; private set; }
 
-        private string filePokemonCSV = AdresseFile.FileDirection + "CSV\\pokemon.csv";
+        private string filePokemonCSV = GlobalSettings.projectRoot + "CSV\\pokemon.csv";
         private string colorCSV;
 
         public int appartenant {  get; set; }
@@ -864,7 +864,7 @@ public int widthBack {get; private set;}
         public static string GetNom(int id)
         {
             string name = "";
-            using (StreamReader sr = new StreamReader(AdresseFile.FileDirection + "CSV\\pokemon.csv"))
+            using (StreamReader sr = new StreamReader(GlobalSettings.projectRoot + "CSV\\pokemon.csv"))
             {
                 string line;
                 bool pokemonFound = false;
@@ -1272,7 +1272,7 @@ public int widthBack {get; private set;}
 
 string returnValue = "";
 
-filedirection =  Path.Combine(AdresseFile.FileDirection,"Assets\\Sprites\\Pokemon", filedirection);
+filedirection =  Path.Combine(GlobalSettings.projectRoot,"Assets\\Sprites\\Pokemon", filedirection);
 
             if (File.Exists(filedirection))
             {
