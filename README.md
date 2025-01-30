@@ -2,6 +2,8 @@
 
 [Download Link](https://drive.google.com/file/d/1SpUeiWUTK-fc8AZHeVyPZnw_7FKH0WXw/view?usp=sharing)
 
+## In Order to launch the program (Windows 11)
+Please make the console fullscreen and zoom out a little before playing, otherwise it will crash.
 
 
 
