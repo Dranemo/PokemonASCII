@@ -12,13 +12,13 @@ namespace pokemonConsole
 {
     internal class Intro
     {
-        private static string asciiFileOak = AdresseFile.FileDirection + "Assets\\Sprites\\ascii-art_chen.txt";
-        private static string asciiFileBlue = AdresseFile.FileDirection + "Assets\\Sprites\\ascii-art_blue.txt";
-        private static string asciiFileRed = AdresseFile.FileDirection + "Assets\\Sprites\\ascii-art_red.txt";
-        private static string asciiFileMiddleBid = AdresseFile.FileDirection + "Assets\\Sprites\\ascii-art_middleBigRed.txt";
-        private static string asciiFileMiddleLittle = AdresseFile.FileDirection + "Assets\\Sprites\\ascii-art_middleLittleRed.txt";
-        private static string asciiFileLittleRed = AdresseFile.FileDirection + "Assets\\Sprites\\ascii-art_littleRed.txt";
-        private static string scriptOak = AdresseFile.FileDirection + "Scripts\\ScriptIntroChen.txt";
+        private static string asciiFileOak = GlobalSettings.projectRoot + "Assets\\Sprites\\ascii-art_chen.txt";
+        private static string asciiFileBlue = GlobalSettings.projectRoot + "Assets\\Sprites\\ascii-art_blue.txt";
+        private static string asciiFileRed = GlobalSettings.projectRoot + "Assets\\Sprites\\ascii-art_red.txt";
+        private static string asciiFileMiddleBid = GlobalSettings.projectRoot + "Assets\\Sprites\\ascii-art_middleBigRed.txt";
+        private static string asciiFileMiddleLittle = GlobalSettings.projectRoot + "Assets\\Sprites\\ascii-art_middleLittleRed.txt";
+        private static string asciiFileLittleRed = GlobalSettings.projectRoot + "Assets\\Sprites\\ascii-art_littleRed.txt";
+        private static string scriptOak = GlobalSettings.projectRoot + "Scripts\\ScriptIntroChen.txt";
 
         private static string asciiOak = "";
         private static string asciiBlue = "";

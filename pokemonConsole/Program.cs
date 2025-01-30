@@ -33,7 +33,7 @@ namespace Usefull
         }
         public static void playSound(string soundFile)
         {
-            SoundPlayer simpleSound = new SoundPlayer($"{AdresseFile.FileDirection}Musiques\\{soundFile}");
+            SoundPlayer simpleSound = new SoundPlayer(Path.Combine(GlobalSettings.projectRoot, "Musiques", soundFile));
             simpleSound.Play();
             currentMusicFileName= soundFile;
         }

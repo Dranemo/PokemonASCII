@@ -10,7 +10,7 @@ namespace pokemonConsole
 {
     internal class Save
     {
-        private static string filePath = AdresseFile.FileDirection + "save.txt";
+        private static string filePath = GlobalSettings.projectRoot + "save.txt";
 
 
         public static void Saving(Player player, Rival rival)

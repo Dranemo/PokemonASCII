@@ -30,7 +30,7 @@ namespace pokemonConsole
 
 
 
-        private string fileCSV = AdresseFile.FileDirection + "CSV\\capacites.csv";
+        private string fileCSV = GlobalSettings.projectRoot + "CSV\\capacites.csv";
 
         //lis le CSV
         public Capacity(int id_) 

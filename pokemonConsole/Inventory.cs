@@ -21,7 +21,7 @@ namespace pokemonConsole
 
         public int quantity;
 
-        private string fileCSV = AdresseFile.FileDirection + "CSV\\item.csv";
+        private string fileCSV = GlobalSettings.projectRoot + "CSV\\item.csv";
 
         public Item(int item_id, int quantity = 1)
         {
