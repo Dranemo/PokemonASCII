@@ -2,7 +2,7 @@
 
 [Download Link](https://drive.google.com/file/d/1SpUeiWUTK-fc8AZHeVyPZnw_7FKH0WXw/view?usp=sharing)
 
-## In Order to launch the program (Windows 11)
+## /!\ <ins>In Order to launch the program (Windows 11)</ins> /!\ 
 Please make the console fullscreen and zoom out a little before playing, otherwise it will crash.
 
 
@@ -82,6 +82,7 @@ La ville de Bourg-Palette ainsi que la Route 1 sont inclus dans le jeu. L'introd
 * Plantage lorsque l'on tente d'utiliser un objet sans avoir de Pokémon.
 * Problèmes d'affichage lors des combats avec tout qui se décale. 
 * Bug qui freeze le programme lorsque le joueur pousse le PNJ de la route 1 contre le mur car la fonction de mouvement du PNJ ne contient pas de vérif s'il y en a un disponible.
+* Plantage sur Windows 11 si la console est trop petite pour tout afficher
 
 
 
@@ -153,6 +154,7 @@ Pallet Town and Route 1 are included in the game. Professor Oak's introduction i
 * Crash when trying to use an item without having a Pokemon.
 * Display issues during battles with everything shifting.
 * Bug that freezes the program when the player pushes the NPC on Route 1 against the wall because the NPC's movement function lacks a check if there is an obstacle.
+* Crash in windows 11 if there isnt enough space to show everything.
 
 
 
