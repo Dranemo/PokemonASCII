@@ -25,8 +25,8 @@ namespace pokemonConsole
         static public void Start()
         {
             string soundFilePath = "main_menu.wav";
-            //GlobalSettings.projectRoot = Path.GetFullPath(Path.Combine(baseDirectory, @"..\..\..\")+@"\GameFiles\");
-            GlobalSettings.projectRoot = Path.GetFullPath("GameFiles/");
+            GlobalSettings.projectRoot = Path.GetFullPath(Path.Combine(baseDirectory, @"..\..\..\")+@"\GameFiles\"); // Disable this if you want to do a release
+            //GlobalSettings.projectRoot = Path.GetFullPath("GameFiles/"); // Enable this if you want to do a release
             Functions.playSound(soundFilePath);
             Player player = new Player();
             Rival rival = new Rival();
