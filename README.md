@@ -2,6 +2,9 @@
 
 [Download Link](https://drive.google.com/file/d/1SpUeiWUTK-fc8AZHeVyPZnw_7FKH0WXw/view?usp=sharing)
 
+
+## /!\ <ins>Pour lancer le programme (Windows 11)</ins> /!\ 
+Mettez la console en plein écran et dézoomez avant de lancer le jeu, sinon le programme va planter.  
 ## /!\ <ins>In Order to launch the program (Windows 11)</ins> /!\ 
 Please make the console fullscreen and zoom out a little before playing, otherwise it will crash.
 
@@ -91,7 +94,7 @@ Dans le fichier Program.cs, trouver la classe "AdresseFile" et le string "FileDi
 
 
 
-### La license Pokemon, les sprites, les musiques, les sons et l'UI utilisés dans ce projet appartiennent à Nintendo et à GameFreak Compagny.  
+### La license Pokemon, les sprites, les musiques, les sons et l'UI utilisés dans ce projet appartiennent à Nintendo et à GameFreak Company.  
 
 
 
