@@ -19,12 +19,14 @@ namespace pokemonConsole
         private static string logoMainMenuAscii = "";
         private static string pathLogoFile = "";
 
-        private static string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        private static string baseDirectory = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+
 
         static public void Start()
         {
             string soundFilePath = "main_menu.wav";
-            GlobalSettings.projectRoot = Path.GetFullPath(Path.Combine(baseDirectory, @"..\..\..\")+@"\GameFiles\");
+            //GlobalSettings.projectRoot = Path.GetFullPath(Path.Combine(baseDirectory, @"..\..\..\")+@"\GameFiles\");
+            GlobalSettings.projectRoot = Path.GetFullPath("GameFiles/");
             Functions.playSound(soundFilePath);
             Player player = new Player();
             Rival rival = new Rival();
