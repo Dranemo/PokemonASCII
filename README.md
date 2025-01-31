@@ -1,6 +1,6 @@
 # Pokemon Version ASCII
 
-[Download Link](https://drive.google.com/file/d/1SpUeiWUTK-fc8AZHeVyPZnw_7FKH0WXw/view?usp=sharing)
+[Release Link](https://github.com/Dranemo/PokemonASCII/releases/tag/ReleasePortfolio)
 
 
 ## /!\ <ins>Pour lancer le programme (Windows 11)</ins> /!\ 
