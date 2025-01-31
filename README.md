@@ -13,15 +13,17 @@ Please make the console fullscreen and zoom out a little before playing, otherwi
 ## Table of Content
 
 1. [Français](#Francais)
-   1. [Fonctionnalités de base par zone](#FoncBaseFr)
-   2. [Fonctionnalités spécifiques](#FoncSpeFr)
-   3. [Bug connus](#GlitchFr)
-   4. [Lancer le programme avec la solution](#RunFr)
+   1. [Touches](#InputFr)
+   2. [Fonctionnalités de base par zone](#FoncBaseFr)
+   3. [Fonctionnalités spécifiques](#FoncSpeFr)
+   4. [Bug connus](#GlitchFr)
+   5. [Lancer le programme avec la solution](#RunFr)
 2. [English](#Anglais)
-   1. [Basic Features per zone](#FoncBaseEn)
-   2. [Specific Features](#FoncSpeEn)
-   3. [Known Glitches](#GlitchEn)
-   4. [Run program using the solution](##RunEn)
+   1. [Input](#InputEn)
+   2. [Basic Features per zone](#FoncBaseEn)
+   3. [Specific Features](#FoncSpeEn)
+   4. [Known Glitches](#GlitchEn)
+   5. [Run program using the solution](#RunEn)
 3. [Credits](#Credits)
 
 
@@ -38,7 +40,13 @@ Francais uniquement
 Le projet recrée une petite partie du jeu Pokemon Rouge et Bleu initialement sorti en 1998 par GameFreak.  
 La ville de Bourg-Palette ainsi que la Route 1 sont inclus dans le jeu. L'introduction du professeur Chen est également présente.  
 
-
+### Touches <a name="InputFr"></a>
+| Touches | Action |
+|---|---|
+| Flèches directionnelles | Déplacement |
+| Entrer | Selectionner |
+| Echap (Sur la carte) | Quitter le jeu |
+| Echap (Dans un menu) | Quitter le menu |
 
 ### Fonctionnalités par zone <a name="FoncBaseFr"></a>
 
@@ -111,6 +119,14 @@ The project recreates a small part of the Pokemon Red and Blue game originally r
 Pallet Town and Route 1 are included in the game. Professor Oak's introduction is also present.
 
 
+### Input <a name="InputEn"></a>
+| Input | Action |
+|---|---|
+| Directionnal Arrows | Movement |
+| Enter | Select |
+| Escape (On the Map) | Quit the Game |
+| Escape (In a Menu) | Quit the Menu |
+
 
 ### Basic Features per zone <a name="FoncBaseEn"></a>
 
@@ -171,7 +187,7 @@ In the Program.cs file, find the "AddressFile" class and the "FileDirection" str
 
 
 
-## Credits
+## Credits <a name="Credits"></a>
 
 * Caillot Yanaël - [LinkedIn](https://www.linkedin.com/in/ycaillot/) - [GitHub](https://github.com/Dranemo)
 * Guellaf Melvin - [LinkedIn](https://www.linkedin.com/in/melvin-guellaff-353628202/) - [GitHub](https://github.com/MGuellaf)
