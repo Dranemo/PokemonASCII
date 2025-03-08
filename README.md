@@ -1,6 +1,6 @@
 # Pokemon Version ASCII
 
-[Release Link](https://github.com/Dranemo/PokemonASCII/releases/tag/ReleasePortfolio)
+[Release Link](https://github.com/Dranemo/Releases/releases/tag/PokemonASCII)
 
 
 ## /!\ <ins>Pour lancer le programme (Windows 11)</ins> /!\ 
