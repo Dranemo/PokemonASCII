@@ -25,6 +25,7 @@ Please make the console fullscreen and zoom out a little before playing, otherwi
    4. [Known Glitches](#GlitchEn)
    5. [Run program using the solution](#RunEn)
 3. [Credits](#Credits)
+4. [License](#License)
 
 
 
@@ -192,6 +193,10 @@ In the Program.cs file, find the "AddressFile" class and the "FileDirection" str
 * Caillot Yanaël - [LinkedIn](https://www.linkedin.com/in/ycaillot/) - [GitHub](https://github.com/Dranemo)
 * Guellaf Melvin - [LinkedIn](https://www.linkedin.com/in/melvin-guellaff-353628202/) - [GitHub](https://github.com/MGuellaf)
 * Gathelier Axel - [LinkedIn](https://www.linkedin.com/in/axel-gathelier-13198b252/) - [GitHub](https://github.com/GolfOcean334)
+
+## License <a name="License"></a>
+We are the owner of this project. You are permitted to view and execute this code for evaluation or demonstration purposes only. Any modification, distribution, or commercial use is prohibited without our explicit permission.
+
 [^1]: [Source](https://www.pokebip.com/page/jeuxvideo/guide_tactique_strategie_pokemon/formules_mathematiques)
 [^2]: [Source](https://www.pokepedia.fr/Capture_de_Pokémon)
 [^3]: [Source](https://www.pokencyclopedia.info/fr/index.php?id=sprites/gen1/spr_red-blue_gb) 
